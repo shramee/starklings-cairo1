@@ -19,9 +19,9 @@
           darwin.apple_sdk.frameworks.CoreServices
         ];
 
-        rustlings =
+        starklings =
           pkgs.rustPlatform.buildRustPackage {
-            name = "rustlings";
+            name = "starklings";
             version = "5.3.0";
 
             buildInputs = cargoBuildInputs;
@@ -55,7 +55,7 @@
             cargo
             rustc
             rust-analyzer
-            rustlings
+            starklings
             rustfmt
             clippy
           ] ++ cargoBuildInputs;

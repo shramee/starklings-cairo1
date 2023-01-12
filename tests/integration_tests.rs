@@ -7,13 +7,13 @@ use std::process::Command;
 
 #[test]
 fn runs_without_arguments() {
-    let mut cmd = Command::cargo_bin("rustlings").unwrap();
+    let mut cmd = Command::cargo_bin("starklings").unwrap();
     cmd.assert().success();
 }
 
 #[test]
 fn fails_when_in_wrong_dir() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .current_dir("tests/")
         .assert()
@@ -22,7 +22,7 @@ fn fails_when_in_wrong_dir() {
 
 #[test]
 fn verify_all_success() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .arg("verify")
         .current_dir("tests/fixture/success")
@@ -32,7 +32,7 @@ fn verify_all_success() {
 
 #[test]
 fn verify_fails_if_some_fails() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .arg("verify")
         .current_dir("tests/fixture/failure")
@@ -42,7 +42,7 @@ fn verify_fails_if_some_fails() {
 
 #[test]
 fn run_single_compile_success() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["run", "compSuccess"])
         .current_dir("tests/fixture/success/")
@@ -52,7 +52,7 @@ fn run_single_compile_success() {
 
 #[test]
 fn run_single_compile_failure() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["run", "compFailure"])
         .current_dir("tests/fixture/failure/")
@@ -62,7 +62,7 @@ fn run_single_compile_failure() {
 
 #[test]
 fn run_single_test_success() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["run", "testSuccess"])
         .current_dir("tests/fixture/success/")
@@ -72,7 +72,7 @@ fn run_single_test_success() {
 
 #[test]
 fn run_single_test_failure() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["run", "testFailure"])
         .current_dir("tests/fixture/failure/")
@@ -82,7 +82,7 @@ fn run_single_test_failure() {
 
 #[test]
 fn run_single_test_not_passed() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["run", "testNotPassed.rs"])
         .current_dir("tests/fixture/failure/")
@@ -92,7 +92,7 @@ fn run_single_test_not_passed() {
 
 #[test]
 fn run_single_test_no_filename() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .arg("run")
         .current_dir("tests/fixture/")
@@ -102,7 +102,7 @@ fn run_single_test_no_filename() {
 
 #[test]
 fn run_single_test_no_exercise() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["run", "compNoExercise.rs"])
         .current_dir("tests/fixture/failure")
@@ -112,7 +112,7 @@ fn run_single_test_no_exercise() {
 
 #[test]
 fn reset_single_exercise() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["reset", "intro1"])
         .assert()
@@ -121,7 +121,7 @@ fn reset_single_exercise() {
 
 #[test]
 fn reset_no_exercise() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .arg("reset")
         .assert()
@@ -133,7 +133,7 @@ fn reset_no_exercise() {
 
 #[test]
 fn get_hint_for_single_test() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["hint", "testFailure"])
         .current_dir("tests/fixture/failure")
@@ -169,7 +169,7 @@ fn all_exercises_require_confirmation() {
 
 #[test]
 fn run_compile_exercise_does_not_prompt() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["run", "pending_exercise"])
         .current_dir("tests/fixture/state")
@@ -180,7 +180,7 @@ fn run_compile_exercise_does_not_prompt() {
 
 #[test]
 fn run_test_exercise_does_not_prompt() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["run", "pending_test_exercise"])
         .current_dir("tests/fixture/state")
@@ -191,7 +191,7 @@ fn run_test_exercise_does_not_prompt() {
 
 #[test]
 fn run_single_test_success_with_output() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["--nocapture", "run", "testSuccess"])
         .current_dir("tests/fixture/success/")
@@ -202,7 +202,7 @@ fn run_single_test_success_with_output() {
 
 #[test]
 fn run_single_test_success_without_output() {
-    Command::cargo_bin("rustlings")
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["run", "testSuccess"])
         .current_dir("tests/fixture/success/")
@@ -212,8 +212,8 @@ fn run_single_test_success_without_output() {
 }
 
 #[test]
-fn run_rustlings_list() {
-    Command::cargo_bin("rustlings")
+fn run_starklings_list() {
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["list"])
         .current_dir("tests/fixture/success")
@@ -222,8 +222,8 @@ fn run_rustlings_list() {
 }
 
 #[test]
-fn run_rustlings_list_no_pending() {
-    Command::cargo_bin("rustlings")
+fn run_starklings_list_no_pending() {
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["list"])
         .current_dir("tests/fixture/success")
@@ -233,8 +233,8 @@ fn run_rustlings_list_no_pending() {
 }
 
 #[test]
-fn run_rustlings_list_both_done_and_pending() {
-    Command::cargo_bin("rustlings")
+fn run_starklings_list_both_done_and_pending() {
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["list"])
         .current_dir("tests/fixture/state")
@@ -244,8 +244,8 @@ fn run_rustlings_list_both_done_and_pending() {
 }
 
 #[test]
-fn run_rustlings_list_without_pending() {
-    Command::cargo_bin("rustlings")
+fn run_starklings_list_without_pending() {
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["list", "--solved"])
         .current_dir("tests/fixture/state")
@@ -255,8 +255,8 @@ fn run_rustlings_list_without_pending() {
 }
 
 #[test]
-fn run_rustlings_list_without_done() {
-    Command::cargo_bin("rustlings")
+fn run_starklings_list_without_done() {
+    Command::cargo_bin("starklings")
         .unwrap()
         .args(&["list", "--unsolved"])
         .current_dir("tests/fixture/state")
