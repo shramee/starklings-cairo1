@@ -1,2 +1,0 @@
-language = "rust"
-run = "[ -x ~/.cargo/bin/starklings ] && ~/.cargo/bin/starklings watch || ./install.sh"
