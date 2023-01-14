@@ -264,3 +264,13 @@ fn run_starklings_list_without_done() {
         .success()
         .stdout(predicates::str::contains("Done").not());
 }
+
+#[test]
+fn run_cairo_single_compile_success() {
+    Command::cargo_bin("starklings")
+        .unwrap()
+        .args(&["run", "cairoPass"])
+        .current_dir("tests/fixture/cairo/")
+        .assert()
+        .success();
+}
