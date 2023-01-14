@@ -64,3 +64,17 @@ first exercise. Make sure to have your editor open!
 ## Contributing
 
 ### _Work in progress_
+
+## Testing
+
+#### For Cairo related tests
+
+```
+cargo test cairo
+```
+
+#### For all tests
+
+```
+cargo test
+```
