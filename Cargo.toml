@@ -1,8 +1,9 @@
 [package]
 name = "starklings"
-version = "5.3.0"
+version = "0.1.0"
 authors = [
   "Shramee <shramee@gmail.com>",
+	# Authors of original rustlings
 	"Liv <mokou@fastmail.com>",
   "Carol (Nichols || Goulding) <carol.nichols@gmail.com>",
 ]
@@ -19,8 +20,30 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.81"
 home = "0.5.3"
 glob = "0.3.0"
+
 # Cairo runner dependencies
-cairo-lang-runner = { git = "https://github.com/starkware-libs/cairo",tag = "v0.1.0"}
+cairo-lang-runner = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
+cairo-lang-compiler = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
+cairo-lang-casm = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
+cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
+cairo-lang-sierra = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
+cairo-lang-sierra-ap-change = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
+cairo-lang-sierra-gas = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
+cairo-lang-sierra-generator = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
+cairo-lang-sierra-to-casm = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
+cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
+
+anyhow = "1.0.66"
+ark-ff = "0.4.0-alpha.7"
+ark-std = "0.3.0"
+cairo-felt = "0.1.0"
+cairo-vm = "0.1.1"
+clap = { version = "4.0", features = ["derive"] }
+itertools = "0.10.3"
+num-bigint = "0.4"
+num-traits = "0.2"
+salsa = "0.16.1"
+thiserror = "1.0.32"
 
 [[bin]]
 name = "starklings"

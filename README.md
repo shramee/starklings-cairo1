@@ -56,3 +56,11 @@ comment to move on to the next exercise.
 Got all that? Great! To get started, run `starklings watch` in order to get the
 first exercise. Make sure to have your editor open!
 ```
+
+## Inspiration
+
+- [Rustlings](https://github.com/rust-lang/rustlings), starklings is forked from Rustlings. Thanks to all the original [authors and contributors](https://github.com/rust-lang/rustlings)
+
+## Contributing
+
+### _Work in progress_

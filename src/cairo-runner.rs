@@ -12,7 +12,7 @@ use cairo_lang_sierra_generator::db::SierraGenGroup;
 use cairo_lang_sierra_generator::replace_ids::replace_sierra_ids_in_program;
 use clap::Parser;
 
-fn cairo_runner(path: String) -> anyhow::Result<()> {
+pub fn cairo_runner(path: String) -> anyhow::Result<()> {
     let mut db_val = RootDatabase::default();
     let db = &mut db_val;
 
