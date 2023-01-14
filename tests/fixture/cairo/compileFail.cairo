@@ -1,3 +1,3 @@
 fn main() -> felt {
-    2
+    hi()
 }

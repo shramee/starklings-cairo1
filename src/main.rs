@@ -147,7 +147,6 @@ fn main() {
 
     let toml_str = &fs::read_to_string("info.toml").unwrap();
     let exercises = toml::from_str::<ExerciseList>(toml_str).unwrap().exercises;
-    let verbose = args.nocapture;
 
     let command = args.nested.unwrap_or_else(|| {
         println!("{DEFAULT_OUT}\n");
@@ -213,7 +212,7 @@ fn main() {
         Subcommands::Run(subargs) => {
             let exercise = find_exercise(&subargs.name, &exercises);
 
-            run(exercise, verbose).unwrap_or_else(|_| std::process::exit(1));
+            run(exercise).unwrap_or_else(|_| std::process::exit(1));
         }
 
         Subcommands::Reset(subargs) => {
@@ -229,8 +228,7 @@ fn main() {
         }
 
         Subcommands::Verify(_subargs) => {
-            verify(&exercises, (0, exercises.len()), verbose)
-                .unwrap_or_else(|_| std::process::exit(1));
+            verify(&exercises, (0, exercises.len())).unwrap_or_else(|_| std::process::exit(1));
         }
 
         Subcommands::Lsp(_subargs) => {
@@ -252,7 +250,7 @@ fn main() {
             }
         }
 
-        Subcommands::Watch(_subargs) => match watch(&exercises, verbose) {
+        Subcommands::Watch(_subargs) => match watch(&exercises) {
             Err(e) => {
                 println!(
                     "Error: Could not watch your progress. Error message was {:?}.",
@@ -340,7 +338,7 @@ enum WatchStatus {
     Unfinished,
 }
 
-fn watch(exercises: &[Exercise], verbose: bool) -> notify::Result<WatchStatus> {
+fn watch(exercises: &[Exercise]) -> notify::Result<WatchStatus> {
     /* Clears the terminal with an ANSI escape code.
     Works in UNIX and newer Windows terminals. */
     fn clear_screen() {
@@ -356,7 +354,7 @@ fn watch(exercises: &[Exercise], verbose: bool) -> notify::Result<WatchStatus> {
     clear_screen();
 
     let to_owned_hint = |t: &Exercise| t.hint.to_owned();
-    let failed_exercise_hint = match verify(exercises.iter(), (0, exercises.len()), verbose) {
+    let failed_exercise_hint = match verify(exercises.iter(), (0, exercises.len())) {
         Ok(_) => return Ok(WatchStatus::Finished),
         Err(exercise) => Arc::new(Mutex::new(Some(to_owned_hint(exercise)))),
     };
@@ -378,7 +376,7 @@ fn watch(exercises: &[Exercise], verbose: bool) -> notify::Result<WatchStatus> {
                             );
                         let num_done = exercises.iter().filter(|e| e.looks_done()).count();
                         clear_screen();
-                        match verify(pending_exercises, (num_done, exercises.len()), verbose) {
+                        match verify(pending_exercises, (num_done, exercises.len())) {
                             Ok(_) => return Ok(WatchStatus::Finished),
                             Err(exercise) => {
                                 let mut failed_exercise_hint = failed_exercise_hint.lock().unwrap();
