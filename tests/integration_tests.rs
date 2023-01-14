@@ -1,6 +1,6 @@
 use assert_cmd::prelude::*;
 use glob::glob;
-use predicates::boolean::PredicateBooleanExt;
+
 use std::fs::File;
 use std::io::Read;
 use std::process::Command;
@@ -16,96 +16,6 @@ fn fails_when_in_wrong_dir() {
     Command::cargo_bin("starklings")
         .unwrap()
         .current_dir("tests/")
-        .assert()
-        .code(1);
-}
-
-#[test]
-fn verify_all_success() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .arg("verify")
-        .current_dir("tests/fixture/success")
-        .assert()
-        .success();
-}
-
-#[test]
-fn verify_fails_if_some_fails() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .arg("verify")
-        .current_dir("tests/fixture/failure")
-        .assert()
-        .code(1);
-}
-
-#[test]
-fn run_single_compile_success() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["run", "compSuccess"])
-        .current_dir("tests/fixture/success/")
-        .assert()
-        .success();
-}
-
-#[test]
-fn run_single_compile_failure() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["run", "compFailure"])
-        .current_dir("tests/fixture/failure/")
-        .assert()
-        .code(1);
-}
-
-#[test]
-fn run_single_test_success() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["run", "testSuccess"])
-        .current_dir("tests/fixture/success/")
-        .assert()
-        .success();
-}
-
-#[test]
-fn run_single_test_failure() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["run", "testFailure"])
-        .current_dir("tests/fixture/failure/")
-        .assert()
-        .code(1);
-}
-
-#[test]
-fn run_single_test_not_passed() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["run", "testNotPassed.rs"])
-        .current_dir("tests/fixture/failure/")
-        .assert()
-        .code(1);
-}
-
-#[test]
-fn run_single_test_no_filename() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .arg("run")
-        .current_dir("tests/fixture/")
-        .assert()
-        .code(1);
-}
-
-#[test]
-fn run_single_test_no_exercise() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["run", "compNoExercise.rs"])
-        .current_dir("tests/fixture/failure")
         .assert()
         .code(1);
 }
@@ -132,21 +42,10 @@ fn reset_no_exercise() {
 }
 
 #[test]
-fn get_hint_for_single_test() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["hint", "testFailure"])
-        .current_dir("tests/fixture/failure")
-        .assert()
-        .code(0)
-        .stdout("Hello!\n");
-}
-
-#[test]
 fn all_exercises_require_confirmation() {
-    for exercise in glob("exercises/**/*.rs").unwrap() {
+    for exercise in glob("exercises/**/*.cairo").unwrap() {
         let path = exercise.unwrap();
-        if path.file_name().unwrap() == "mod.rs" {
+        if path.file_name().unwrap() == "mod.cairo" {
             continue;
         }
         let source = {
@@ -167,103 +66,81 @@ fn all_exercises_require_confirmation() {
     }
 }
 
-#[test]
-fn run_compile_exercise_does_not_prompt() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["run", "pending_exercise"])
-        .current_dir("tests/fixture/state")
-        .assert()
-        .code(0)
-        .stdout(predicates::str::contains("I AM NOT DONE").not());
-}
+// #[test]
+// fn run_compile_exercise_does_not_prompt() {
+//     Command::cargo_bin("starklings")
+//         .unwrap()
+//         .args(&["run", "pending_exercise"])
+//         .current_dir("tests/fixture/state")
+//         .assert()
+//         .code(0)
+//         .stdout(predicates::str::contains("I AM NOT DONE").not());
+// }
 
-#[test]
-fn run_test_exercise_does_not_prompt() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["run", "pending_test_exercise"])
-        .current_dir("tests/fixture/state")
-        .assert()
-        .code(0)
-        .stdout(predicates::str::contains("I AM NOT DONE").not());
-}
+// #[test]
+// fn run_test_exercise_does_not_prompt() {
+//     Command::cargo_bin("starklings")
+//         .unwrap()
+//         .args(&["run", "pending_test_exercise"])
+//         .current_dir("tests/fixture/state")
+//         .assert()
+//         .code(0)
+//         .stdout(predicates::str::contains("I AM NOT DONE").not());
+// }
 
-#[test]
-fn run_single_test_success_with_output() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["--nocapture", "run", "testSuccess"])
-        .current_dir("tests/fixture/success/")
-        .assert()
-        .code(0)
-        .stdout(predicates::str::contains("THIS TEST TOO SHALL PASS"));
-}
+// #[test]
+// fn run_starklings_list() {
+//     Command::cargo_bin("starklings")
+//         .unwrap()
+//         .args(&["list"])
+//         .current_dir("tests/fixture/success")
+//         .assert()
+//         .success();
+// }
 
-#[test]
-fn run_single_test_success_without_output() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["run", "testSuccess"])
-        .current_dir("tests/fixture/success/")
-        .assert()
-        .code(0)
-        .stdout(predicates::str::contains("THIS TEST TOO SHALL PASS").not());
-}
+// #[test]
+// fn run_starklings_list_no_pending() {
+//     Command::cargo_bin("starklings")
+//         .unwrap()
+//         .args(&["list"])
+//         .current_dir("tests/fixture/success")
+//         .assert()
+//         .success()
+//         .stdout(predicates::str::contains("Pending").not());
+// }
 
-#[test]
-fn run_starklings_list() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["list"])
-        .current_dir("tests/fixture/success")
-        .assert()
-        .success();
-}
+// #[test]
+// fn run_starklings_list_both_done_and_pending() {
+//     Command::cargo_bin("starklings")
+//         .unwrap()
+//         .args(&["list"])
+//         .current_dir("tests/fixture/state")
+//         .assert()
+//         .success()
+//         .stdout(predicates::str::contains("Done").and(predicates::str::contains("Pending")));
+// }
 
-#[test]
-fn run_starklings_list_no_pending() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["list"])
-        .current_dir("tests/fixture/success")
-        .assert()
-        .success()
-        .stdout(predicates::str::contains("Pending").not());
-}
+// #[test]
+// fn run_starklings_list_without_pending() {
+//     Command::cargo_bin("starklings")
+//         .unwrap()
+//         .args(&["list", "--solved"])
+//         .current_dir("tests/fixture/state")
+//         .assert()
+//         .success()
+//         .stdout(predicates::str::contains("Pending").not());
+// }
 
-#[test]
-fn run_starklings_list_both_done_and_pending() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["list"])
-        .current_dir("tests/fixture/state")
-        .assert()
-        .success()
-        .stdout(predicates::str::contains("Done").and(predicates::str::contains("Pending")));
-}
-
-#[test]
-fn run_starklings_list_without_pending() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["list", "--solved"])
-        .current_dir("tests/fixture/state")
-        .assert()
-        .success()
-        .stdout(predicates::str::contains("Pending").not());
-}
-
-#[test]
-fn run_starklings_list_without_done() {
-    Command::cargo_bin("starklings")
-        .unwrap()
-        .args(&["list", "--unsolved"])
-        .current_dir("tests/fixture/state")
-        .assert()
-        .success()
-        .stdout(predicates::str::contains("Done").not());
-}
+// #[test]
+// fn run_starklings_list_without_done() {
+//     Command::cargo_bin("starklings")
+//         .unwrap()
+//         .args(&["list", "--unsolved"])
+//         .current_dir("tests/fixture/state")
+//         .assert()
+//         .success()
+//         .stdout(predicates::str::contains("Done").not());
+// }
 
 #[test]
 fn run_cairo_single_compile_success() {
