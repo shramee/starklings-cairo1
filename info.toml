@@ -2,7 +2,7 @@
 
 [[exercises]]
 name = "intro1"
-path = "exercises/intro/intro1.rs"
-mode = "compile" # Or "test"
-hint = """
-Hint here"""
+path = "exercises/intro/intro1.cairo"
+mode = "compile"
+hint = """"""
+
