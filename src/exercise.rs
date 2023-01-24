@@ -96,7 +96,6 @@ impl Exercise {
     }
 
     pub fn state(&self) -> State {
-        println!("{self:#?}");
         let mut source_file =
             File::open(&self.path).expect("We were unable to open the exercise file!");
 
