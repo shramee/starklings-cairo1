@@ -6,3 +6,20 @@ path = "exercises/intro/intro1.cairo"
 mode = "compile"
 hint = """"""
 
+[[exercises]]
+name = "intro2"
+path = "exercises/intro/intro2.cairo"
+mode = "compile"
+hint = """"""
+
+[[exercises]]
+name = "intro3"
+path = "exercises/intro/intro3.cairo"
+mode = "compile"
+hint = """"""
+
+[[exercises]]
+name = "intro4"
+path = "exercises/intro/intro4.cairo"
+mode = "compile"
+hint = """"""
