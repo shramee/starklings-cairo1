@@ -1,12 +1,73 @@
-[workspace]
-
-members = [
-    "src"
+[package]
+name = "starklings"
+version = "0.1.0"
+authors = [
+  "Shramee <shramee@gmail.com>",
+	# Authors of original rustlings
+	"Liv <mokou@fastmail.com>",
+  "Carol (Nichols || Goulding) <carol.nichols@gmail.com>",
 ]
+edition = "2021"
 
-[workspace.package]
-version = "1.0.0-alpha.2"
-edition = "2023"
-repository = "https://github.com/shramee/starklings-cairo1"
-license = "MIT"
-license-file = "LICENSE"
+[dependencies]
+argh = "0.1"
+indicatif = "0.16"
+console = "0.15"
+notify = "4.0"
+toml = "0.5"
+regex = "1.5"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.81"
+home = "0.5.3"
+glob = "0.3.0"
+
+# Cairo runner dependencies
+cairo-lang-runner = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-compiler = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-casm = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-debug = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-sierra = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-sierra-ap-change = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-sierra-gas = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-sierra-generator = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-sierra-to-casm = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-starknet = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-syntax = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-plugins = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+
+
+anyhow = "1.0.66"
+ark-ff = "0.4.0-alpha.7"
+ark-std = "0.3.0"
+cairo-felt = "0.1.1"
+cairo-vm = "0.1.1"
+clap = { version = "4.0", features = ["derive"] }
+itertools = "0.10.3"
+num-bigint = "0.4"
+num-traits = "0.2"
+salsa = "0.16.1"
+thiserror = "1.0.32"
+rayon = "0.9.0"
+colored = "2"
+
+[dev-dependencies]
+assert_cmd = "0.11.0"
+predicates = "1.0.1"
+glob = "0.3.0"
+
+[[bin]]
+name = "starklings"
+path = "src/main.rs"
+
+[[bin]]
+name = "cairo-runner"
+path = "src/cairo-runner.rs"
+
+[[bin]]
+name = "cairo-tester"
+path = "src/cairo-tester.rs"

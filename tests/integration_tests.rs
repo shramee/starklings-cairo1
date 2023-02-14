@@ -151,3 +151,23 @@ fn run_cairo_single_compile_success() {
         .assert()
         .success();
 }
+
+#[test]
+fn run_cairo_single_test_success() {
+    Command::cargo_bin("starklings")
+        .unwrap()
+        .args(&["run", "testPass"])
+        .current_dir("tests/fixture/cairo/")
+        .assert()
+        .success();
+}
+
+#[test]
+fn run_cairo_single_test_failure() {
+    Command::cargo_bin("starklings")
+        .unwrap()
+        .args(&["run", "testFails"])
+        .current_dir("tests/fixture/cairo/")
+        .assert()
+        .code(1);
+}
