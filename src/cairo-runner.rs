@@ -3,6 +3,7 @@
 use std::path::Path;
 
 use anyhow::{Context, Ok};
+use cairo_lang_filesystem::db::init_dev_corelib;
 use cairo_lang_compiler::db::RootDatabase;
 use cairo_lang_compiler::diagnostics::check_and_eprint_diagnostics;
 use cairo_lang_compiler::project::setup_project;
@@ -11,6 +12,8 @@ use cairo_lang_runner::SierraCasmRunner;
 use cairo_lang_sierra_generator::db::SierraGenGroup;
 use cairo_lang_sierra_generator::replace_ids::replace_sierra_ids_in_program;
 use clap::Parser;
+
+const CORELIB_DIR_NAME: &str = "corelib";
 
 /// Command line args parser.
 /// Exits with 0/1 if the input is formatted correctly/incorrectly.
@@ -31,12 +34,18 @@ struct Args {
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
 
-    let mut db_val = RootDatabase::default();
-    let db = &mut db_val;
+    let mut db = RootDatabase::default();
+    let mut corelib_dir = std::env::current_exe()
+        .unwrap_or_else(|e| panic!("Problem getting the executable path: {e:?}"));
+    corelib_dir.pop();
+    corelib_dir.pop();
+    corelib_dir.pop();
+    corelib_dir.push(CORELIB_DIR_NAME);
+    init_dev_corelib(&mut db, corelib_dir);
 
-    let main_crate_ids = setup_project(db, Path::new(&args.path))?;
+    let main_crate_ids = setup_project(&mut db, Path::new(&args.path))?;
 
-    if check_and_eprint_diagnostics(db) {
+    if check_and_eprint_diagnostics(&mut db) {
         anyhow::bail!("failed to compile: {}", args.path);
     }
 
@@ -45,7 +54,7 @@ fn main() -> anyhow::Result<()> {
         .to_option()
         .with_context(|| "Compilation failed without any diagnostics.")?;
     let runner = SierraCasmRunner::new(
-        replace_sierra_ids_in_program(db, &sierra_program),
+        replace_sierra_ids_in_program(&mut db, &sierra_program),
         args.available_gas.is_some(),
     )
     .with_context(|| "Failed setting up runner.")?;
