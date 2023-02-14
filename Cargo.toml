@@ -1,59 +1,12 @@
-[package]
-name = "starklings"
-version = "0.1.0"
-authors = [
-  "Shramee <shramee@gmail.com>",
-	# Authors of original rustlings
-	"Liv <mokou@fastmail.com>",
-  "Carol (Nichols || Goulding) <carol.nichols@gmail.com>",
+[workspace]
+
+members = [
+    "src"
 ]
-edition = "2021"
 
-[dependencies]
-argh = "0.1"
-indicatif = "0.16"
-console = "0.15"
-notify = "4.0"
-toml = "0.5"
-regex = "1.5"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0.81"
-home = "0.5.3"
-glob = "0.3.0"
-
-# Cairo runner dependencies
-cairo-lang-runner = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
-cairo-lang-compiler = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
-cairo-lang-casm = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
-cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
-cairo-lang-sierra = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
-cairo-lang-sierra-ap-change = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
-cairo-lang-sierra-gas = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
-cairo-lang-sierra-generator = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
-cairo-lang-sierra-to-casm = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
-cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo",rev = "1bbd7fd6e00824476f02be6b545339bfa287c484" }
-
-anyhow = "1.0.66"
-ark-ff = "0.4.0-alpha.7"
-ark-std = "0.3.0"
-cairo-felt = "0.1.0"
-cairo-vm = "0.1.1"
-clap = { version = "4.0", features = ["derive"] }
-itertools = "0.10.3"
-num-bigint = "0.4"
-num-traits = "0.2"
-salsa = "0.16.1"
-thiserror = "1.0.32"
-
-[[bin]]
-name = "starklings"
-path = "src/main.rs"
-
-[[bin]]
-name = "cairo-runner"
-path = "src/cairo-runner.rs"
-
-[dev-dependencies]
-assert_cmd = "0.11.0"
-predicates = "1.0.1"
-glob = "0.3.0"
+[workspace.package]
+version = "1.0.0-alpha.2"
+edition = "2023"
+repository = "https://github.com/shramee/starklings-cairo1"
+license = "MIT"
+license-file = "LICENSE"
