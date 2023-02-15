@@ -23,3 +23,53 @@ name = "intro4"
 path = "exercises/intro/intro4.cairo"
 mode = "compile"
 hint = """"""
+
+
+# STRUCTS
+
+[[exercises]]
+name = "structs1"
+path = "exercises/structs/structs1.cairo"
+mode = "test"
+hint = """
+Cairo has a single type of struct that are named collections of related data stored in fields.
+In this exercise you need to complete and implement a struct.
+Here is how we describe a person struct that stores a name and an age,
+
+#[derive(Copy, Drop)]
+struct Person {
+    name: felt,
+    age: felt,
+}
+
+You'd use the struct like so,
+
+let john = Person { name: 'John', age: 29 };
+
+
+Read more about structs in the Structs section of this article: https://link.medium.com/c8TqX7R3qxb#ff54 """
+
+
+[[exercises]]
+name = "structs2"
+path = "exercises/structs/structs2.cairo"
+mode = "test"
+hint = """
+Creating instances of structs is easy, all you need to do is assign some values to its fields. Unlike Rust, Cairo requires you to initialize all fields when creating a struct and 
+there is no update syntax available at the moment. You can have multiple data types in a struct, and even other structs.
+
+There are some shortcuts that can be taken when destructuring structs by using the following syntax: `let Foo {x: a, y: b} = foo`;
+Read more about structs in the Structs section of this article: https://link.medium.com/c8TqX7R3qxb#ff54 """
+
+[[exercises]]
+name = "structs3"
+path = "exercises/structs/structs3.cairo"
+mode = "test"
+hint = """
+For is_international: What makes a package international? Seems related to the places it goes through right?
+
+For get_fees: This method takes an additional argument, is there a field in the Package struct that this relates to?
+
+Looking at the test functions will also help you understand more about the syntax.
+This section will help you understanding more about impls and traits: https://link.medium.com/c8TqX7R3qxb#83b5.
+"""

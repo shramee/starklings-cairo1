@@ -36,7 +36,7 @@ pub struct ExerciseList {
     pub exercises: Vec<Exercise>,
 }
 
-// A representation of a rustlings exercise.
+// A representation of a starklings exercise.
 // This is deserialized from the accompanying info.toml file
 #[derive(Deserialize, Debug)]
 pub struct Exercise {
