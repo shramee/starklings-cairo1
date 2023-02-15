@@ -23,6 +23,7 @@ pub fn verify<'a>(
     for exercise in exercises {
         let compile_result = match exercise.mode {
             Mode::Compile => compile_and_run_interactively(exercise),
+            Mode::Test => compile_and_test_interactively(exercise),
         };
         if !compile_result.unwrap_or(false) {
             return Err(exercise);
@@ -42,6 +43,23 @@ fn compile_and_run_interactively(exercise: &Exercise) -> Result<bool, ()> {
     progress_bar.set_message(format!("Running {exercise}..."));
 
     let run_state = compile_and_run_cairo(exercise, &progress_bar)?;
+
+    progress_bar.finish_and_clear();
+
+    Ok(prompt_for_completion(
+        exercise,
+        Some(String::from_utf8(run_state.stdout).unwrap()),
+    ))
+}
+
+// Tests the given Exercise and run the resulting binary in an interactive mode
+fn compile_and_test_interactively(exercise: &Exercise) -> Result<bool, ()> {
+    let progress_bar = ProgressBar::new_spinner();
+    progress_bar.enable_steady_tick(100);
+
+    progress_bar.set_message(format!("Testing {exercise}..."));
+
+    let run_state = compile_and_test_cairo(exercise, &progress_bar)?;
 
     progress_bar.finish_and_clear();
 
@@ -72,6 +90,27 @@ fn compile_and_run_cairo<'a, 'b>(
     }
 }
 
+// Tests the given Exercise and return an object with information
+// about the state of the tests
+fn compile_and_test_cairo<'a, 'b>(
+    exercise: &'a Exercise,
+    progress_bar: &'b ProgressBar,
+) -> Result<std::process::Output, ()> {
+    let compilation_result = exercise.test_cairo();
+
+    if compilation_result.stderr.len() > 0 {
+        progress_bar.finish_and_clear();
+        warn!(
+            "Test of {} failed! Please try again. Here's the output:",
+            exercise
+        );
+        println!("{}", String::from_utf8(compilation_result.stderr).unwrap());
+        Err(())
+    } else {
+        Ok(compilation_result)
+    }
+}
+
 fn prompt_for_completion(exercise: &Exercise, prompt_output: Option<String>) -> bool {
     let context = match exercise.state() {
         State::Done => return true,
@@ -80,7 +119,7 @@ fn prompt_for_completion(exercise: &Exercise, prompt_output: Option<String>) -> 
 
     match exercise.mode {
         Mode::Compile => success!("Successfully ran {}!", exercise),
-        // Mode::Test => success!("Successfully tested {}!", exercise),
+        Mode::Test => success!("Successfully tested {}!", exercise),
         // Mode::Clippy => success!("Successfully compiled {}!", exercise),
     }
 
@@ -90,7 +129,7 @@ fn prompt_for_completion(exercise: &Exercise, prompt_output: Option<String>) -> 
 
     let success_msg = match exercise.mode {
         Mode::Compile => "The code is compiling!",
-        // Mode::Test => "The code is compiling, and the tests pass!",
+        Mode::Test => "The code is compiling, and the tests pass!",
         // Mode::Clippy => clippy_success_msg,
     };
 

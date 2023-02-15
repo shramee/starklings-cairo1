@@ -147,7 +147,6 @@ fn main() {
 
     let toml_str = &fs::read_to_string("info.toml").unwrap();
     let exercises = toml::from_str::<ExerciseList>(toml_str).unwrap().exercises;
-
     let command = args.nested.unwrap_or_else(|| {
         println!("{DEFAULT_OUT}\n");
         std::process::exit(0);

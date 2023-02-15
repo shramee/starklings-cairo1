@@ -27,6 +27,8 @@ fn temp_file() -> String {
 pub enum Mode {
     // Indicates that the exercise should be compiled as a binary
     Compile,
+    // Indicates that the exercise should be tested
+    Test,
 }
 
 #[derive(Deserialize)]
@@ -93,6 +95,14 @@ impl Exercise {
             .args(&["--path", self.path.to_str().unwrap()])
             .output();
         cmd.expect("Failed to run 'compile' command.")
+    }
+
+    pub fn test_cairo(&self) -> std::process::Output {
+        let cmd = Command::new("cargo")
+            .args(&["run", "-q", "--bin", "cairo-tester", "--"])
+            .args(&["--path", self.path.to_str().unwrap()])
+            .output();
+        cmd.expect("Failed to run 'test' command.")
     }
 
     pub fn state(&self) -> State {
@@ -168,6 +178,18 @@ mod test {
         let exercise = Exercise {
             name: "finished_exercise".into(),
             path: PathBuf::from("tests/fixture/cairo/compilePass.cairo"),
+            mode: Mode::Compile,
+            hint: String::new(),
+        };
+
+        assert_eq!(exercise.state(), State::Done);
+    }
+
+    #[test]
+    fn test_cairo_test_passes() {
+        let exercise = Exercise {
+            name: "testPass".into(),
+            path: PathBuf::from("tests/fixture/cairo/testPass.cairo"),
             mode: Mode::Compile,
             hint: String::new(),
         };

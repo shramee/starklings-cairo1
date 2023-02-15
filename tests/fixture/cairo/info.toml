@@ -9,3 +9,15 @@ name = "cairoFail"
 path = "compileFail.cairo"
 mode = "compile"
 hint = ""
+
+[[exercises]]
+name = "testPass"
+path = "testPass.cairo"
+mode = "test"
+hint = ""
+
+[[exercises]]
+name = "testFail"
+path = "testFail.cairo"
+mode = "test"
+hint = ""
