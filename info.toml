@@ -96,6 +96,51 @@ You can read about the different integer types here: https://link.medium.com/c8T
 """
 
 
+
+# FUNCTIONS
+
+[[exercises]]
+name = "functions1"
+path = "exercises/functions/functions1.cairo"
+mode = "compile"
+hint = """
+This main function is calling a function that it expects to exist, but the
+function doesn't exist. It expects this function to have the name `call_me`.
+It expects this function to not take any arguments and not return a value.
+Sounds a lot like `main`, doesn't it?"""
+
+[[exercises]]
+name = "functions2"
+path = "exercises/functions/functions2.cairo"
+mode = "compile"
+hint = """
+Cairo requires that all parts of a function's signature have type annotations,
+but `call_me` is missing the type annotation of `num`. What is the basic type in Cairo?"""
+
+[[exercises]]
+name = "functions3"
+path = "exercises/functions/functions3.cairo"
+mode = "compile"
+hint = """
+This time, the function *declaration* is okay, but there's something wrong
+with the place where we're calling the function.
+Remember how we can use a suffix to specify the type of a literal? https://link.medium.com/c8TqX7R3qxb#6d64
+As a reminder, you can freely play around with different solutions in Starklings!
+Watch mode will only jump to the next exercise if you remove the I AM NOT DONE comment."""
+
+
+[[exercises]]
+name = "functions5"
+path = "exercises/functions/functions4.cairo"
+mode = "compile"
+hint = """
+This is a really common error that can be fixed by removing one character.
+It happens because Cairo distinguishes between expressions and statements: expressions return a value based on their operand(s), and statements simply return a () type which behaves just like `void` in C/C++ language.
+We want to return a value of `felt` type from the `square` function, but it is returning a `()` type...
+They are not the same. There are two solutions:
+1. Add a `return` ahead of `num * num;`
+2. remove `;`, make it to be `num * num`"""
+
 # STRUCTS
 
 [[exercises]]
@@ -126,7 +171,7 @@ name = "structs2"
 path = "exercises/structs/structs2.cairo"
 mode = "test"
 hint = """
-Creating instances of structs is easy, all you need to do is assign some values to its fields. Unlike Rust, Cairo requires you to initialize all fields when creating a struct and 
+Creating instances of structs is easy, all you need to do is assign some values to its fields. Unlike Rust, Cairo requires you to initialize all fields when creating a struct and
 there is no update syntax available at the moment. You can have multiple data types in a struct, and even other structs.
 
 There are some shortcuts that can be taken when destructuring structs by using the following syntax: `let Foo {x: a, y: b} = foo`;
