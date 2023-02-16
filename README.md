@@ -18,9 +18,9 @@
 0. Make sure you have Rust and Cargo installed with `nightly` toolchain. With rustup,
    - `curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly`
    - Or `Customise installation` then `Default toolchain?` set to `nightly` and everything else empty.
-1. Run `cargo run --bin starklings`, this might take a while the first time.
-2. You should see an intro message a little like this.
-
+1. Run `cargo build --all --release`, this might take a while the first time.
+2. Run `target/release/starklings watch` to start the interactive tutorial.
+3. Run `target/release/starklings --help` for more options.
 ```
 starklings - An interactive tutorial to get started with Cairo and Starknet
 

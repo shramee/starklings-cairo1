@@ -90,16 +90,14 @@ impl Drop for FileHandle {
 
 impl Exercise {
     pub fn run_cairo(&self) -> std::process::Output {
-        let cmd = Command::new("cargo")
-            .args(&["run", "-q", "--bin", "cairo-runner", "--"])
+        let cmd = Command::new("target/release/cairo-runner")
             .args(&["--path", self.path.to_str().unwrap()])
             .output();
         cmd.expect("Failed to run 'compile' command.")
     }
 
     pub fn test_cairo(&self) -> std::process::Output {
-        let cmd = Command::new("cargo")
-            .args(&["run", "-q", "--bin", "cairo-tester", "--"])
+        let cmd = Command::new("target/release/cairo-tester")
             .args(&["--path", self.path.to_str().unwrap()])
             .output();
         cmd.expect("Failed to run 'test' command.")
