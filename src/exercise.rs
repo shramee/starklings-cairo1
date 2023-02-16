@@ -90,14 +90,18 @@ impl Drop for FileHandle {
 
 impl Exercise {
     pub fn run_cairo(&self) -> std::process::Output {
-        let cmd = Command::new("target/release/cairo-runner")
+        let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        path.push("target/debug/cairo-runner");
+        let cmd = Command::new(path)
             .args(&["--path", self.path.to_str().unwrap()])
             .output();
         cmd.expect("Failed to run 'compile' command.")
     }
 
     pub fn test_cairo(&self) -> std::process::Output {
-        let cmd = Command::new("target/release/cairo-tester")
+        let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        path.push("target/debug/cairo-tester");
+        let cmd = Command::new(path)
             .args(&["--path", self.path.to_str().unwrap()])
             .output();
         cmd.expect("Failed to run 'test' command.")
