@@ -5,12 +5,13 @@ use std::path::Path;
 use std::sync::{Arc, Mutex};
 
 use anyhow::{bail, Context};
-use cairo_lang_compiler::db::RootDatabaseBuilder;
-use cairo_lang_compiler::diagnostics::check_and_eprint_diagnostics;
+use cairo_lang_compiler::db::{RootDatabase};
 use cairo_lang_compiler::project::setup_project;
+use cairo_lang_compiler::diagnostics::DiagnosticsReporter;
 use cairo_lang_debug::DebugWithDb;
 use cairo_lang_defs::ids::{FreeFunctionId, FunctionWithBodyId, ModuleItemId};
 use cairo_lang_diagnostics::ToOption;
+use cairo_lang_filesystem::db::init_dev_corelib;
 use cairo_lang_filesystem::ids::CrateId;
 use cairo_lang_plugins::config::ConfigPlugin;
 use cairo_lang_plugins::derive::DerivePlugin;
@@ -30,6 +31,9 @@ use clap::Parser;
 use colored::Colorize;
 use itertools::Itertools;
 use rayon::prelude::{IntoParallelIterator, ParallelIterator};
+
+const CORELIB_DIR_NAME: &str = "corelib";
+
 
 /// Command line args parser.
 /// Exits with 0/1 if the input is formatted correctly/incorrectly.
@@ -72,15 +76,19 @@ fn main() -> anyhow::Result<()> {
     if args.starknet {
         plugins.push(Arc::new(StarkNetPlugin {}));
     }
-    let mut builder = RootDatabaseBuilder::empty();
-    builder.with_plugins(plugins).with_dev_corelib().unwrap();
-    let mut db_val = builder.build();
-    let db = &mut db_val;
+    let db = &mut RootDatabase::builder().with_plugins(plugins).build()?;
+    let mut corelib_dir = std::env::current_exe()
+        .unwrap_or_else(|e| panic!("Problem getting the executable path: {e:?}"));
+    corelib_dir.pop();
+    corelib_dir.pop();
+    corelib_dir.pop();
+    corelib_dir.push(CORELIB_DIR_NAME);
+    init_dev_corelib(db, corelib_dir);
 
     let main_crate_ids = setup_project(db, Path::new(&args.path))?;
 
-    if check_and_eprint_diagnostics(db) {
-        anyhow::bail!("failed to compile: {}", args.path);
+    if DiagnosticsReporter::stderr().check(db) {
+        bail!("failed to compile: {}", args.path);
     }
     let all_tests = find_all_tests(db, main_crate_ids);
     let sierra_program = db

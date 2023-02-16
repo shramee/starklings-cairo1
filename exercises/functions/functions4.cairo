@@ -8,20 +8,21 @@
 // to future exercises!)
 
 // I AM NOT DONE
+use traits::Into;
 
 fn main() {
-    let original_price = 51_u64;
-    debug::print_felt(u64_to_felt(sale_price(original_price)));
+    let original_price = 51_u32;
+    debug::print_felt(sale_price(original_price).into());
 }
 
-fn sale_price(price: u64) -> u64 {
+fn sale_price(price: u32) -> {
     if is_even(price) {
-        price - 10_u64
+        price - 10_u32
     } else {
-        price - 3_u64
+        price - 3_u32
     }
 }
 
-fn is_even(num: u64) -> bool {
-    num % 2_u64 == 0_u64
+fn is_even(num: u32) -> bool {
+    num % 2_u32 == 0_u32
 }
