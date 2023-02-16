@@ -23,3 +23,74 @@ name = "intro4"
 path = "exercises/intro/intro4.cairo"
 mode = "compile"
 hint = """"""
+
+# VARIABLES
+
+[[exercises]]
+name = "variables1"
+path = "exercises/variables/variables1.cairo"
+mode = "compile"
+hint = """
+The declaration on line 8 is missing a keyword that is needed in Cairo
+to create a new variable binding."""
+
+[[exercises]]
+name = "variables2"
+path = "exercises/variables/variables2.cairo"
+mode = "compile"
+hint = """
+What happens if you annotate line 7 with a type annotation?
+What if you give x a value?
+What if you do both?
+What type should x be, anyway? (remember what the basic type in Cairo is?)
+What if x is the same type as 10? What if it's a different type? (e.g. a u8)"""
+
+[[exercises]]
+name = "variables3"
+path = "exercises/variables/variables3.cairo"
+mode = "compile"
+hint = """
+Oops! In this exercise, we have a variable binding that we've created on
+line 7, and we're trying to use it on line 8, but we haven't given it a
+value. We can't print out something that isn't there; try giving x a value!
+This is an error that can cause bugs that's very easy to make in any
+programming language -- thankfully the Cairo compiler has caught this for us!"""
+
+[[exercises]]
+name = "variables4"
+path = "exercises/variables/variables4.cairo"
+mode = "compile"
+hint = """
+In Cairo, variable bindings are immutable by default. But here we're trying
+to reassign a different value to x! There's a keyword we can use to make
+a variable binding mutable instead."""
+
+[[exercises]]
+name = "variables5"
+path = "exercises/variables/variables5.cairo"
+mode = "compile"
+hint = """
+In variables4 we already learned how to make an immutable variable mutable
+using a special keyword. Unfortunately this doesn't help us much in this exercise
+because we want to assign a different typed value to an existing variable. Sometimes
+you may also like to reuse existing variable names because you are just converting
+values to different types like in this exercise.
+Fortunately Cairo has a powerful solution to this problem: 'Shadowing'!
+You can see an example of variables and 'shadowing' here: https://link.medium.com/c8TqX7R3qxb#4fe8
+You can read about the different integer types here: https://link.medium.com/c8TqX7R3qxb#6d64
+If you want to learn more about this concept, you can also read about it in the Rust Book:
+https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html#shadowing
+Try to solve this exercise afterwards using this technique."""
+
+[[exercises]]
+name = "variables6"
+path = "exercises/variables/variables6.cairo"
+mode = "compile"
+hint = """
+We know about variables and mutability, but there is another important type of
+variable available: constants.
+Constants are always immutable and they are declared with keyword 'const' rather
+than keyword 'let'.
+Constants types must also always be annotated.
+You can read about the different integer types here: https://link.medium.com/c8TqX7R3qxb#6d64
+"""
