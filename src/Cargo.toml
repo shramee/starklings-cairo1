@@ -22,17 +22,17 @@ home = "0.5.3"
 glob = "0.3.0"
 
 # Cairo runner dependencies
-cairo-lang-runner = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
-cairo-lang-compiler = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
-cairo-lang-casm = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
-cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
-cairo-lang-sierra = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
-cairo-lang-sierra-ap-change = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
-cairo-lang-sierra-gas = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
-cairo-lang-sierra-generator = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
-cairo-lang-sierra-to-casm = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
-cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
-cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.2"}
+cairo-lang-runner = { git = "https://github.com/starkware-libs/cairo",rev = "1991669a0453bd65541ff81a12772bac05130052"}
+cairo-lang-compiler = { git = "https://github.com/starkware-libs/cairo",rev = "1991669a0453bd65541ff81a12772bac05130052"}
+cairo-lang-casm = { git = "https://github.com/starkware-libs/cairo",rev = "1991669a0453bd65541ff81a12772bac05130052"}
+cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo",rev = "1991669a0453bd65541ff81a12772bac05130052"}
+cairo-lang-sierra = { git = "https://github.com/starkware-libs/cairo",rev = "1991669a0453bd65541ff81a12772bac05130052"}
+cairo-lang-sierra-ap-change = { git = "https://github.com/starkware-libs/cairo",rev = "1991669a0453bd65541ff81a12772bac05130052"}
+cairo-lang-sierra-gas = { git = "https://github.com/starkware-libs/cairo",rev = "1991669a0453bd65541ff81a12772bac05130052"}
+cairo-lang-sierra-generator = { git = "https://github.com/starkware-libs/cairo",rev = "1991669a0453bd65541ff81a12772bac05130052"}
+cairo-lang-sierra-to-casm = { git = "https://github.com/starkware-libs/cairo",rev = "1991669a0453bd65541ff81a12772bac05130052"}
+cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo",rev = "1991669a0453bd65541ff81a12772bac05130052"}
+cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo",rev = "1991669a0453bd65541ff81a12772bac05130052"}
 
 
 anyhow = "1.0.66"

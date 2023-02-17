@@ -29,16 +29,15 @@ fn create_order_template() -> Order {
 #[test]
 fn test_your_order() {
     let order_template = create_order_template();
-    // TODO: Create your own order using the template above!
-    // let your_order =
-
     // TODO: Deserialize your order into multiple variables to make the assertions pass!
-    assert(name == 'Hacker in Cairo', 'Wrong name');
+    // let ...
+
+    assert(name == 'Bob', 'Wrong name');
     assert(year == order_template.year, 'Wrong year');
     assert(made_by_phone == order_template.made_by_phone, 'Wrong phone');
     assert(made_by_mobile == order_template.made_by_mobile, 'Wrong mobile');
     assert(made_by_email == order_template.made_by_email, 'Wrong email');
     assert(item_number == order_template.item_number, 'Wrong item number');
-    assert(count == 1, 'Wrong count');
+    assert(count == 0, 'Wrong count');
 }
 

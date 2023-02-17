@@ -4,8 +4,8 @@ use std::path::Path;
 
 use anyhow::{Context, Ok};
 use cairo_lang_filesystem::db::init_dev_corelib;
+use cairo_lang_compiler::diagnostics::DiagnosticsReporter;
 use cairo_lang_compiler::db::RootDatabase;
-use cairo_lang_compiler::diagnostics::check_and_eprint_diagnostics;
 use cairo_lang_compiler::project::setup_project;
 use cairo_lang_diagnostics::ToOption;
 use cairo_lang_runner::SierraCasmRunner;
@@ -45,7 +45,7 @@ fn main() -> anyhow::Result<()> {
 
     let main_crate_ids = setup_project(&mut db, Path::new(&args.path))?;
 
-    if check_and_eprint_diagnostics(&mut db) {
+    if DiagnosticsReporter::stderr().check(&mut db) {
         anyhow::bail!("failed to compile: {}", args.path);
     }
 
@@ -57,7 +57,7 @@ fn main() -> anyhow::Result<()> {
         replace_sierra_ids_in_program(&mut db, &sierra_program),
         args.available_gas.is_some(),
     )
-    .with_context(|| "Failed setting up runner.")?;
+        .with_context(|| "Failed setting up runner.")?;
     let result = runner
         .run_function("::main", &[], args.available_gas)
         .with_context(|| "Failed to run the function.")?;

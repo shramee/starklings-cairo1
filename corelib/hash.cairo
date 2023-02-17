@@ -1,3 +1,6 @@
+use traits::Into;
+use starknet::ContractAddressIntoFelt;
+
 extern type Pedersen;
 
 extern fn pedersen(a: felt, b: felt) -> felt implicits(Pedersen) nopanic;
@@ -24,13 +27,31 @@ impl LegacyHashBool of LegacyHash::<bool> {
 
 impl LegacyHashU8 of LegacyHash::<u8> {
     fn hash(state: felt, value: u8) -> felt {
-        LegacyHash::<felt>::hash(state, u8_to_felt(value))
+        LegacyHash::<felt>::hash(state, value.into())
+    }
+}
+
+impl LegacyHashU16 of LegacyHash::<u16> {
+    fn hash(state: felt, value: u16) -> felt {
+        LegacyHash::<felt>::hash(state, value.into())
+    }
+}
+
+impl LegacyHashU32 of LegacyHash::<u32> {
+    fn hash(state: felt, value: u32) -> felt {
+        LegacyHash::<felt>::hash(state, value.into())
+    }
+}
+
+impl LegacyHashU64 of LegacyHash::<u64> {
+    fn hash(state: felt, value: u64) -> felt {
+        LegacyHash::<felt>::hash(state, value.into())
     }
 }
 
 impl LegacyHashU128 of LegacyHash::<u128> {
     fn hash(state: felt, value: u128) -> felt {
-        LegacyHash::<felt>::hash(state, u128_to_felt(value))
+        LegacyHash::<felt>::hash(state, value.into())
     }
 }
 
@@ -41,9 +62,23 @@ impl LegacyHashU256 of LegacyHash::<u256> {
     }
 }
 
+impl LegacyHashContractAddress of LegacyHash::<ContractAddress> {
+    fn hash(state: felt, value: ContractAddress) -> felt {
+        LegacyHash::<felt>::hash(state, value.into())
+    }
+}
+
 // TODO(orizi): Move to generic impl.
 impl LegacyHashFeltPair of LegacyHash::<(felt, felt)> {
     fn hash(state: felt, pair: (felt, felt)) -> felt {
+        let (first, second) = pair;
+        let state = LegacyHash::hash(state, first);
+        LegacyHash::hash(state, second)
+    }
+}
+
+impl LegacyHashContractAddressPair of LegacyHash::<(ContractAddress, ContractAddress)> {
+    fn hash(state: felt, pair: (ContractAddress, ContractAddress)) -> felt {
         let (first, second) = pair;
         let state = LegacyHash::hash(state, first);
         LegacyHash::hash(state, second)

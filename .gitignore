@@ -11,3 +11,4 @@ rust-project.json
 !.vscode/extensions.json
 *.iml
 *.o
+solutions/
