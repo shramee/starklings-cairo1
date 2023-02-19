@@ -37,16 +37,17 @@ fn run_cairo(exercise: &Exercise) -> Result<(), ()> {
     progress_bar.enable_steady_tick(100);
     let output = exercise.run_cairo();
 
-    if output.stderr.len() > 0 {
+    if let Some(error) = output.as_ref().err(){
         progress_bar.finish_and_clear();
         println!("Err");
-        println!("{}", String::from_utf8(output.stderr).unwrap());
+        println!("{}", error.to_string());
 
         println!("Normal");
-        println!("{}", String::from_utf8(output.stdout).unwrap());
+        println!("{}", error.to_string());
         Err(())
     } else {
-        println!("{}", String::from_utf8(output.stdout).unwrap());
+        let message = output.unwrap();
+        println!("{}", message);
         success!("Successfully ran {}", exercise);
         Ok(())
     }
@@ -61,16 +62,17 @@ fn test_cairo(exercise: &Exercise) -> Result<(), ()> {
     progress_bar.enable_steady_tick(100);
     let output = exercise.test_cairo();
 
-    if output.stderr.len() > 0 {
+    if let Some(error) = output.as_ref().err(){
         progress_bar.finish_and_clear();
         println!("Err");
-        println!("{}", String::from_utf8(output.stderr).unwrap());
+        println!("{}", error.to_string());
 
         println!("Normal");
-        println!("{}", String::from_utf8(output.stdout).unwrap());
+        println!("{}", error.to_string());
         Err(())
     } else {
-        println!("{}", String::from_utf8(output.stdout).unwrap());
+        let message = output.unwrap();
+        println!("{}", message);
         success!("Successfully ran {}", exercise);
         Ok(())
     }
