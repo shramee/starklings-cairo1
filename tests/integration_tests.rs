@@ -66,6 +66,24 @@ fn all_exercises_require_confirmation() {
     }
 }
 
+#[test]
+fn exercise_paths_should_be_in_exercise_dir() {
+    let output = Command::cargo_bin("starklings")
+        .unwrap()
+        .args(&["paths"])
+        .output()
+        .unwrap()
+        .stdout;
+    let output = String::from_utf8(output).unwrap();
+    // println!("{:#?}", output.split("\n"));
+
+    output.split("\n").for_each(|path| {
+        if (path.len() > 0 && !path.starts_with("exercises/")) {
+            panic!("Exercise {path} must be in exercises directory.");
+        }
+    });
+}
+
 // #[test]
 // fn run_compile_exercise_does_not_prompt() {
 //     Command::cargo_bin("starklings")

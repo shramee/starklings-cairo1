@@ -51,6 +51,7 @@ enum Subcommands {
     Reset(ResetArgs),
     Hint(HintArgs),
     List(ListArgs),
+    Paths(PathsArgs),
     Lsp(LspArgs),
 }
 
@@ -117,6 +118,11 @@ struct ListArgs {
     /// display only exercises that have been solved
     solved: bool,
 }
+
+#[derive(FromArgs, PartialEq, Debug)]
+#[argh(subcommand, name = "paths")]
+/// Enable rust-analyzer for exercises
+struct PathsArgs {}
 
 fn main() {
     let args: Args = argh::from_env();
@@ -206,6 +212,13 @@ fn main() {
                 exercises.len(),
                 percentage_progress
             );
+            std::process::exit(0);
+        }
+
+        Subcommands::Paths(_) => {
+            exercises.iter().for_each(|e| {
+                println!("{}", e.path.display());
+            });
             std::process::exit(0);
         }
 

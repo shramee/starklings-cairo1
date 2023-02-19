@@ -141,6 +141,8 @@ They are not the same. There are two solutions:
 1. Add a `return` ahead of `num * num;`
 2. remove `;`, make it to be `num * num`"""
 
+# Arrays
+
 [[exercises]]
 name = "arrays1"
 path = "exercises/arrays/arrays1.cairo"
