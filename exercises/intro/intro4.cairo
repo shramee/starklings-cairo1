@@ -17,5 +17,5 @@ fn sub(a, b) {
 
 fn main() -> felt {
    add(3, 5);
-   sub(11, 7);
+   sub(11, 7)
 }
