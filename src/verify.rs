@@ -48,7 +48,7 @@ fn compile_and_run_interactively(exercise: &Exercise) -> Result<bool, ()> {
 
     Ok(prompt_for_completion(
         exercise,
-        Some(String::from_utf8(run_state.stdout).unwrap()),
+        Some(run_state)
     ))
 }
 
@@ -65,7 +65,7 @@ fn compile_and_test_interactively(exercise: &Exercise) -> Result<bool, ()> {
 
     Ok(prompt_for_completion(
         exercise,
-        Some(String::from_utf8(run_state.stdout).unwrap()),
+        Some(run_state),
     ))
 }
 
@@ -74,19 +74,19 @@ fn compile_and_test_interactively(exercise: &Exercise) -> Result<bool, ()> {
 fn compile_and_run_cairo<'a, 'b>(
     exercise: &'a Exercise,
     progress_bar: &'b ProgressBar,
-) -> Result<std::process::Output, ()> {
+) -> Result<String, ()> {
     let compilation_result = exercise.run_cairo();
 
-    if compilation_result.stderr.len() > 0 {
+    if let Some(error) = compilation_result.as_ref().err() {
         progress_bar.finish_and_clear();
         warn!(
             "Compiling of {} failed! Please try again. Here's the output:",
             exercise
         );
-        println!("{}", String::from_utf8(compilation_result.stderr).unwrap());
+        println!("{}", error.to_string());
         Err(())
     } else {
-        Ok(compilation_result)
+        Ok(compilation_result.unwrap())
     }
 }
 
@@ -95,19 +95,19 @@ fn compile_and_run_cairo<'a, 'b>(
 fn compile_and_test_cairo<'a, 'b>(
     exercise: &'a Exercise,
     progress_bar: &'b ProgressBar,
-) -> Result<std::process::Output, ()> {
+) -> Result<String, ()> {
     let compilation_result = exercise.test_cairo();
 
-    if compilation_result.stderr.len() > 0 {
+    if let Some(error) = compilation_result.as_ref().err() {
         progress_bar.finish_and_clear();
         warn!(
-            "Test of {} failed! Please try again. Here's the output:",
+            "Testing of {} failed! Please try again. Here's the output:",
             exercise
         );
-        println!("{}", String::from_utf8(compilation_result.stderr).unwrap());
+        println!("{}", error.to_string());
         Err(())
     } else {
-        Ok(compilation_result)
+        Ok(compilation_result.unwrap())
     }
 }
 

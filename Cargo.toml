@@ -65,9 +65,9 @@ name = "starklings"
 path = "src/main.rs"
 
 [[bin]]
-name = "cairo-runner"
-path = "src/cairo-runner.rs"
+name = "starklings-runner"
+path = "src/starklings_runner.rs"
 
 [[bin]]
-name = "cairo-tester"
-path = "src/cairo-tester.rs"
+name = "starklings-tester"
+path = "src/starklings_tester.rs"

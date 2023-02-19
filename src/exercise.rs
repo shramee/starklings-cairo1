@@ -5,7 +5,9 @@ use std::fmt::{self, Display, Formatter};
 use std::fs::{remove_file, File};
 use std::io::Read;
 use std::path::PathBuf;
-use std::process::{self, Command};
+use std::process::{self};
+use crate::starklings_runner::{Args as RunnerArgs,run_cairo_program};
+use crate::starklings_tester::{Args as TesterArgs ,test_cairo_program};
 
 const I_AM_DONE_REGEX: &str = r"(?m)^\s*///?\s*I\s+AM\s+NOT\s+DONE";
 const CONTEXT: usize = 2;
@@ -89,20 +91,23 @@ impl Drop for FileHandle {
 }
 
 impl Exercise {
-    pub fn run_cairo(&self) -> std::process::Output {
-        let cmd = Command::new("cargo")
-            .args(&["run", "-q", "--bin", "cairo-runner", "--"])
-            .args(&["--path", self.path.to_str().unwrap()])
-            .output();
-        cmd.expect("Failed to run 'compile' command.")
+    pub fn run_cairo(&self) -> anyhow::Result<String> {
+        run_cairo_program(&RunnerArgs{
+            path: self.path.to_str().unwrap().parse()?,
+            available_gas: None,
+            print_full_memory: false,
+        })
+
     }
 
-    pub fn test_cairo(&self) -> std::process::Output {
-        let cmd = Command::new("cargo")
-            .args(&["run", "-q", "--bin", "cairo-tester", "--"])
-            .args(&["--path", self.path.to_str().unwrap()])
-            .output();
-        cmd.expect("Failed to run 'test' command.")
+    pub fn test_cairo(&self) -> anyhow::Result<String> {
+        test_cairo_program(&TesterArgs{
+            path: self.path.to_str().unwrap().parse()?,
+            filter: "".to_string(),
+            include_ignored: false,
+            ignored: false,
+            starknet: false,
+        })
     }
 
     pub fn state(&self) -> State {

@@ -39,22 +39,22 @@ const CORELIB_DIR_NAME: &str = "corelib";
 /// Exits with 0/1 if the input is formatted correctly/incorrectly.
 #[derive(Parser, Debug)]
 #[clap(version, verbatim_doc_comment)]
-struct Args {
+pub struct Args {
     /// The path to compile and run its tests.
     #[arg(short, long)]
-    path: String,
+    pub path: String,
     /// The filter for the tests, running only tests containing the filter string.
     #[arg(short, long, default_value_t = String::default())]
-    filter: String,
+    pub filter: String,
     /// Should we run ignored tests as well.
     #[arg(long, default_value_t = false)]
-    include_ignored: bool,
+    pub include_ignored: bool,
     /// Should we run only the ignored tests.
     #[arg(long, default_value_t = false)]
-    ignored: bool,
+    pub ignored: bool,
     /// Should we add the starknet plugin to run the tests.
     #[arg(long, default_value_t = false)]
-    starknet: bool,
+    pub starknet: bool,
 }
 
 /// The status of a ran test.
@@ -66,8 +66,16 @@ enum TestStatus {
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
+    let res = test_cairo_program(&args);
+    if let Err(e) = res {
+        eprintln!("{}", e);
+        std::process::exit(1);
+    }
+    Ok(())
+}
 
-    // TODO(orizi): Use `get_default_plugins` and just update the config plugin.
+pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
+// TODO(orizi): Use `get_default_plugins` and just update the config plugin.
     let mut plugins: Vec<Arc<dyn SemanticPlugin>> = vec![
         Arc::new(DerivePlugin {}),
         Arc::new(PanicablePlugin {}),
@@ -115,7 +123,7 @@ fn main() -> anyhow::Result<()> {
                     FunctionLongId {
                         function: ConcreteFunction {
                             generic_function: GenericFunctionId::Free(test.func_id),
-                            generic_args: vec![]
+                            generic_args: vec![],
                         }
                     }
                         .debug(db)
@@ -139,7 +147,7 @@ fn main() -> anyhow::Result<()> {
             failed.len(),
             ignored.len()
         ).as_str());
-        Ok(())
+        Ok(result_string)
     } else {
         result_string.push_str(format!("failures:").as_str());
         for (failure, run_result) in failed.iter().zip_eq(failed_run_results) {
@@ -169,7 +177,7 @@ fn main() -> anyhow::Result<()> {
             passed.len(),
             failed.len(),
             ignored.len()
-        );
+        )
     }
 }
 
@@ -237,7 +245,7 @@ fn run_tests(
                 }
                 TestStatus::Ignore => (&mut summary.ignored, "ignored".bright_yellow()),
             };
-            println!("test {name} ... {status_str}",);
+            println!("test {name} ... {status_str}", );
             res_type.push(name);
         });
     wrapped_summary.into_inner().unwrap()

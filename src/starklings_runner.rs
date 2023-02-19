@@ -19,21 +19,29 @@ const CORELIB_DIR_NAME: &str = "corelib";
 /// Exits with 0/1 if the input is formatted correctly/incorrectly.
 #[derive(Parser, Debug)]
 #[clap(version, verbatim_doc_comment)]
-struct Args {
+pub struct Args {
     /// The file to compile and run.
     #[arg(short, long)]
-    path: String,
+    pub path: String,
     /// In cases where gas is available, the amount of provided gas.
     #[arg(long)]
-    available_gas: Option<usize>,
+    pub available_gas: Option<usize>,
     /// Whether to print the memory.
     #[arg(long, default_value_t = false)]
-    print_full_memory: bool,
+    pub print_full_memory: bool,
 }
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
+    let res = run_cairo_program(&args);
+    if let Err(e) = res {
+        eprintln!("{}", e);
+        std::process::exit(1);
+    }
+    Ok(())
+}
 
+pub fn run_cairo_program(args: &Args) -> anyhow::Result<String> {
     let mut db = RootDatabase::default();
     let mut corelib_dir = std::env::current_exe()
         .unwrap_or_else(|e| panic!("Problem getting the executable path: {e:?}"));
@@ -49,6 +57,8 @@ fn main() -> anyhow::Result<()> {
         anyhow::bail!("failed to compile: {}", args.path);
     }
 
+    let mut ret_string = String::new();
+
     let sierra_program = db
         .get_sierra_program(main_crate_ids)
         .to_option()
@@ -63,24 +73,12 @@ fn main() -> anyhow::Result<()> {
         .with_context(|| "Failed to run the function.")?;
     match result.value {
         cairo_lang_runner::RunResultValue::Success(values) => {
-            println!("Run completed successfully, returning {values:?}")
+            ret_string.push_str(format!("Run completed successfully, returning {values:?}").as_str())
         }
         cairo_lang_runner::RunResultValue::Panic(values) => {
-            println!("Run panicked with err values: {values:?}")
+            ret_string.push_str(format!("Run panicked with err values: {values:?}").as_str());
         }
     }
-    if let Some(gas) = result.gas_counter {
-        println!("Remaining gas: {gas}");
-    }
-    if args.print_full_memory {
-        print!("Full memory: [");
-        for cell in &result.memory {
-            match cell {
-                None => print!("_, "),
-                Some(value) => print!("{value}, "),
-            }
-        }
-        println!("]");
-    }
-    Ok(())
+    println!("{ret_string}");
+    Ok(ret_string)
 }

@@ -19,11 +19,12 @@ use std::time::Duration;
 
 #[macro_use]
 mod ui;
-
 mod exercise;
 mod project;
 mod run;
 mod verify;
+mod starklings_tester;
+mod starklings_runner;
 
 // In sync with crate version
 const VERSION: &str = "5.3.0";
