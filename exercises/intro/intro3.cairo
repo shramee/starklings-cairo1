@@ -1,4 +1,4 @@
-// I AM DONE
+// I AM NOT DONE
 // Cairo is a typed language. A popular type is `felt`, which is like a number.
 // The function below is missing some types and there are a couple errors. Can you see fix this?
 
