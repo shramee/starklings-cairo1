@@ -2,25 +2,25 @@
 
 [[exercises]]
 name = "intro1"
-path = "solutions/intro/intro1.cairo"
+path = "exercises/intro/intro1.cairo"
 mode = "compile"
 hint = """"""
 
 [[exercises]]
 name = "intro2"
-path = "solutions/intro/intro2.cairo"
+path = "exercises/intro/intro2.cairo"
 mode = "compile"
 hint = """"""
 
 [[exercises]]
 name = "intro3"
-path = "solutions/intro/intro3.cairo"
+path = "exercises/intro/intro3.cairo"
 mode = "compile"
 hint = """"""
 
 [[exercises]]
 name = "intro4"
-path = "solutions/intro/intro4.cairo"
+path = "exercises/intro/intro4.cairo"
 mode = "compile"
 hint = """"""
 
@@ -28,7 +28,7 @@ hint = """"""
 
 [[exercises]]
 name = "variables1"
-path = "solutions/variables/variables1.cairo"
+path = "exercises/variables/variables1.cairo"
 mode = "compile"
 hint = """
 The declaration on line 8 is missing a keyword that is needed in Cairo
@@ -36,7 +36,7 @@ to create a new variable binding."""
 
 [[exercises]]
 name = "variables2"
-path = "solutions/variables/variables2.cairo"
+path = "exercises/variables/variables2.cairo"
 mode = "compile"
 hint = """
 What happens if you annotate line 7 with a type annotation?
@@ -47,7 +47,7 @@ What if x is the same type as 10? What if it's a different type? (e.g. a u8)"""
 
 [[exercises]]
 name = "variables3"
-path = "solutions/variables/variables3.cairo"
+path = "exercises/variables/variables3.cairo"
 mode = "compile"
 hint = """
 Oops! In this exercise, we have a variable binding that we've created on
@@ -58,7 +58,7 @@ programming language -- thankfully the Cairo compiler has caught this for us!"""
 
 [[exercises]]
 name = "variables4"
-path = "solutions/variables/variables4.cairo"
+path = "exercises/variables/variables4.cairo"
 mode = "compile"
 hint = """
 In Cairo, variable bindings are immutable by default. But here we're trying
@@ -67,7 +67,7 @@ a variable binding mutable instead."""
 
 [[exercises]]
 name = "variables5"
-path = "solutions/variables/variables5.cairo"
+path = "exercises/variables/variables5.cairo"
 mode = "compile"
 hint = """
 In variables4 we already learned how to make an immutable variable mutable
@@ -84,7 +84,7 @@ Try to solve this exercise afterwards using this technique."""
 
 [[exercises]]
 name = "variables6"
-path = "solutions/variables/variables6.cairo"
+path = "exercises/variables/variables6.cairo"
 mode = "compile"
 hint = """
 We know about variables and mutability, but there is another important type of
@@ -101,7 +101,7 @@ You can read about the different integer types here: https://link.medium.com/c8T
 
 [[exercises]]
 name = "functions1"
-path = "solutions/functions/functions1.cairo"
+path = "exercises/functions/functions1.cairo"
 mode = "compile"
 hint = """
 This main function is calling a function that it expects to exist, but the
@@ -111,7 +111,7 @@ Sounds a lot like `main`, doesn't it?"""
 
 [[exercises]]
 name = "functions2"
-path = "solutions/functions/functions2.cairo"
+path = "exercises/functions/functions2.cairo"
 mode = "compile"
 hint = """
 Cairo requires that all parts of a function's signature have type annotations,
@@ -119,7 +119,7 @@ but `call_me` is missing the type annotation of `num`. What is the basic type in
 
 [[exercises]]
 name = "functions3"
-path = "solutions/functions/functions3.cairo"
+path = "exercises/functions/functions3.cairo"
 mode = "compile"
 hint = """
 This time, the function *declaration* is okay, but there's something wrong
@@ -131,7 +131,7 @@ Watch mode will only jump to the next exercise if you remove the I AM NOT DONE c
 
 [[exercises]]
 name = "functions5"
-path = "solutions/functions/functions4.cairo"
+path = "exercises/functions/functions4.cairo"
 mode = "compile"
 hint = """
 This is a really common error that can be fixed by removing one character.
@@ -143,7 +143,7 @@ They are not the same. There are two solutions:
 
 [[exercises]]
 name = "arrays1"
-path = "solutions/arrays/arrays1.cairo"
+path = "exercises/arrays/arrays1.cairo"
 mode = "test"
 hint = """
 You can declare an array in Cairo using the following syntax:
@@ -156,7 +156,7 @@ The `pop_front` method removes the first element from the array and returns an O
 
 [[exercises]]
 name = "arrays2"
-path = "solutions/arrays/arrays2.cairo"
+path = "exercises/arrays/arrays2.cairo"
 mode = "test"
 hint = """
 How can you remove the first element from the array?
@@ -166,7 +166,7 @@ This will prevent the `Variable not dropped` error.
 
 [[exercises]]
 name = "arrays3"
-path = "solutions/arrays/arrays3.cairo"
+path = "exercises/arrays/arrays3.cairo"
 mode = "test"
 hint = """
 The test fails because you are trying to access an element that is out of bounds!
@@ -178,19 +178,19 @@ Without changing the index accessed, how can we make the test pass? Is there a m
 
 [[exercises]]
 name = "primitive_types1"
-path = "solutions/primitive_types/primitive_types1.cairo"
+path = "exercises/primitive_types/primitive_types1.cairo"
 mode = "compile"
 hint = "No hints this time ;)"
 
 [[exercises]]
 name = "primitive_types2"
-path = "solutions/primitive_types/primitive_types2.cairo"
+path = "exercises/primitive_types/primitive_types2.cairo"
 mode = "compile"
 hint = "No hints this time ;)"
 
 [[exercises]]
 name = "primitive_types3"
-path = "solutions/primitive_types/primitive_types3.cairo"
+path = "exercises/primitive_types/primitive_types3.cairo"
 mode = "compile"
 hint = """
 You'll need to make a pattern to bind `name` and `age` to the appropriate parts
@@ -201,7 +201,7 @@ You can do it!!
 
 [[exercises]]
 name = "primitive_types4"
-path = "solutions/primitive_types/primitive_types4.cairo"
+path = "exercises/primitive_types/primitive_types4.cairo"
 mode = "test"
 hint = """
 There are multiple integer types in Cairo. You can read about them here: https://link.medium.com/c8TqX7R3qxb#6d64
@@ -216,7 +216,7 @@ Take a look at the top of the file to see how these traits are imported.
 
 [[exercises]]
 name = "if1"
-path = "solutions/if/if1.cairo"
+path = "exercises/if/if1.cairo"
 mode = "test"
 hint = """
 Remember in Cairo that:
@@ -226,7 +226,7 @@ Remember in Cairo that:
 
 [[exercises]]
 name = "if2"
-path = "solutions/if/if2.cairo"
+path = "exercises/if/if2.cairo"
 mode = "test"
 hint = """
 For that first compiler error, it's important in Cairo that each conditional
@@ -237,7 +237,7 @@ conditions checking different input values."""
 
 [[exercises]]
 name = "structs1"
-path = "solutions/structs/structs1.cairo"
+path = "exercises/structs/structs1.cairo"
 mode = "test"
 hint = """
 Cairo has a single type of struct that are named collections of related data stored in fields.
@@ -260,7 +260,7 @@ Read more about structs in the Structs section of this article: https://link.med
 
 [[exercises]]
 name = "structs2"
-path = "solutions/structs/structs2.cairo"
+path = "exercises/structs/structs2.cairo"
 mode = "test"
 hint = """
 Cairo requires you to initialize all fields when creating a struct and there is no update syntax available at the moment.
@@ -275,7 +275,7 @@ Read more about structs in the Structs section of this article: https://link.med
 
 [[exercises]]
 name = "structs3"
-path = "solutions/structs/structs3.cairo"
+path = "exercises/structs/structs3.cairo"
 mode = "test"
 hint = """
 For is_international: What makes a package international? Seems related to the places it goes through right?

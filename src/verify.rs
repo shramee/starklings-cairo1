@@ -101,7 +101,7 @@ fn compile_and_test_cairo<'a, 'b>(
     if let Some(error) = compilation_result.as_ref().err() {
         progress_bar.finish_and_clear();
         warn!(
-            "Compiling of {} failed! Please try again. Here's the output:",
+            "Testing of {} failed! Please try again. Here's the output:",
             exercise
         );
         println!("{}", error.to_string());
