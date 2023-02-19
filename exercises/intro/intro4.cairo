@@ -6,7 +6,7 @@
 // Young Starkling, Joe, tried to write his own `sub` function, but his function
 // won't compile. Can you help him out?
 
-fn add(a :felt, b :felt) -> felt {
+fn add(a: felt, b: felt) -> felt {
     a + b
 }
 
