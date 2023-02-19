@@ -30,23 +30,23 @@ fn main() {
     }
 }
 
-fn is_alphabetic(ref self:felt)->bool{
-    if self>='a'{
-        if self<='z'{
+fn is_alphabetic(ref char:felt)->bool{
+    if char>='a'{
+        if char<='z'{
             return true;
         }
     }
-    if self>='A'{
-        if self<='Z'{
+    if char>='A'{
+        if char<='Z'{
             return true;
         }
     }
     false
 }
 
-fn is_numeric(ref self:felt)->bool{
-    if self>='0'{
-        if self<='9'{
+fn is_numeric(ref char:felt)->bool{
+    if char>='0'{
+        if char<='9'{
             return true;
         }
     }
