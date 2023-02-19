@@ -7,6 +7,11 @@
 // I AM NOT DONE
 
 fn foo_if_fizz(fizzish: felt) -> felt {
+    // Complete this function using if, else if and/or else blocks.
+    // If fizzish is,
+    // 'fizz', return 'foo'
+    // 'fuzz', return 'bar'
+    // anything else, return 'baz'
     if fizzish == 'fizz' {
         'foo'
     } else {
