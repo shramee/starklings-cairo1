@@ -263,10 +263,14 @@ name = "structs2"
 path = "exercises/structs/structs2.cairo"
 mode = "test"
 hint = """
-Creating instances of structs is easy, all you need to do is assign some values to its fields. Unlike Rust, Cairo requires you to initialize all fields when creating a struct and
-there is no update syntax available at the moment. You can have multiple data types in a struct, and even other structs.
+Cairo requires you to initialize all fields when creating a struct and there is no update syntax available at the moment.
+You can have multiple data types in a struct, and even other structs.
 
-There are some shortcuts that can be taken when destructuring structs by using the following syntax: `let Foo {x: a, y: b} = foo`;
+There are some shortcuts that can be taken when destructuring structs,
+```
+let Foo {x, y} = foo; // Creates variables x and y with values foo.x and foo.y
+let Foo {x: a, y: b} = foo; // Creates variables a and b with values foo.x and foo.y
+```
 Read more about structs in the Structs section of this article: https://link.medium.com/c8TqX7R3qxb#ff54 """
 
 [[exercises]]
