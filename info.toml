@@ -141,6 +141,39 @@ They are not the same. There are two solutions:
 1. Add a `return` ahead of `num * num;`
 2. remove `;`, make it to be `num * num`"""
 
+[[exercises]]
+name = "arrays1"
+path = "exercises/arrays/arrays1.cairo"
+mode = "test"
+hint = """
+You can declare an array in Cairo using the following syntax:
+`let your_array = ArrayTrait::new();`
+You can append elements to an array using the following syntax:
+`your_array.append(element);`
+
+The `pop_front` method removes the first element from the array and returns an Option::Some(value) if the array is not empty, or Option::None() if the array is empty.
+"""
+
+[[exercises]]
+name = "arrays2"
+path = "exercises/arrays/arrays2.cairo"
+mode = "test"
+hint = """
+How can you remove the first element from the array?
+Take a look at the previous exercise for a hint. Don't forget to call `.unwrap()` on the returned value.
+This will prevent the `Variable not dropped` error.
+"""
+
+[[exercises]]
+name = "arrays3"
+path = "exercises/arrays/arrays3.cairo"
+mode = "test"
+hint = """
+The test fails because you are trying to access an element that is out of bounds! 
+By using array.pop_front(), we remove the first element from the array, so the index of the last element is no longer 2.
+Without changing the index accessed, how can we make the test pass? Is there a method that returns an option that could help us?
+"""
+
 # PRIMITIVE TYPES
 
 [[exercises]]
@@ -199,7 +232,6 @@ hint = """
 For that first compiler error, it's important in Cairo that each conditional
 block returns the same type! To get the tests passing, you will need a couple
 conditions checking different input values."""
-
 
 # STRUCTS
 
