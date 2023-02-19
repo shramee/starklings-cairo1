@@ -80,11 +80,7 @@ fn exercise_paths_should_be_in_exercise_dir() {
         if (path.len() > 0 && !path.starts_with("exercises/")) {
             panic!("Exercise {path} must be in exercises directory.");
         }
-        // assert!(
-        //     path.starts_with("exercises/"),
-        //     "All exercises need to be in exercises directory."
-        // );
-    })
+    });
 }
 
 // #[test]
