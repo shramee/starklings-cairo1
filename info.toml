@@ -179,6 +179,28 @@ This method will return an `Option` type, so you'll need to unwrap it. To use th
 Take a look at the top of the file to see how these traits are imported.
 """
 
+# IF
+
+[[exercises]]
+name = "if1"
+path = "exercises/if/if1.cairo"
+mode = "test"
+hint = """
+Remember in Cairo that:
+- the `if` condition does not need to be surrounded by parentheses
+- `if`/`else` conditionals are expressions
+- Each condition is followed by a `{}` block."""
+
+[[exercises]]
+name = "if2"
+path = "exercises/if/if2.cairo"
+mode = "test"
+hint = """
+For that first compiler error, it's important in Cairo that each conditional
+block returns the same type! To get the tests passing, you will need a couple
+conditions checking different input values."""
+
+
 # STRUCTS
 
 [[exercises]]
@@ -226,5 +248,4 @@ For get_fees: This method takes an additional argument, is there a field in the 
 
 Looking at the test functions will also help you understand more about the syntax.
 This section will help you understanding more about impls and traits: https://link.medium.com/c8TqX7R3qxb#83b5.
-=======
 """
