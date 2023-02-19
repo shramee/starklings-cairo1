@@ -141,7 +141,6 @@ They are not the same. There are two solutions:
 1. Add a `return` ahead of `num * num;`
 2. remove `;`, make it to be `num * num`"""
 
-
 [[exercises]]
 name = "arrays1"
 path = "exercises/arrays/arrays1.cairo"
@@ -175,6 +174,64 @@ By using array.pop_front(), we remove the first element from the array, so the i
 Without changing the index accessed, how can we make the test pass? Is there a method that returns an option that could help us?
 """
 
+# PRIMITIVE TYPES
+
+[[exercises]]
+name = "primitive_types1"
+path = "solutions/primitive_types/primitive_types1.cairo"
+mode = "compile"
+hint = "No hints this time ;)"
+
+[[exercises]]
+name = "primitive_types2"
+path = "solutions/primitive_types/primitive_types2.cairo"
+mode = "compile"
+hint = "No hints this time ;)"
+
+[[exercises]]
+name = "primitive_types3"
+path = "solutions/primitive_types/primitive_types3.cairo"
+mode = "compile"
+hint = """
+You'll need to make a pattern to bind `name` and `age` to the appropriate parts
+of the tuple.
+If you're familiar with Rust, you should know that Cairo has a similar syntax for tuple destructuration.
+You can do it!!
+"""
+
+[[exercises]]
+name = "primitive_types4"
+path = "solutions/primitive_types/primitive_types4.cairo"
+mode = "test"
+hint = """
+There are multiple integer types in Cairo. You can read about them here: https://link.medium.com/c8TqX7R3qxb#6d64
+If you try to sum two integers and the result is bigger than the biggest integer of this type, you'll get a compilation error.
+You can convert integers to felts using the `.into()` method. Make sure that you imported the `Into` trait.
+You can convert felts to integers using the `.try_into()` method. Make sure that you imported the `TryInto` trait.
+This method will return an `Option` type, so you'll need to unwrap it. To use the `unwrap()` method, you'll need to import the `OptionTrait` trait.
+Take a look at the top of the file to see how these traits are imported.
+"""
+
+# IF
+
+[[exercises]]
+name = "if1"
+path = "exercises/if/if1.cairo"
+mode = "test"
+hint = """
+Remember in Cairo that:
+- the `if` condition does not need to be surrounded by parentheses
+- `if`/`else` conditionals are expressions
+- Each condition is followed by a `{}` block."""
+
+[[exercises]]
+name = "if2"
+path = "exercises/if/if2.cairo"
+mode = "test"
+hint = """
+For that first compiler error, it's important in Cairo that each conditional
+block returns the same type! To get the tests passing, you will need a couple
+conditions checking different input values."""
 
 # STRUCTS
 
@@ -223,5 +280,4 @@ For get_fees: This method takes an additional argument, is there a field in the 
 
 Looking at the test functions will also help you understand more about the syntax.
 This section will help you understanding more about impls and traits: https://link.medium.com/c8TqX7R3qxb#83b5.
-=======
 """
