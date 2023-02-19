@@ -178,19 +178,19 @@ Without changing the index accessed, how can we make the test pass? Is there a m
 
 [[exercises]]
 name = "primitive_types1"
-path = "solutions/primitive_types/primitive_types1.cairo"
+path = "exercises/primitive_types/primitive_types1.cairo"
 mode = "compile"
 hint = "No hints this time ;)"
 
 [[exercises]]
 name = "primitive_types2"
-path = "solutions/primitive_types/primitive_types2.cairo"
+path = "exercises/primitive_types/primitive_types2.cairo"
 mode = "compile"
 hint = "No hints this time ;)"
 
 [[exercises]]
 name = "primitive_types3"
-path = "solutions/primitive_types/primitive_types3.cairo"
+path = "exercises/primitive_types/primitive_types3.cairo"
 mode = "compile"
 hint = """
 You'll need to make a pattern to bind `name` and `age` to the appropriate parts
@@ -201,7 +201,7 @@ You can do it!!
 
 [[exercises]]
 name = "primitive_types4"
-path = "solutions/primitive_types/primitive_types4.cairo"
+path = "exercises/primitive_types/primitive_types4.cairo"
 mode = "test"
 hint = """
 There are multiple integer types in Cairo. You can read about them here: https://link.medium.com/c8TqX7R3qxb#6d64
