@@ -9,7 +9,7 @@ use notify::{RecommendedWatcher, RecursiveMode, Watcher};
 use std::ffi::OsStr;
 use std::fs;
 use std::io::{self, prelude::*};
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc::{channel, RecvTimeoutError};
@@ -22,9 +22,9 @@ mod ui;
 mod exercise;
 mod project;
 mod run;
-mod verify;
-mod starklings_tester;
 mod starklings_runner;
+mod starklings_tester;
+mod verify;
 
 // In sync with crate version
 const VERSION: &str = "5.3.0";
@@ -47,6 +47,7 @@ struct Args {
 enum Subcommands {
     Verify(VerifyArgs),
     Watch(WatchArgs),
+    CompileSolutions(CompileSolutionsArgs),
     Run(RunArgs),
     Reset(ResetArgs),
     Hint(HintArgs),
@@ -64,6 +65,11 @@ struct VerifyArgs {}
 #[argh(subcommand, name = "watch")]
 /// Reruns `verify` when files were edited
 struct WatchArgs {}
+
+#[derive(FromArgs, PartialEq, Debug)]
+#[argh(subcommand, name = "compile_solutions")]
+/// Reruns `verify` when files were edited
+struct CompileSolutionsArgs {}
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "run")]
@@ -153,7 +159,7 @@ fn main() {
     }
 
     let toml_str = &fs::read_to_string("info.toml").unwrap();
-    let exercises = toml::from_str::<ExerciseList>(toml_str).unwrap().exercises;
+    let mut exercises = toml::from_str::<ExerciseList>(toml_str).unwrap().exercises;
     let command = args.nested.unwrap_or_else(|| {
         println!("{DEFAULT_OUT}\n");
         std::process::exit(0);
@@ -260,6 +266,29 @@ fn main() {
             } else {
                 println!("Successfully generated rust-project.json");
                 println!("rust-analyzer will now parse exercises, restart your language server or editor")
+            }
+        }
+
+        Subcommands::CompileSolutions(_subargs) => {
+            let exercises_base = PathBuf::from("exercises/");
+            let solutions_base = PathBuf::from("solutions/");
+            exercises.iter_mut().for_each(|mut ex| {
+                ex.path = solutions_base
+                    .clone()
+                    .join(ex.path.strip_prefix(&exercises_base).unwrap());
+            });
+            match watch(&exercises) {
+                Err(e) => {
+                    println!("Error: {:?}", e);
+                    std::process::exit(1);
+                }
+                Ok(WatchStatus::Finished) => {
+                    let emoji = Emoji("🎉", "★");
+                    println!("{emoji} All solutions compile! {emoji}");
+                }
+                Ok(WatchStatus::Unfinished) => {
+                    println!("Solutions checking was stopped.");
+                }
             }
         }
 
