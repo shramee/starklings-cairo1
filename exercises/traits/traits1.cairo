@@ -15,12 +15,12 @@ struct Animal {
     noise: felt
 }
 
-trait AnimalTrait<T> {
-    fn new(noise: felt) -> T;
-    fn make_noise(self: T) -> felt;
+trait AnimalTrait {
+    fn new(noise: felt) -> Animal;
+    fn make_noise(self: Animal) -> felt;
 }
 
-impl AnimalImpl of AnimalTrait::<Animal> {// TODO: implement the trait AnimalTrait for Animal
+impl AnimalImpl of AnimalTrait {// TODO: implement the trait AnimalTrait for Animal
 }
 
 #[test]
