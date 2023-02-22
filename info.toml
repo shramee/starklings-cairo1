@@ -287,3 +287,39 @@ For get_fees: This method takes an additional argument, is there a field in the 
 Looking at the test functions will also help you understand more about the syntax.
 This section will help you understanding more about impls and traits: https://link.medium.com/c8TqX7R3qxb#83b5.
 """
+
+
+# TRAITS
+
+[[exercises]]
+name = "traits1"
+path = "exercises/traits/traits1.cairo"
+mode = "test"
+hint = """ 
+If you want to implement a trait for a type, you have to implement all the methods in the trait.
+Based on the signature of the method, you can easily implement it.
+
+In the test, you need to instantiate two objects of type `Animal`.
+You can call the method of a trait by using the MyTrait::foo() syntax.
+How would you instantiate the two objects with AnimalTrait?
+Maybe you need to specify the type of the object?
+"""
+
+[[exercises]]
+name = "traits2"
+path = "exercises/traits/traits2.cairo"
+mode = "test"
+hint = """ No hints for this one! It is very similar to the previous exercise."""
+
+[[exercises]]
+name = "traits3"
+path = "exercises/traits/traits3.cairo"
+mode = "test"
+hint = """ 
+You can implement multiple traits for a type.
+When a trait is destined to be implemented by a single type, you don't need to use generics.
+If you're having trouble updating the distance value in the `Fish` and `Dog` impls, remember that you need to first
+1. Destructure the object into mutable variables
+2. Update the distance variable
+3. Reconstruct `self` with the updated variables (`self = MyStruct { ... }`) 
+"""
