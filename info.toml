@@ -292,10 +292,10 @@ This section will help you understanding more about impls and traits: https://li
 name = "operations1"
 path = "exercises/operations/operation1.cairo"
 mode = "test"
-hint = """"""
+hint = """No hints this time ;)"""
 
 [[exercises]]
 name = "operations2"
 path = "exercises/operations/operations2.cairo"
 mode = "test"
-hint = """"""
+hint = """No hints this time ;)"""
