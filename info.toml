@@ -287,3 +287,15 @@ For get_fees: This method takes an additional argument, is there a field in the 
 Looking at the test functions will also help you understand more about the syntax.
 This section will help you understanding more about impls and traits: https://link.medium.com/c8TqX7R3qxb#83b5.
 """
+
+[[exercises]]
+name = "operations1"
+path = "exercises/operations/operation1.cairo"
+mode = "test"
+hint = """"""
+
+[[exercises]]
+name = "operations2"
+path = "exercises/operations/operations2.cairo"
+mode = "test"
+hint = """"""
