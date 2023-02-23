@@ -1,60 +1,68 @@
-use zeroable::Zeroable;
+use box::Box;
+use option::OptionTrait;
+use array::Span;
 use traits::Into;
 use traits::TryInto;
-use option::OptionTrait;
+use zeroable::Zeroable;
+
+// Re-imports
+// StorageAccess
+mod storage_access;
+// use storage_access;
+use storage_access::StorageAccess;
+use storage_access::StorageAddress;
+use storage_access::StorageBaseAddress;
+use storage_access::storage_base_address_const;
+use storage_access::storage_base_address_from_felt;
+use storage_access::storage_read_syscall;
+use storage_access::storage_write_syscall;
+use storage_access::storage_address_from_base;
+use storage_access::storage_address_from_base_and_offset;
+
+// ContractAddress
+mod contract_address;
+// use contract_address;
+use contract_address::ContractAddress;
+use contract_address::ContractAddressIntoFelt;
+use contract_address::FeltTryIntoContractAddress;
+use contract_address::contract_address_const;
+use contract_address::contract_address_to_felt;
+use contract_address::contract_address_try_from_felt;
+use contract_address::ContractAddressZeroable;
+
 
 extern type System;
+
 #[derive(Copy, Drop)]
-extern type StorageBaseAddress;
-#[derive(Copy, Drop)]
-extern type StorageAddress;
-#[derive(Copy, Drop)]
-extern type ContractAddress;
+struct TxInfo {
+    // The version of the transaction. It is fixed (currently, 1) in the OS, and should be
+    // signed by the account contract.
+    // This field allows invalidating old transactions, whenever the meaning of the other
+    // transaction fields is changed (in the OS).
+    version: felt,
+    // The account contract from which this transaction originates.
+    account_contract_address: ContractAddress,
+    // The max_fee field of the transaction.
+    max_fee: u128,
+    // The signature of the transaction.
+    signature: Span::<felt>,
+    // The hash of the transaction.
+    transaction_hash: felt,
+    // The identifier of the chain.
+    // This field can be used to prevent replay of testnet transactions on mainnet.
+    chain_id: felt,
+    // The transaction's nonce.
+    nonce: felt,
+}
 
 // An Helper function to force the inclusion of `System` in the list of implicits.
 fn use_system_implicit() implicits(System) {}
 
-// Storage.
-extern fn storage_base_address_const<const address>() -> StorageBaseAddress nopanic;
-extern fn storage_base_address_from_felt(
-    addr: felt
-) -> StorageBaseAddress implicits(RangeCheck) nopanic;
-extern fn storage_address_from_base_and_offset(
-    base: StorageBaseAddress, offset: u8
-) -> StorageAddress nopanic;
-extern fn storage_address_from_base(base: StorageBaseAddress) -> StorageAddress nopanic;
-
-// Only address_domain 0 is currently supported.
-// This parameter is going to be used to access address spaces with different
-// data availability guarantees.
-extern fn storage_read_syscall(
-    address_domain: felt, address: StorageAddress, 
-) -> SyscallResult::<felt> implicits(GasBuiltin, System) nopanic;
-extern fn storage_write_syscall(
-    address_domain: felt, address: StorageAddress, value: felt
-) -> SyscallResult::<()> implicits(GasBuiltin, System) nopanic;
 
 // Interoperability.
-extern fn contract_address_const<const address>() -> ContractAddress nopanic;
 extern fn call_contract_syscall(
-    address: ContractAddress, calldata: Array::<felt>
+    address: ContractAddress, entry_point_selector: felt, calldata: Array::<felt>
 ) -> SyscallResult::<Array::<felt>> implicits(GasBuiltin, System) nopanic;
-
-extern fn contract_address_try_from_felt(
-    address: felt
-) -> Option::<ContractAddress> implicits(RangeCheck) nopanic;
-extern fn contract_address_to_felt(address: ContractAddress) -> felt nopanic;
-
-impl FeltTryIntoContractAddress of TryInto::<felt, ContractAddress> {
-    fn try_into(self: felt) -> Option::<ContractAddress> {
-        contract_address_try_from_felt(self)
-    }
-}
-impl ContractAddressIntoFelt of Into::<ContractAddress, felt> {
-    fn into(self: ContractAddress) -> felt {
-        contract_address_to_felt(self)
-    }
-}
 
 // Events.
 extern fn emit_event_syscall(
@@ -92,6 +100,14 @@ fn get_block_number() -> u64 {
     get_block_number_syscall().unwrap_syscall()
 }
 
+extern fn get_tx_info_syscall() -> SyscallResult::<Box::<TxInfo>> implicits(
+    GasBuiltin, System
+) nopanic;
+
+fn get_tx_info() -> Box::<TxInfo> {
+    get_tx_info_syscall().unwrap_syscall()
+}
+
 extern fn get_block_timestamp_syscall() -> SyscallResult::<u64> implicits(
     GasBuiltin, System
 ) nopanic;
@@ -99,86 +115,6 @@ extern fn get_block_timestamp_syscall() -> SyscallResult::<u64> implicits(
 // TODO(ilya): Consider Adding a type for timestamps.
 fn get_block_timestamp() -> u64 {
     get_block_timestamp_syscall().unwrap_syscall()
-}
-
-
-trait StorageAccess<T> {
-    fn read(address_domain: felt, base: StorageBaseAddress) -> SyscallResult::<T>;
-    fn write(address_domain: felt, base: StorageBaseAddress, value: T) -> SyscallResult::<()>;
-}
-
-impl StorageAccessFelt of StorageAccess::<felt> {
-    #[inline(always)]
-    fn read(address_domain: felt, base: StorageBaseAddress) -> SyscallResult::<felt> {
-        storage_read_syscall(address_domain, storage_address_from_base(base))
-    }
-    #[inline(always)]
-    fn write(address_domain: felt, base: StorageBaseAddress, value: felt) -> SyscallResult::<()> {
-        storage_write_syscall(address_domain, storage_address_from_base(base), value)
-    }
-}
-
-impl StorageAccessBool of StorageAccess::<bool> {
-    fn read(address_domain: felt, base: StorageBaseAddress) -> SyscallResult::<bool> {
-        Result::Ok(StorageAccess::<felt>::read(address_domain, base)? != 0)
-    }
-    #[inline(always)]
-    fn write(address_domain: felt, base: StorageBaseAddress, value: bool) -> SyscallResult::<()> {
-        StorageAccess::<felt>::write(address_domain, base, if value {
-            1
-        } else {
-            0
-        })
-    }
-}
-
-impl StorageAccessU8 of StorageAccess::<u8> {
-    fn read(address_domain: felt, base: StorageBaseAddress) -> Result::<u8, Array::<felt>> {
-        Result::Ok(
-            StorageAccess::<felt>::read(
-                address_domain, base
-            )?.try_into().expect('StorageAccessU8 - non u8')
-        )
-    }
-    #[inline(always)]
-    fn write(
-        address_domain: felt, base: StorageBaseAddress, value: u8
-    ) -> Result::<(), Array::<felt>> {
-        StorageAccess::<felt>::write(address_domain, base, value.into())
-    }
-}
-
-impl StorageAccessU128 of StorageAccess::<u128> {
-    fn read(address_domain: felt, base: StorageBaseAddress) -> SyscallResult::<u128> {
-        Result::Ok(
-            StorageAccess::<felt>::read(
-                address_domain, base
-            )?.try_into().expect('StorageAccessU128 - non u128')
-        )
-    }
-    #[inline(always)]
-    fn write(address_domain: felt, base: StorageBaseAddress, value: u128) -> SyscallResult::<()> {
-        StorageAccess::<felt>::write(address_domain, base, value.into())
-    }
-}
-
-impl StorageAccessU256 of StorageAccess::<u256> {
-    fn read(address_domain: felt, base: StorageBaseAddress) -> SyscallResult::<u256> {
-        Result::Ok(
-            u256 {
-                low: StorageAccess::<u128>::read(address_domain, base)?,
-                high: storage_read_syscall(
-                    address_domain, storage_address_from_base_and_offset(base, 1_u8)
-                )?.try_into().expect('StorageAccessU256 - non u256')
-            }
-        )
-    }
-    fn write(address_domain: felt, base: StorageBaseAddress, value: u256) -> SyscallResult::<()> {
-        StorageAccess::<u128>::write(address_domain, base, value.low)?;
-        storage_write_syscall(
-            address_domain, storage_address_from_base_and_offset(base, 1_u8), value.high.into()
-        )
-    }
 }
 
 /// The result type for a syscall.
@@ -196,16 +132,5 @@ impl SyscallResultTraitImpl<T> of SyscallResultTrait::<T> {
                 panic(revert_reason)
             },
         }
-    }
-}
-
-impl ContractAddressZeroable of Zeroable::<ContractAddress> {
-    fn zero() -> ContractAddress {
-        contract_address_const::<0>()
-    }
-
-    #[inline(always)]
-    fn is_zero(self: ContractAddress) -> bool {
-        contract_address_to_felt(self).is_zero()
     }
 }
