@@ -287,3 +287,32 @@ For get_fees: This method takes an additional argument, is there a field in the 
 Looking at the test functions will also help you understand more about the syntax.
 This section will help you understanding more about impls and traits: https://link.medium.com/c8TqX7R3qxb#83b5.
 """
+
+# OPTIONS
+
+[[exercises]]
+name = "options1"
+path = "exercises/options/options1.cairo"
+mode = "test"
+hint = """
+Options can have a Some value, with an inner value, or a None value, without an inner value.
+There's multiple ways to get at the inner value, you can use unwrap, or pattern match. Unwrapping
+is the easiest, but how do you do it safely so that it doesn't panic in your face later?"""
+
+[[exercises]]
+name = "options2"
+path = "exercises/options/options2.cairo"
+mode = "test"
+hint = """
+check out: https://github.com/starkware-libs/cairo/blob/main/corelib/src/option.cairo 
+to see the implementation of the Option type and its methods.
+"""
+
+[[exercises]]
+name = "options3"
+path = "exercises/options/options3.cairo"
+mode = "compile"
+hint = """
+Reminder: You can use a match statement with an Option to handle both the Some and None cases.
+This syntax is more flexible than using unwrap, which only handles the Some case, and contributes to more robust code.
+"""
