@@ -299,3 +299,9 @@ name = "operations2"
 path = "exercises/operations/operations2.cairo"
 mode = "test"
 hint = """No hints this time ;)"""
+
+[[exercises]]
+name = "operations3"
+path = "exercises/operations/operations3.cairo"
+mode = "test"
+hint = """Use % for modulus, / for division, and * for multiplication."""
