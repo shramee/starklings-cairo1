@@ -1,25 +1,60 @@
-// Mary is buying apples. The price of an apple is calculated as follows:
-// - An apple costs 3 rustbucks.
-// - If Mary buys more than 40 apples, each apple only costs 2 rustbuck!
-// Write a function that calculates the price of an order of apples given
-// the quantity bought. No hints this time!
+// Remember last time you calculated division in Cairo0?
+// Now Cairo1 has native integer types e.g. u8, u32, ...u256, usize which support more operators then felts
+// And always watch out for overflows e.g in the last test
+// Let try to use them
 
 // I AM NOT DONE
 
-// Put your function here!
-// fn calculate_price_of_apples {
+
+fn modulus(x : u8, y: u8) ->  u8 {
+    // calculate the modulus of x and y
+    // FILL ME
+    res
+}
+
+fn floor_division(x: usize, y: usize) -> u32 {
+    // calculate the floor_division of x and y
+    // FILL ME
+    res
+}
+
+fn multiplication(x: u64, y: u64) -> u64 {
+    // calculate the multiplication of x and y
+    // FILL ME
+    res
+}
 
 
-// Do not change the test function
+// Do not change the tests
 #[test]
-fn verify_test() {
-    let price1 = calculate_price_of_apples(35);
-    let price2 = calculate_price_of_apples(40);
-    let price3 = calculate_price_of_apples(41);
-    let price4 = calculate_price_of_apples(65);
+fn test_modulus(){
+    let res = modulus(16_u8, 2_u8);
+    assert(res==0_u8, 'Error message');
 
-    assert(105 == price1);
-    assert(120 == price2);
-    assert(82 == price3);
-    assert(130 == price4);
+    let res = modulus(17_u8, 3_u8);
+    assert(res==2_u8, 'Error message');
+}
+
+#[test]
+fn test_floor_division(){
+    let res = floor_division(160_usize, 2_usize);
+    assert(res==80_usize, 'Error message');
+
+    let res = floor_division(21_usize, 4_usize);
+    assert(res==5_usize, 'Error message');
+}
+
+#[test]
+fn test_mul(){
+    let res = multiplication(16_u64, 2_u64);
+    assert(res==32_u64, 'Error message');
+
+    let res = multiplication(21_u64, 4_u64);
+    assert(res==84_u64, 'Error message');
+}
+
+#[test]
+#[should_panic]
+fn test_u64_mul_overflow_1() {
+    let res = multiplication(0x100000000_u64, 0x100000000_u64);
 }
