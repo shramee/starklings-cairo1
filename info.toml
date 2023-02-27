@@ -288,7 +288,6 @@ Looking at the test functions will also help you understand more about the synta
 This section will help you understanding more about impls and traits: https://link.medium.com/c8TqX7R3qxb#83b5.
 """
 
-
 # TRAITS
 
 [[exercises]]
@@ -323,3 +322,20 @@ If you're having trouble updating the distance value in the `Fish` and `Dog` imp
 2. Update the distance variable
 3. Reconstruct `self` with the updated variables (`self = MyStruct { ... }`) 
 """
+[[exercises]]
+name = "operations1"
+path = "exercises/operations/operations1.cairo"
+mode = "test"
+hint = """No hints this time ;)"""
+
+[[exercises]]
+name = "operations2"
+path = "exercises/operations/operations2.cairo"
+mode = "test"
+hint = """Use % for modulus, / for division, and * for multiplication."""
+
+[[exercises]]
+name = "quizs1"
+path = "exercises/quizs/quizs1.cairo"
+mode = "test"
+hint = """No hints this time ;)"""
