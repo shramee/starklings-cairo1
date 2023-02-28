@@ -3,6 +3,5 @@
 // needs to have a `main` function. So this file is a valid Cairo file.
 // Other exercises will require you to write Cairo code to make the exercise file compile.
 // Remove "I AM NOT DONE" comment when you are ready to move to the next exercise.
-// I AM NOT DONE
 
 fn main() {}
