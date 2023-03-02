@@ -18,8 +18,8 @@ fn verify_test() {
     let price3 = calculate_price_of_apples(41);
     let price4 = calculate_price_of_apples(65);
 
-    assert(105 == price1);
-    assert(120 == price2);
-    assert(82 == price3);
-    assert(130 == price4);
+    assert(105 == price1, 'Incorrect price');
+    assert(120 == price2, 'Incorrect price');
+    assert(122 == price3, 'Incorrect price');
+    assert(170 == price4, 'Incorrect price');
 }
