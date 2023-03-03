@@ -358,7 +358,7 @@ to see the implementation of the Option type and its methods.
 [[exercises]]
 name = "options3"
 path = "exercises/options/options3.cairo"
-mode = "compile"
+mode = "test"
 hint = """
 Reminder: You can use a match statement with an Option to handle both the Some and None cases.
 This syntax is more flexible than using unwrap, which only handles the Some case, and contributes to more robust code.
