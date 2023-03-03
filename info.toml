@@ -308,6 +308,33 @@ Looking at the test functions will also help you understand more about the synta
 This section will help you understanding more about impls and traits: https://link.medium.com/c8TqX7R3qxb#83b5.
 """
 
+# ENUMS
+
+[[exercises]]
+name = "enums1"
+path = "exercises/enums/enums1.cairo"
+mode = "compile"
+hint = "No hints this time ;)"
+
+[[exercises]]
+name = "enums2"
+path = "exercises/enums/enums2.cairo"
+mode = "compile"
+hint = """
+You can create enumerations that have different variants with different types
+such as no data, structs, a single felt string, tuples, ...etc"""
+
+[[exercises]]
+name = "enums3"
+path = "exercises/enums/enums3.cairo"
+mode = "test"
+hint = """
+As a first step, you can define enums to compile this code without errors.
+and then create a match expression in `process()`. 
+Note that you need to deconstruct some message variants 
+in the match expression to get value in the variant.
+"""
+
 # OPTIONS
 
 [[exercises]]
@@ -331,7 +358,7 @@ to see the implementation of the Option type and its methods.
 [[exercises]]
 name = "options3"
 path = "exercises/options/options3.cairo"
-mode = "compile"
+mode = "test"
 hint = """
 Reminder: You can use a match statement with an Option to handle both the Some and None cases.
 This syntax is more flexible than using unwrap, which only handles the Some case, and contributes to more robust code.
