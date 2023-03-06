@@ -2,8 +2,6 @@
 // Address all the TODOs to make the tests pass!
 // Execute `starklings hint structs2` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
-
 #[derive(Copy, Drop)]
 struct Order {
     name: felt,
@@ -30,7 +28,7 @@ fn create_order_template() -> Order {
 fn test_your_order() {
     let order_template = create_order_template();
     // TODO: Deserialize your order into multiple variables to make the assertions pass!
-    // let ...
+    let Order{name, year, made_by_phone, made_by_mobile, made_by_email,item_number, count} = order_template;
 
     assert(name == 'Bob', 'Wrong name');
     assert(year == order_template.year, 'Wrong year');

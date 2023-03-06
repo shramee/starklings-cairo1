@@ -4,7 +4,6 @@
 // Make the code compile and the tests pass!
 // Execute `starklings hint structs3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
 
 use array::ArrayTrait;
 #[derive(Copy, Drop)]
@@ -16,8 +15,8 @@ struct Package {
 
 trait PackageTrait {
     fn new(sender_country: felt, recipient_country: felt, weight_in_grams: felt) -> Package;
-    fn is_international(ref self: Package) -> //???;
-    fn get_fees(ref self: Package, cents_per_gram: felt) -> //???;
+    fn is_international(ref self: Package) ->bool; //???;
+    fn get_fees(ref self: Package, cents_per_gram: felt) -> felt; //???;
 }
 impl PackageImpl of PackageTrait {
     fn new(sender_country: felt, recipient_country: felt, weight_in_grams: felt) -> Package {
@@ -29,14 +28,12 @@ impl PackageImpl of PackageTrait {
         Package { sender_country, recipient_country, weight_in_grams,  }
     }
 
-    fn is_international(ref self: Package) -> //???
-    {
-        /// Something goes here...
+     fn is_international(ref self: Package) -> bool {
+        self.sender_country != self.recipient_country
     }
 
-    fn get_fees(ref self: Package, cents_per_gram: felt) -> //???
-    {
-        /// Something goes here...
+    fn get_fees(ref self: Package, cents_per_gram: felt) -> felt {
+        self.weight_in_grams * cents_per_gram
     }
 }
 
