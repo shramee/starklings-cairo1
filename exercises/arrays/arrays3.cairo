@@ -25,5 +25,5 @@ fn test_arrays3() {
 }
 
 // Don't mind this for now.
-impl OptionDrop of Drop::<Option::<felt>>;
+impl OptionDrop of Drop::<Option::<@felt>>;
 

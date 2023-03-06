@@ -95,87 +95,6 @@ Constants types must also always be annotated.
 You can read about the different integer types here: https://link.medium.com/c8TqX7R3qxb#6d64
 """
 
-
-
-# FUNCTIONS
-
-[[exercises]]
-name = "functions1"
-path = "exercises/functions/functions1.cairo"
-mode = "compile"
-hint = """
-This main function is calling a function that it expects to exist, but the
-function doesn't exist. It expects this function to have the name `call_me`.
-It expects this function to not take any arguments and not return a value.
-Sounds a lot like `main`, doesn't it?"""
-
-[[exercises]]
-name = "functions2"
-path = "exercises/functions/functions2.cairo"
-mode = "compile"
-hint = """
-Cairo requires that all parts of a function's signature have type annotations,
-but `call_me` is missing the type annotation of `num`. What is the basic type in Cairo?"""
-
-[[exercises]]
-name = "functions3"
-path = "exercises/functions/functions3.cairo"
-mode = "compile"
-hint = """
-This time, the function *declaration* is okay, but there's something wrong
-with the place where we're calling the function.
-Remember how we can use a suffix to specify the type of a literal? https://link.medium.com/c8TqX7R3qxb#6d64
-As a reminder, you can freely play around with different solutions in Starklings!
-Watch mode will only jump to the next exercise if you remove the I AM NOT DONE comment."""
-
-
-[[exercises]]
-name = "functions5"
-path = "exercises/functions/functions4.cairo"
-mode = "compile"
-hint = """
-This is a really common error that can be fixed by removing one character.
-It happens because Cairo distinguishes between expressions and statements: expressions return a value based on their operand(s), and statements simply return a () type which behaves just like `void` in C/C++ language.
-We want to return a value of `felt` type from the `square` function, but it is returning a `()` type...
-They are not the same. There are two solutions:
-1. Add a `return` ahead of `num * num;`
-2. remove `;`, make it to be `num * num`"""
-
-# Arrays
-
-[[exercises]]
-name = "arrays1"
-path = "exercises/arrays/arrays1.cairo"
-mode = "test"
-hint = """
-You can declare an array in Cairo using the following syntax:
-`let your_array = ArrayTrait::new();`
-You can append elements to an array using the following syntax:
-`your_array.append(element);`
-
-The `pop_front` method removes the first element from the array and returns an Option::Some(value) if the array is not empty, or Option::None() if the array is empty.
-"""
-
-[[exercises]]
-name = "arrays2"
-path = "exercises/arrays/arrays2.cairo"
-mode = "test"
-hint = """
-How can you remove the first element from the array?
-Take a look at the previous exercise for a hint. Don't forget to call `.unwrap()` on the returned value.
-This will prevent the `Variable not dropped` error.
-"""
-
-[[exercises]]
-name = "arrays3"
-path = "exercises/arrays/arrays3.cairo"
-mode = "test"
-hint = """
-The test fails because you are trying to access an element that is out of bounds!
-By using array.pop_front(), we remove the first element from the array, so the index of the last element is no longer 2.
-Without changing the index accessed, how can we make the test pass? Is there a method that returns an option that could help us?
-"""
-
 # PRIMITIVE TYPES
 
 [[exercises]]
@@ -214,6 +133,20 @@ This method will return an `Option` type, so you'll need to unwrap it. To use th
 Take a look at the top of the file to see how these traits are imported.
 """
 
+# OPERATIONS
+
+[[exercises]]
+name = "operations1"
+path = "exercises/operations/operations1.cairo"
+mode = "test"
+hint = """No hints this time ;)"""
+
+[[exercises]]
+name = "operations2"
+path = "exercises/operations/operations2.cairo"
+mode = "test"
+hint = """Use % for modulus, / for division, and * for multiplication."""
+
 # IF
 
 [[exercises]]
@@ -234,6 +167,150 @@ hint = """
 For that first compiler error, it's important in Cairo that each conditional
 block returns the same type! To get the tests passing, you will need a couple
 conditions checking different input values."""
+
+# FUNCTIONS
+
+[[exercises]]
+name = "functions1"
+path = "exercises/functions/functions1.cairo"
+mode = "compile"
+hint = """
+This main function is calling a function that it expects to exist, but the
+function doesn't exist. It expects this function to have the name `call_me`.
+It expects this function to not take any arguments and not return a value.
+Sounds a lot like `main`, doesn't it?"""
+
+[[exercises]]
+name = "functions2"
+path = "exercises/functions/functions2.cairo"
+mode = "compile"
+hint = """
+Cairo requires that all parts of a function's signature have type annotations,
+but `call_me` is missing the type annotation of `num`. What is the basic type in Cairo?"""
+
+[[exercises]]
+name = "functions3"
+path = "exercises/functions/functions3.cairo"
+mode = "compile"
+hint = """
+This time, the function *declaration* is okay, but there's something wrong
+with the place where we're calling the function.
+Remember how we can use a suffix to specify the type of a literal? https://link.medium.com/c8TqX7R3qxb#6d64
+As a reminder, you can freely play around with different solutions in Starklings!
+Watch mode will only jump to the next exercise if you remove the I AM NOT DONE comment."""
+
+
+[[exercises]]
+name = "functions4"
+path = "exercises/functions/functions4.cairo"
+mode = "compile"
+hint = """
+This is a really common error that can be fixed by removing one character.
+It happens because Cairo distinguishes between expressions and statements: expressions return a value based on their operand(s), and statements simply return a () type which behaves just like `void` in C/C++ language.
+We want to return a value of `felt` type from the `square` function, but it is returning a `()` type...
+They are not the same. There are two solutions:
+1. Add a `return` ahead of `num * num;`
+2. remove `;`, make it to be `num * num`"""
+
+# QUIZ 1
+
+[[exercises]]
+name = "quizs1"
+path = "exercises/quizs/quizs1.cairo"
+mode = "test"
+hint = """No hints this time ;)"""
+
+# ENUMS
+
+[[exercises]]
+name = "enums1"
+path = "exercises/enums/enums1.cairo"
+mode = "compile"
+hint = "No hints this time ;)"
+
+[[exercises]]
+name = "enums2"
+path = "exercises/enums/enums2.cairo"
+mode = "compile"
+hint = """
+You can create enumerations that have different variants with different types
+such as no data, structs, a single felt string, tuples, ...etc"""
+
+[[exercises]]
+name = "enums3"
+path = "exercises/enums/enums3.cairo"
+mode = "test"
+hint = """
+As a first step, you can define enums to compile this code without errors.
+and then create a match expression in `process()`.
+Note that you need to deconstruct some message variants
+in the match expression to get value in the variant.
+"""
+
+# OPTIONS
+
+[[exercises]]
+name = "options1"
+path = "exercises/options/options1.cairo"
+mode = "test"
+hint = """
+Options can have a Some value, with an inner value, or a None value, without an inner value.
+There's multiple ways to get at the inner value, you can use unwrap, or pattern match. Unwrapping
+is the easiest, but how do you do it safely so that it doesn't panic in your face later?"""
+
+[[exercises]]
+name = "options2"
+path = "exercises/options/options2.cairo"
+mode = "test"
+hint = """
+check out: https://github.com/starkware-libs/cairo/blob/main/corelib/src/option.cairo
+to see the implementation of the Option type and its methods.
+"""
+
+[[exercises]]
+name = "options3"
+path = "exercises/options/options3.cairo"
+mode = "test"
+hint = """
+Reminder: You can use a match statement with an Option to handle both the Some and None cases.
+This syntax is more flexible than using unwrap, which only handles the Some case, and contributes to more robust code.
+"""
+
+# Arrays
+
+[[exercises]]
+name = "arrays1"
+path = "exercises/arrays/arrays1.cairo"
+mode = "test"
+hint = """
+You can declare an array in Cairo using the following syntax:
+`let your_array = ArrayTrait::new();`
+You can append elements to an array using the following syntax:
+`your_array.append(element);`
+
+The `pop_front` method removes the first element from the array and returns an Option::Some(value) if the array is not empty, or Option::None() if the array is empty.
+"""
+
+[[exercises]]
+name = "arrays2"
+path = "exercises/arrays/arrays2.cairo"
+mode = "test"
+hint = """
+How can you remove the first element from the array?
+Take a look at the previous exercise for a hint. Don't forget to call `.unwrap()` on the returned value.
+This will prevent the `Variable not dropped` error.
+"""
+
+[[exercises]]
+name = "arrays3"
+path = "exercises/arrays/arrays3.cairo"
+mode = "test"
+hint = """
+The test fails because you are trying to access an element that is out of bounds!
+By using array.pop_front(), we remove the first element from the array, so the index of the last element is no longer 2.
+Without changing the index accessed, how can we make the test pass? Is there a method that returns an option that could help us?
+"""
+
 
 # STRUCTS
 
@@ -286,4 +363,126 @@ For get_fees: This method takes an additional argument, is there a field in the 
 
 Looking at the test functions will also help you understand more about the syntax.
 This section will help you understanding more about impls and traits: https://link.medium.com/c8TqX7R3qxb#83b5.
+"""
+
+
+# MOVE SEMANTICS
+
+[[exercises]]
+name = "move_semantics1"
+path = "exercises/move_semantics/move_semantics1.cairo"
+mode = "compile"
+hint = """
+So you've got the "ref argument must be a mutable variable." error on line 17,
+right? The fix for this is going to be adding one keyword, and the addition is NOT on line 17
+where the error is.
+
+Also: Try accessing `arr0` after having called `fill_arr()`. See what happens!"""
+
+[[exercises]]
+name = "move_semantics2"
+path = "exercises/move_semantics/move_semantics2.cairo"
+mode = "compile"
+hint = """
+So, `arr0` is passed into the `fill_arr` function as an argument. In Cairo,
+when an argument is passed to a function and it's not explicitly returned,
+you can't use the original variable anymore. We call this "moving" a variable.
+Variables that are moved into a function (or block scope) and aren't explicitly
+returned get "dropped" at the end of that function. This is also what happens here.
+There's a few ways to fix this, try them all if you want:
+1. Make another, separate version of the data that's in `arr0` and pass that
+   to `fill_arr` instead.
+2. Make `fill_arr` *mutably* borrow a reference to its argument (which will need to be
+   mutable) with the `ref` keyword , modify it directly, then not return anything. Then you can get rid
+   of `arr1` entirely -- note that this will change what gets printed by the
+   first `print`
+3. Make `fill_arr` borrow an immutable view of its argument instead of taking ownership by using the snapshot operator `@`,
+   and then copy the data within the function in order to return an owned
+   `Array::<felt>`. This requires an explicit clone of the array and should generally be avoided in Cairo, as the memory is write-once and cloning can be expensive."""
+
+[[exercises]]
+name = "move_semantics3"
+path = "exercises/move_semantics/move_semantics3.cairo"
+mode = "compile"
+hint = """
+The difference between this one and the previous ones is that the first line
+of `fn fill_arr` that had `let mut arr = arr;` is no longer there. You can,
+instead of adding that line back, add `mut` in one place that will change
+an existing binding to be a mutable binding instead of an immutable one :)"""
+
+[[exercises]]
+name = "move_semantics4"
+path = "exercises/move_semantics/move_semantics4.cairo"
+mode = "compile"
+hint = """
+Stop reading whenever you feel like you have enough direction :) Or try
+doing one step and then fixing the compiler errors that result!
+So the end goal is to:
+   - get rid of the first line in main that creates the new array
+   - so then `arr0` doesn't exist, so we can't pass it to `fill_arr`
+   - we don't want to pass anything to `fill_arr`, so its signature should
+     reflect that it does not take any arguments
+   - since we're not creating a new vec in `main` anymore, we need to create
+     a new vec in `fill_arr`, similarly to the way we did in `main`"""
+
+[[exercises]]
+name = "move_semantics5"
+path = "exercises/move_semantics/move_semantics5.cairo"
+mode = "compile"
+hint = """
+Carefully reason about how each function takes ownership of the variable passed.
+It depends on the keyword used to pass the variable.
+What happens when a function takes ownership of a variable and then returns it?
+Can we still use it later on?
+"""
+
+[[exercises]]
+name = "move_semantics6"
+path = "exercises/move_semantics/move_semantics6.cairo"
+mode = "compile"
+hint = """
+The first problem is that `get_value` is taking ownership of the Number struct.
+So `Number` is moved and can't be used for `set_value`
+`number` is moved to `get_value` first, meaning that `set_value` cannot manipulate the data.
+What can we use to pass an immutable reference to `get_value`? What special operator do we use for that?
+What other operator do we use to "desnap" a snapshot?
+Hint: It involves the `@` and `*` operators.
+
+Once you've fixed that, `set_value`'s function signature will also need to be adjusted.
+Can you figure out how?
+"""
+
+# TRAITS
+
+[[exercises]]
+name = "traits1"
+path = "exercises/traits/traits1.cairo"
+mode = "test"
+hint = """ 
+If you want to implement a trait for a type, you have to implement all the methods in the trait.
+Based on the signature of the method, you can easily implement it.
+
+In the test, you need to instantiate two objects of type `Animal`.
+You can call the method of a trait by using the MyTrait::foo() syntax.
+How would you instantiate the two objects with AnimalTrait?
+Maybe you need to specify the type of the object?
+"""
+
+[[exercises]]
+name = "traits2"
+path = "exercises/traits/traits2.cairo"
+mode = "test"
+hint = """ No hints for this one! It is very similar to the previous exercise."""
+
+[[exercises]]
+name = "traits3"
+path = "exercises/traits/traits3.cairo"
+mode = "test"
+hint = """ 
+You can implement multiple traits for a type.
+When a trait is destined to be implemented by a single type, you don't need to use generics.
+If you're having trouble updating the distance value in the `Fish` and `Dog` impls, remember that you need to first
+1. Destructure the object into mutable variables
+2. Update the distance variable
+3. Reconstruct `self` with the updated variables (`self = MyStruct { ... }`) 
 """
