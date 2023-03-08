@@ -20,6 +20,6 @@ fn verify_test() {
 
     assert(105 == price1, 'Incorrect price');
     assert(120 == price2, 'Incorrect price');
-    assert(122 == price3, 'Incorrect price');
-    assert(170 == price4, 'Incorrect price');
+    assert(82 == price3, 'Incorrect price');
+    assert(130 == price4, 'Incorrect price');
 }
