@@ -19,7 +19,7 @@ struct Student {
 fn display_grades(student: @Student, index: usize) {
     // don't mind these lines! They are required when
     // running recursive functions.
-    match get_gas() {
+    match gas::get_gas() {
         Option::Some(_) => {},
         Option::None(_) => {
             let mut data = ArrayTrait::new();
