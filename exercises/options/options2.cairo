@@ -23,3 +23,4 @@ fn simple_option(optional_target: Option::<felt>) {
 }
 
 impl OptionFeltCopy of Copy::<Option::<felt>>;
+impl OptionFeltDrop of Drop::<Option::<felt>>;
