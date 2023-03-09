@@ -135,11 +135,11 @@ Take a look at the top of the file to see how these traits are imported.
 
 # OPERATIONS
 
-[[exercises]]
-name = "operations1"
-path = "exercises/operations/operations1.cairo"
-mode = "test"
-hint = """No hints this time ;)"""
+# [[exercises]]
+# name = "operations1"
+# path = "exercises/operations/operations1.cairo"
+# mode = "test"
+# hint = """No hints this time ;)"""
 
 [[exercises]]
 name = "operations2"
