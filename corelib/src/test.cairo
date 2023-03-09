@@ -169,14 +169,6 @@ fn test_felt_operators() {
     assert(1 * 3 == 3, '1 * 3 == 3');
     assert(3 * 6 == 18, '3 * 6 == 18');
     assert(-3 == 1 - 4, '-3 == 1 - 4');
-    assert(1 < 4, '1 < 4');
-    assert(1 <= 4, '1 <= 4');
-    assert(!(4 < 4), '!(4 < 4)');
-    assert(4 <= 4, '4 <= 4');
-    assert(5 > 2, '5 > 2');
-    assert(5 >= 2, '5 >= 2');
-    assert(!(3 > 3), '!(3 > 3)');
-    assert(3 >= 3, '3 >= 3');
 }
 
 #[test]
@@ -881,9 +873,22 @@ fn test_box_unbox_u256() {
 
 #[test]
 fn test_span() {
-    let span = test_array_helper().span();
+    let mut span = test_array_helper().span();
 
     assert(span.len() == 3_u32, 'Unexpected span length.');
     assert(*span.get(0_u32).unwrap() == 10, 'Unexpected element');
-    assert(*span.at(1_u32) == 11, 'Unexpected element');
+    assert(*span.pop_front().unwrap() == 10, 'Unexpected element');
+    assert(span.len() == 2_u32, 'Unexpected span length.');
+    assert(*span.at(1_u32) == 12, 'Unexpected element');
+}
+
+#[test]
+fn test_get_available_gas_no_gas_supply() {
+    assert(testing::get_available_gas() == 0_u128, 'expected no_gas_supply')
+}
+
+#[test]
+#[available_gas(10000)]
+fn test_get_available_gas_with_gas_supply() {
+    assert(testing::get_available_gas() > 5000_u128, 'high amount of gas used')
 }

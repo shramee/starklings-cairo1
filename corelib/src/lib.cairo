@@ -77,9 +77,11 @@ impl BoolPartialEq of PartialEq::<bool> {
     }
 }
 
-// Felt.
+// General purpose implicits.
 extern type RangeCheck;
+extern type SegmentArena;
 
+// Felt.
 #[derive(Copy, Drop)]
 extern type felt;
 extern fn felt_const<const value>() -> felt nopanic;
@@ -142,12 +144,12 @@ extern type NonZero<T>;
 // TODO(spapini): Add generic impls for NonZero for Copy, Drop.
 enum IsZeroResult<T> {
     Zero: (),
-    NonZero: NonZero::<T>,
+    NonZero: NonZero<T>,
 }
-extern fn unwrap_nz<T>(a: NonZero::<T>) -> T nopanic;
+extern fn unwrap_nz<T>(a: NonZero<T>) -> T nopanic;
 
-impl IsZeroResultIntoBool<T> of Into::<IsZeroResult::<T>, bool> {
-    fn into(self: IsZeroResult::<T>) -> bool {
+impl IsZeroResultIntoBool<T> of Into::<IsZeroResult<T>, bool> {
+    fn into(self: IsZeroResult<T>) -> bool {
         match self {
             IsZeroResult::Zero(()) => true,
             IsZeroResult::NonZero(_) => false,
@@ -157,7 +159,7 @@ impl IsZeroResultIntoBool<T> of Into::<IsZeroResult::<T>, bool> {
 
 impl NonZeroFeltCopy of Copy::<NonZero::<felt>>;
 impl NonZeroFeltDrop of Drop::<NonZero::<felt>>;
-extern fn felt_div(a: felt, b: NonZero::<felt>) -> felt nopanic;
+extern fn felt_div(a: felt, b: NonZero<felt>) -> felt nopanic;
 
 impl FeltPartialEq of PartialEq::<felt> {
     #[inline(always)]
@@ -173,26 +175,7 @@ impl FeltPartialEq of PartialEq::<felt> {
     }
 }
 
-impl PartialOrdFelt of PartialOrd::<felt> {
-    #[inline(always)]
-    fn le(a: felt, b: felt) -> bool {
-        !(b < a)
-    }
-    #[inline(always)]
-    fn ge(a: felt, b: felt) -> bool {
-        !(a < b)
-    }
-    #[inline(always)]
-    fn lt(a: felt, b: felt) -> bool {
-        integer::u256_from_felt(a) < integer::u256_from_felt(b)
-    }
-    #[inline(always)]
-    fn gt(a: felt, b: felt) -> bool {
-        b < a
-    }
-}
-
-extern fn felt_is_zero(a: felt) -> IsZeroResult::<felt> nopanic;
+extern fn felt_is_zero(a: felt) -> IsZeroResult<felt> nopanic;
 
 // TODO(spapini): Constraint using Copy and Drop traits.
 extern fn dup<T>(obj: T) -> (T, T) nopanic;
@@ -286,12 +269,16 @@ mod integer;
 use integer::u128;
 use integer::u128_const;
 use integer::u128_sqrt;
-use integer::upcast;
 use integer::U128Add;
 use integer::U128Sub;
 use integer::U128Mul;
 use integer::U128Div;
 use integer::U128Rem;
+use integer::U128AddEq;
+use integer::U128SubEq;
+use integer::U128MulEq;
+use integer::U128DivEq;
+use integer::U128RemEq;
 use integer::U128PartialOrd;
 use integer::U128PartialEq;
 use integer::U128BitAnd;
@@ -301,43 +288,66 @@ use integer::u128_is_zero;
 use integer::u8;
 use integer::u8_const;
 use integer::U8Add;
-use integer::U8Div;
-use integer::U8PartialEq;
-use integer::U8PartialOrd;
-use integer::U8Rem;
 use integer::U8Sub;
 use integer::U8Mul;
+use integer::U8Div;
+use integer::U8Rem;
+use integer::U8AddEq;
+use integer::U8SubEq;
+use integer::U8MulEq;
+use integer::U8DivEq;
+use integer::U8RemEq;
+use integer::U8PartialEq;
+use integer::U8PartialOrd;
 use integer::u16;
 use integer::u16_const;
 use integer::U16Add;
-use integer::U16Div;
-use integer::U16PartialEq;
-use integer::U16PartialOrd;
-use integer::U16Rem;
 use integer::U16Sub;
 use integer::U16Mul;
+use integer::U16Div;
+use integer::U16Rem;
+use integer::U16AddEq;
+use integer::U16SubEq;
+use integer::U16MulEq;
+use integer::U16DivEq;
+use integer::U16RemEq;
+use integer::U16PartialEq;
+use integer::U16PartialOrd;
 use integer::u32;
 use integer::u32_const;
 use integer::U32Add;
-use integer::U32Div;
-use integer::U32PartialEq;
-use integer::U32PartialOrd;
-use integer::U32Rem;
 use integer::U32Sub;
 use integer::U32Mul;
+use integer::U32Div;
+use integer::U32Rem;
+use integer::U32AddEq;
+use integer::U32SubEq;
+use integer::U32MulEq;
+use integer::U32DivEq;
+use integer::U32RemEq;
+use integer::U32PartialEq;
+use integer::U32PartialOrd;
 use integer::u64;
 use integer::u64_const;
 use integer::U64Add;
-use integer::U64Div;
-use integer::U64PartialEq;
-use integer::U64PartialOrd;
-use integer::U64Rem;
 use integer::U64Sub;
 use integer::U64Mul;
+use integer::U64Div;
+use integer::U64Rem;
+use integer::U64AddEq;
+use integer::U64SubEq;
+use integer::U64MulEq;
+use integer::U64DivEq;
+use integer::U64RemEq;
+use integer::U64PartialEq;
+use integer::U64PartialOrd;
 use integer::u256;
 use integer::U256Add;
 use integer::U256Sub;
 use integer::U256Mul;
+use integer::U256AddEq;
+use integer::U256SubEq;
+use integer::U256MulEq;
 use integer::U256PartialOrd;
 use integer::U256PartialEq;
 use integer::U256BitAnd;
@@ -365,17 +375,15 @@ mod gas;
 use gas::BuiltinCosts;
 use gas::GasBuiltin;
 use gas::get_builtin_costs;
-use gas::get_gas;
-use gas::get_gas_all;
 
 
 // Panics.
 enum PanicResult<T> {
     Ok: T,
-    Err: Array::<felt>,
+    Err: Array<felt>,
 }
 enum never {}
-extern fn panic(data: Array::<felt>) -> never;
+extern fn panic(data: Array<felt>) -> never;
 
 fn assert(cond: bool, err_code: felt) {
     if !cond {
@@ -387,7 +395,6 @@ fn assert(cond: bool, err_code: felt) {
 
 // Serialization and Deserialization.
 mod serde;
-mod starknet_serde;
 
 // Hash functions.
 mod hash;
@@ -401,7 +408,6 @@ mod debug;
 mod starknet;
 use starknet::System;
 use starknet::ContractAddress;
-mod starknet_testing;
 
 // Internals.
 mod internal;
@@ -411,3 +417,6 @@ use zeroable::Zeroable;
 
 #[cfg(test)]
 mod test;
+
+// Module for testing only.
+mod testing;

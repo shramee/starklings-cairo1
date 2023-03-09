@@ -5,9 +5,9 @@ use std::path::Path;
 use std::sync::{Arc, Mutex};
 
 use anyhow::{bail, Context};
-use cairo_lang_compiler::db::{RootDatabase};
-use cairo_lang_compiler::project::setup_project;
+use cairo_lang_compiler::db::RootDatabase;
 use cairo_lang_compiler::diagnostics::DiagnosticsReporter;
+use cairo_lang_compiler::project::setup_project;
 use cairo_lang_debug::DebugWithDb;
 use cairo_lang_defs::ids::{FreeFunctionId, FunctionWithBodyId, ModuleItemId};
 use cairo_lang_diagnostics::ToOption;
@@ -32,8 +32,7 @@ use colored::Colorize;
 use itertools::Itertools;
 use rayon::prelude::{IntoParallelIterator, ParallelIterator};
 
-const CORELIB_DIR_NAME: &str = "corelib";
-
+const CORELIB_DIR_NAME: &str = "corelib/src";
 
 /// Command line args parser.
 /// Exits with 0/1 if the input is formatted correctly/incorrectly.
@@ -75,11 +74,13 @@ fn main() -> anyhow::Result<()> {
 }
 
 pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
-// TODO(orizi): Use `get_default_plugins` and just update the config plugin.
+    // TODO(orizi): Use `get_default_plugins` and just update the config plugin.
     let mut plugins: Vec<Arc<dyn SemanticPlugin>> = vec![
         Arc::new(DerivePlugin {}),
         Arc::new(PanicablePlugin {}),
-        Arc::new(ConfigPlugin { configs: HashSet::from(["test".to_string()]) }),
+        Arc::new(ConfigPlugin {
+            configs: HashSet::from(["test".to_string()]),
+        }),
     ];
     if args.starknet {
         plugins.push(Arc::new(StarkNetPlugin {}));
@@ -126,7 +127,7 @@ pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
                             generic_args: vec![],
                         }
                     }
-                        .debug(db)
+                    .debug(db)
                 ),
                 test,
             )
@@ -136,17 +137,24 @@ pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
         .filter(|(_, test)| !args.ignored || test.ignored)
         .collect_vec();
     let filtered_out = total_tests_count - named_tests.len();
-    let TestsSummary { passed, failed, ignored, failed_run_results } =
-        run_tests(named_tests, sierra_program)?;
+    let TestsSummary {
+        passed,
+        failed,
+        ignored,
+        failed_run_results,
+    } = run_tests(named_tests, sierra_program)?;
     let mut result_string = String::new();
     if failed.is_empty() {
-        result_string.push_str(format!(
-            "test result: {}. {} passed; {} failed; {} ignored; {filtered_out} filtered out;",
-            "ok".bright_green(),
-            passed.len(),
-            failed.len(),
-            ignored.len()
-        ).as_str());
+        result_string.push_str(
+            format!(
+                "test result: {}. {} passed; {} failed; {} ignored; {filtered_out} filtered out;",
+                "ok".bright_green(),
+                passed.len(),
+                failed.len(),
+                ignored.len()
+            )
+            .as_str(),
+        );
         Ok(result_string)
     } else {
         result_string.push_str(format!("failures:").as_str());
@@ -154,13 +162,15 @@ pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
             result_string.push_str(format!("   {failure} - ").as_str());
             match run_result {
                 RunResultValue::Success(_) => {
-                    result_string.push_str(format!("expected panic but finished successfully.").as_str());
+                    result_string
+                        .push_str(format!("expected panic but finished successfully.").as_str());
                 }
                 RunResultValue::Panic(values) => {
                     result_string.push_str(format!("panicked with [").as_str());
                     for value in &values {
                         match as_cairo_short_string(value) {
-                            Some(as_string) => result_string.push_str(format!("{value} ('{as_string}'), ").as_str()),
+                            Some(as_string) => result_string
+                                .push_str(format!("{value} ('{as_string}'), ").as_str()),
                             None => result_string.push_str(format!("{value}, ").as_str()),
                         }
                     }
@@ -245,7 +255,7 @@ fn run_tests(
                 }
                 TestStatus::Ignore => (&mut summary.ignored, "ignored".bright_yellow()),
             };
-            println!("test {name} ... {status_str}", );
+            println!("test {name} ... {status_str}",);
             res_type.push(name);
         });
     wrapped_summary.into_inner().unwrap()

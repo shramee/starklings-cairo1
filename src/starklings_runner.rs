@@ -3,17 +3,17 @@
 use std::path::Path;
 
 use anyhow::{Context, Ok};
-use cairo_lang_filesystem::db::init_dev_corelib;
-use cairo_lang_compiler::diagnostics::DiagnosticsReporter;
 use cairo_lang_compiler::db::RootDatabase;
+use cairo_lang_compiler::diagnostics::DiagnosticsReporter;
 use cairo_lang_compiler::project::setup_project;
 use cairo_lang_diagnostics::ToOption;
+use cairo_lang_filesystem::db::init_dev_corelib;
 use cairo_lang_runner::SierraCasmRunner;
 use cairo_lang_sierra_generator::db::SierraGenGroup;
 use cairo_lang_sierra_generator::replace_ids::replace_sierra_ids_in_program;
 use clap::Parser;
 
-const CORELIB_DIR_NAME: &str = "corelib";
+const CORELIB_DIR_NAME: &str = "corelib/src";
 
 /// Command line args parser.
 /// Exits with 0/1 if the input is formatted correctly/incorrectly.
@@ -67,14 +67,13 @@ pub fn run_cairo_program(args: &Args) -> anyhow::Result<String> {
         replace_sierra_ids_in_program(&mut db, &sierra_program),
         args.available_gas.is_some(),
     )
-        .with_context(|| "Failed setting up runner.")?;
+    .with_context(|| "Failed setting up runner.")?;
     let result = runner
         .run_function("::main", &[], args.available_gas)
         .with_context(|| "Failed to run the function.")?;
     match result.value {
-        cairo_lang_runner::RunResultValue::Success(values) => {
-            ret_string.push_str(format!("Run completed successfully, returning {values:?}").as_str())
-        }
+        cairo_lang_runner::RunResultValue::Success(values) => ret_string
+            .push_str(format!("Run completed successfully, returning {values:?}").as_str()),
         cairo_lang_runner::RunResultValue::Panic(values) => {
             ret_string.push_str(format!("Run panicked with err values: {values:?}").as_str());
         }

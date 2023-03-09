@@ -103,11 +103,11 @@ path = "exercises/primitive_types/primitive_types1.cairo"
 mode = "compile"
 hint = "No hints this time ;)"
 
-[[exercises]]
-name = "primitive_types2"
-path = "exercises/primitive_types/primitive_types2.cairo"
-mode = "compile"
-hint = "No hints this time ;)"
+# [[exercises]]
+# name = "primitive_types2"
+# path = "exercises/primitive_types/primitive_types2.cairo"
+# mode = "compile"
+# hint = "No hints this time ;)"
 
 [[exercises]]
 name = "primitive_types3"
@@ -149,15 +149,15 @@ hint = """Use % for modulus, / for division, and * for multiplication."""
 
 # IF
 
-[[exercises]]
-name = "if1"
-path = "exercises/if/if1.cairo"
-mode = "test"
-hint = """
-Remember in Cairo that:
-- the `if` condition does not need to be surrounded by parentheses
-- `if`/`else` conditionals are expressions
-- Each condition is followed by a `{}` block."""
+# [[exercises]]
+# name = "if1"
+# path = "exercises/if/if1.cairo"
+# mode = "test"
+# hint = """
+# Remember in Cairo that:
+# - the `if` condition does not need to be surrounded by parentheses
+# - `if`/`else` conditionals are expressions
+# - Each condition is followed by a `{}` block."""
 
 [[exercises]]
 name = "if2"
@@ -214,11 +214,11 @@ They are not the same. There are two solutions:
 
 # QUIZ 1
 
-[[exercises]]
-name = "quizs1"
-path = "exercises/quizs/quizs1.cairo"
-mode = "test"
-hint = """No hints this time ;)"""
+# [[exercises]]
+# name = "quizs1"
+# path = "exercises/quizs/quizs1.cairo"
+# mode = "test"
+# hint = """No hints this time ;)"""
 
 # ENUMS
 
@@ -249,14 +249,14 @@ in the match expression to get value in the variant.
 
 # OPTIONS
 
-[[exercises]]
-name = "options1"
-path = "exercises/options/options1.cairo"
-mode = "test"
-hint = """
-Options can have a Some value, with an inner value, or a None value, without an inner value.
-There's multiple ways to get at the inner value, you can use unwrap, or pattern match. Unwrapping
-is the easiest, but how do you do it safely so that it doesn't panic in your face later?"""
+# [[exercises]]
+# name = "options1"
+# path = "exercises/options/options1.cairo"
+# mode = "test"
+# hint = """
+# Options can have a Some value, with an inner value, or a None value, without an inner value.
+# There's multiple ways to get at the inner value, you can use unwrap, or pattern match. Unwrapping
+# is the easiest, but how do you do it safely so that it doesn't panic in your face later?"""
 
 [[exercises]]
 name = "options2"
@@ -267,14 +267,14 @@ check out: https://github.com/starkware-libs/cairo/blob/main/corelib/src/option.
 to see the implementation of the Option type and its methods.
 """
 
-[[exercises]]
-name = "options3"
-path = "exercises/options/options3.cairo"
-mode = "test"
-hint = """
-Reminder: You can use a match statement with an Option to handle both the Some and None cases.
-This syntax is more flexible than using unwrap, which only handles the Some case, and contributes to more robust code.
-"""
+# [[exercises]]
+# name = "options3"
+# path = "exercises/options/options3.cairo"
+# mode = "test"
+# hint = """
+# Reminder: You can use a match statement with an Option to handle both the Some and None cases.
+# This syntax is more flexible than using unwrap, which only handles the Some case, and contributes to more robust code.
+# """
 
 # Arrays
 
@@ -352,18 +352,18 @@ let Foo {x: a, y: b} = foo; // Creates variables a and b with values foo.x and f
 ```
 Read more about structs in the Structs section of this article: https://link.medium.com/c8TqX7R3qxb#ff54 """
 
-[[exercises]]
-name = "structs3"
-path = "exercises/structs/structs3.cairo"
-mode = "test"
-hint = """
-For is_international: What makes a package international? Seems related to the places it goes through right?
+# [[exercises]]
+# name = "structs3"
+# path = "exercises/structs/structs3.cairo"
+# mode = "test"
+# hint = """
+# For is_international: What makes a package international? Seems related to the places it goes through right?
 
-For get_fees: This method takes an additional argument, is there a field in the Package struct that this relates to?
+# For get_fees: This method takes an additional argument, is there a field in the Package struct that this relates to?
 
-Looking at the test functions will also help you understand more about the syntax.
-This section will help you understanding more about impls and traits: https://link.medium.com/c8TqX7R3qxb#83b5.
-"""
+# Looking at the test functions will also help you understand more about the syntax.
+# This section will help you understanding more about impls and traits: https://link.medium.com/c8TqX7R3qxb#83b5.
+# """
 
 
 # MOVE SEMANTICS
