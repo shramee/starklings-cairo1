@@ -9,19 +9,19 @@
 use array::ArrayTrait;
 #[derive(Copy, Drop)]
 struct Package {
-    sender_country: felt,
-    recipient_country: felt,
-    weight_in_grams: felt,
+    sender_country: usize,
+    recipient_country: usize,
+    weight_in_grams: usize,
 }
 
 trait PackageTrait {
     fn new(sender_country: felt, recipient_country: felt, weight_in_grams: felt) -> Package;
-    fn is_international(ref self: Package) -> //???;
-    fn get_fees(ref self: Package, cents_per_gram: felt) -> //???;
+    fn is_international(ref self: Package) -> bool; //???;
+    fn get_fees(ref self: Package, cents_per_gram: felt) -> felt;//???;
 }
 impl PackageImpl of PackageTrait {
-    fn new(sender_country: felt, recipient_country: felt, weight_in_grams: felt) -> Package {
-        if weight_in_grams <= 0 {
+    fn new(sender_country: usize, recipient_country: usize, weight_in_grams: usize) -> Package {
+        if weight_in_grams <= 0_usize {
             let mut data = ArrayTrait::new();
             data.append('x');
             panic(data);
@@ -34,7 +34,7 @@ impl PackageImpl of PackageTrait {
         /// Something goes here...
     }
 
-    fn get_fees(ref self: Package, cents_per_gram: felt) -> //???
+    fn get_fees(ref self: Package, cents_per_gram: felt) -> felt //???
     {
         /// Something goes here...
     }
