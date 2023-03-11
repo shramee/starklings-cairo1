@@ -9,18 +9,18 @@
 use array::ArrayTrait;
 #[derive(Copy, Drop)]
 struct Package {
-    sender_country: usize,
-    recipient_country: usize,
+    sender_country: felt,
+    recipient_country: felt,
     weight_in_grams: usize,
 }
 
 trait PackageTrait {
-    fn new(sender_country: felt, recipient_country: felt, weight_in_grams: felt) -> Package;
+    fn new(sender_country: felt, recipient_country: felt, weight_in_grams: usize) -> Package;
     fn is_international(ref self: Package) -> bool; //???;
-    fn get_fees(ref self: Package, cents_per_gram: felt) -> felt;//???;
+    fn get_fees(ref self: Package, cents_per_gram: usize) -> usize;//???;
 }
 impl PackageImpl of PackageTrait {
-    fn new(sender_country: usize, recipient_country: usize, weight_in_grams: usize) -> Package {
+    fn new(sender_country: felt, recipient_country: felt, weight_in_grams: usize) -> Package {
         if weight_in_grams <= 0_usize {
             let mut data = ArrayTrait::new();
             data.append('x');
@@ -34,17 +34,18 @@ impl PackageImpl of PackageTrait {
         /// Something goes here...
     }
 
-    fn get_fees(ref self: Package, cents_per_gram: felt) -> felt //???
+    fn get_fees(ref self: Package, cents_per_gram: usize) ->  //???
     {
         /// Something goes here...
     }
 }
 
 #[test]
+#[should_panic]
 fn fail_creating_weightless_package() {
     let sender_country = 'Spain';
     let recipient_country = 'Austria';
-    PackageTrait::new(sender_country, recipient_country, -2210);
+    PackageTrait::new(sender_country, recipient_country, 0_usize);
 }
 
 #[test]
@@ -52,7 +53,7 @@ fn create_international_package() {
     let sender_country = 'Spain';
     let recipient_country = 'Russia';
 
-    let mut package = PackageTrait::new(sender_country, recipient_country, 1200);
+    let mut package = PackageTrait::new(sender_country, recipient_country, 1200_usize);
 
     assert(package.is_international() == true, 'Not international');
 }
@@ -62,7 +63,7 @@ fn create_local_package() {
     let sender_country = 'Canada';
     let recipient_country = sender_country;
 
-    let mut package = PackageTrait::new(sender_country, recipient_country, 1200);
+    let mut package = PackageTrait::new(sender_country, recipient_country, 1200_usize);
 
     assert(package.is_international() == false, 'International');
 }
@@ -72,10 +73,10 @@ fn calculate_transport_fees() {
     let sender_country = 'Spain';
     let recipient_country = 'Spain';
 
-    let cents_per_gram = 3;
+    let cents_per_gram = 3_usize;
 
-    let mut package = PackageTrait::new(sender_country, recipient_country, 1500);
+    let mut package = PackageTrait::new(sender_country, recipient_country, 1500_usize);
 
-    assert(package.get_fees(cents_per_gram) == 4500, 'Wrong fees');
+    assert(package.get_fees(cents_per_gram) == 4500_usize, 'Wrong fees');
 }
 

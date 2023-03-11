@@ -21,7 +21,7 @@ fn check_icecream() {
     assert(maybe_icecream(10_usize).unwrap() == 5_usize, 'err_2');
     assert(maybe_icecream(23_usize).unwrap() == 0_usize, 'err_3');
     assert(maybe_icecream(22_usize).unwrap() == 0_usize, 'err_4');
-    assert(maybe_icecream(21_usize).is_none(), 'err_5');
+    assert(maybe_icecream(25_usize).is_none(), 'err_5');
 }
 
 #[test]
@@ -31,6 +31,4 @@ fn raw_value() {
     assert(icecreams == 5_usize, 'err_6');
 }
 
-// impl OptionFeltDrop of Drop::<Option::<felt>>;
-impl OptionUnitDrop of Drop::<Option<()>>;
-
+impl OptionUsizeDrop of Drop::<Option::<usize>>;
