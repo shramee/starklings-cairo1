@@ -14,10 +14,10 @@ fn main() {
     pass_by_snapshot(@a);
 }
 
-fn pass_by_value(mut arr: Array::<felt>) -> Array::<felt> {
+fn pass_by_value(mut arr: Array<felt>) -> Array<felt> {
     arr
 }
 
-fn pass_by_ref(ref arr: Array::<felt>) {}
+fn pass_by_ref(ref arr: Array<felt>) {}
 
-fn pass_by_snapshot(x: @Array::<felt>) {}
+fn pass_by_snapshot(x: @Array<felt>) {}

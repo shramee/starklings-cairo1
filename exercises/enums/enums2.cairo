@@ -14,7 +14,7 @@ enum Message {// TODO: define the different variants used below
 
 
 fn main() {
-    let mut messages: Array::<Message> = ArrayTrait::new();
+    let mut messages: Array<Message> = ArrayTrait::new();
     messages.append(Message::Quit(()));
     messages.append(Message::Echo('hello world'));
     messages.append(Message::Move((10_u32, 30_u32)));
@@ -35,7 +35,7 @@ impl MessageImpl of MessageTrait::<Message> {
     }
 }
 
-fn print_messages_recursive(messages: Array::<Message>, index: u32) {
+fn print_messages_recursive(messages: Array<Message>, index: u32) {
     if index >= messages.len() {
         return ();
     }
@@ -71,4 +71,4 @@ impl MessagePrintImpl of PrintTrait::<Message> {
     }
 }
 
-impl MessageArrayDrop of Drop::<Array::<Message>>;
+impl MessageArrayDrop of Drop::<Array<Message>>;

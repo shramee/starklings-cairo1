@@ -9,7 +9,7 @@
 use array::ArrayTrait;
 use option::OptionTrait;
 
-fn create_array() -> Array::<felt> {
+fn create_array() -> Array<felt> {
     let a = ArrayTrait::new(); // something to change here...
     a.append(1);
     a
