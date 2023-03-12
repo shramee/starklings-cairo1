@@ -16,8 +16,8 @@ struct Package {
 
 trait PackageTrait {
     fn new(sender_country: felt, recipient_country: felt, weight_in_grams: usize) -> Package;
-    fn is_international(ref self: Package) -> bool; //???;
-    fn get_fees(ref self: Package, cents_per_gram: usize) -> usize;//???;
+    fn is_international(ref self: Package) -> //???;
+    fn get_fees(ref self: Package, cents_per_gram: usize) -> //???;
 }
 impl PackageImpl of PackageTrait {
     fn new(sender_country: felt, recipient_country: felt, weight_in_grams: usize) -> Package {
@@ -30,13 +30,11 @@ impl PackageImpl of PackageTrait {
     }
 
     fn is_international(ref self: Package) -> //???
-    {
-        /// Something goes here...
+    {/// Something goes here...
     }
 
-    fn get_fees(ref self: Package, cents_per_gram: usize) ->  //???
-    {
-        /// Something goes here...
+    fn get_fees(ref self: Package, cents_per_gram: usize) -> //???
+    {/// Something goes here...
     }
 }
 
