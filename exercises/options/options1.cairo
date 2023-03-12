@@ -31,4 +31,4 @@ fn raw_value() {
     assert(icecreams == 5_usize, 'err_6');
 }
 
-impl OptionUsizeDrop of Drop::<Option::<usize>>;
+impl OptionUsizeDrop of Drop::<Option<usize>>;

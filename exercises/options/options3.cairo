@@ -12,7 +12,7 @@ use traits::Into;
 #[derive(Drop)]
 struct Student {
     name: felt,
-    courses: Array::<Option::<felt>>,
+    courses: Array<Option<felt>>,
 }
 
 
@@ -51,7 +51,7 @@ fn display_grades(student: @Student, index: usize) {
 #[test]
 #[available_gas(20000000)]
 fn test_all_defined() {
-    let mut courses = ArrayTrait::<Option::<felt>>::new();
+    let mut courses = ArrayTrait::<Option<felt>>::new();
     courses.append(Option::Some('A'));
     courses.append(Option::Some('B'));
     courses.append(Option::Some('C'));
@@ -64,7 +64,7 @@ fn test_all_defined() {
 #[test]
 #[available_gas(20000000)]
 fn test_some_empty() {
-    let mut courses = ArrayTrait::<Option::<felt>>::new();
+    let mut courses = ArrayTrait::<Option<felt>>::new();
     courses.append(Option::Some('A'));
     courses.append(Option::None(()));
     courses.append(Option::Some('B'));
@@ -75,6 +75,6 @@ fn test_some_empty() {
 }
 
 
-impl OptionFeltDrop of Drop::<Option::<felt>>;
-impl OptionFeltCopy of Copy::<Option::<felt>>;
-impl OptionArrayDrop of Drop::<Array::<Option::<felt>>>;
+impl OptionFeltDrop of Drop::<Option<felt>>;
+impl OptionFeltCopy of Copy::<Option<felt>>;
+impl OptionArrayDrop of Drop::<Array<Option<felt>>>;
