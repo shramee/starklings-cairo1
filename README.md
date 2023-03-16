@@ -22,9 +22,9 @@
 <!-- add `git clone https://github.com/vikkydataseo/starklings-cairo1.git` to avoid the error `error: could not find `Cargo.toml`  -->
 
 1. Run `git clone https://github.com/vikkydataseo/starklings-cairo1.git` to clone the repo
-
-2. Run `cargo run --bin starklings`, this might take a while the first time.
-3. You should see an intro message a little like this.
+2. Run `cd starklings-cairo1`
+3. Run `cargo run --bin starklings`, this might take a while the first time.
+4. You should see an intro message a little like this.
 
 ```
 starklings - An interactive tutorial to get started with Cairo and Starknet
