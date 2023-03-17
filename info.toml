@@ -205,12 +205,10 @@ name = "functions4"
 path = "exercises/functions/functions4.cairo"
 mode = "compile"
 hint = """
-This is a really common error that can be fixed by removing one character.
-It happens because Cairo distinguishes between expressions and statements: expressions return a value based on their operand(s), and statements simply return a () type which behaves just like `void` in C/C++ language.
-We want to return a value of `felt` type from the `square` function, but it is returning a `()` type...
-They are not the same. There are two solutions:
-1. Add a `return` ahead of `num * num;`
-2. remove `;`, make it to be `num * num`"""
+The error message points to line 18 and says it expects a type after the
+`->`. This is where the function's return type should be -- take a look at
+the `is_even` function for an example!
+"""
 
 # QUIZ 1
 
