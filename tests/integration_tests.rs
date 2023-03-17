@@ -24,7 +24,7 @@ fn fails_when_in_wrong_dir() {
 fn reset_single_exercise() {
     Command::cargo_bin("starklings")
         .unwrap()
-        .args(&["reset", "intro1"])
+        .args(["reset", "intro1"])
         .assert()
         .code(0);
 }
@@ -59,8 +59,7 @@ fn all_exercises_require_confirmation() {
             .next()
             .unwrap_or_else(|| {
                 panic!(
-                    "There should be an `I AM NOT DONE` annotation in {:?}",
-                    path
+                    "There should be an `I AM NOT DONE` annotation in {path:?}"
                 )
             });
     }
@@ -70,15 +69,15 @@ fn all_exercises_require_confirmation() {
 fn exercise_paths_should_be_in_exercise_dir() {
     let output = Command::cargo_bin("starklings")
         .unwrap()
-        .args(&["paths"])
+        .args(["paths"])
         .output()
         .unwrap()
         .stdout;
     let output = String::from_utf8(output).unwrap();
     // println!("{:#?}", output.split("\n"));
 
-    output.split("\n").for_each(|path| {
-        if (path.len() > 0 && !path.starts_with("exercises/")) {
+    output.split('\n').for_each(|path| {
+        if !path.is_empty() && !path.starts_with("exercises/") {
             panic!("Exercise {path} must be in exercises directory.");
         }
     });
@@ -164,7 +163,7 @@ fn exercise_paths_should_be_in_exercise_dir() {
 fn run_cairo_single_compile_success() {
     Command::cargo_bin("starklings")
         .unwrap()
-        .args(&["run", "cairoPass"])
+        .args(["run", "cairoPass"])
         .current_dir("tests/fixture/cairo/")
         .assert()
         .success();
@@ -174,7 +173,7 @@ fn run_cairo_single_compile_success() {
 fn run_cairo_single_test_success() {
     Command::cargo_bin("starklings")
         .unwrap()
-        .args(&["run", "testPass"])
+        .args(["run", "testPass"])
         .current_dir("tests/fixture/cairo/")
         .assert()
         .success();
@@ -184,7 +183,7 @@ fn run_cairo_single_test_success() {
 fn run_cairo_single_test_failure() {
     Command::cargo_bin("starklings")
         .unwrap()
-        .args(&["run", "testFails"])
+        .args(["run", "testFails"])
         .current_dir("tests/fixture/cairo/")
         .assert()
         .code(1);

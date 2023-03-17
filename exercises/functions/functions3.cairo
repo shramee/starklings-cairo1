@@ -2,12 +2,12 @@
 // Execute `starklings hint functions3` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
-use traits::Into;
+use debug::PrintTrait;
 
 fn main() {
     call_me();
 }
 
 fn call_me(num: u64) {
-    debug::print_felt252(num.into());
+    num.print();
 }

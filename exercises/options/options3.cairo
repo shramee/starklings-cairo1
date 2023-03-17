@@ -4,10 +4,8 @@
 // I AM NOT DONE
 
 use option::OptionTrait;
-use debug::print;
-use debug::print_felt252;
+use debug::PrintTrait;
 use array::ArrayTrait;
-use traits::Into;
 
 #[derive(Drop)]
 struct Student {
@@ -43,7 +41,7 @@ fn display_grades(student: @Student, index: usize) {
     // TODO: Modify the following lines so that if there is a grade for the course, it is printed.
     //       Otherwise, print "No grade".
     // 
-    print_felt252(course.unwrap());
+    course.unwrap().print();
     display_grades(student, index + 1_usize);
 }
 

@@ -4,7 +4,9 @@
 
 // I AM NOT DONE
 
+use debug::PrintTrait;
+
 fn main() {
     x = 5;
-    debug::print_felt252(x);
+    x.print();
 }

@@ -4,6 +4,8 @@
 
 // I AM NOT DONE
 
+use debug::PrintTrait;
+
 fn main() {
     // A short string is a string whose length is at most 31 characters, and therefore can fit into a single field element.
     // Short strings are actually felts, they are not a real string.
@@ -13,13 +15,13 @@ fn main() {
     if is_alphabetic(
         ref my_first_initial
     ) {
-        debug::print_felt252('Alphabetical!');
+        ('Alphabetical!').print();
     } else if is_numeric(
         ref my_first_initial
     ) {
-        debug::print_felt252('Numerical!');
+        ('Numerical!').print();
     } else {
-        debug::print_felt252('Neither alphabetic nor numeric!');
+        ('Neither alphabetic nor numeric!').print();
     }
 
     let // Finish this line like the example! What's your favorite short string?
@@ -27,13 +29,13 @@ fn main() {
     if is_alphabetic(
         ref your_character
     ) {
-        debug::print_felt252('Alphabetical!');
+        ('Alphabetical!').print();
     } else if is_numeric(
         ref your_character
     ) {
-        debug::print_felt252('Numerical!');
+       ('Numerical!').print();
     } else {
-        debug::print_felt252('Neither alphabetic nor numeric!');
+        ('Neither alphabetic nor numeric!').print();
     }
 }
 

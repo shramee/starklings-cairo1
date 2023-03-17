@@ -3,8 +3,7 @@
 
 // I AM NOT DONE
 
-use debug::print;
-use debug::print_felt252;
+use debug::PrintTrait;
 use array::ArrayTrait;
 use traits::Into;
 
@@ -45,28 +44,24 @@ fn print_messages_recursive(messages: Array<Message>, index: u32) {
 }
 
 
-trait PrintTrait<T> {
-    fn print(self: T);
-}
-
 impl MessagePrintImpl of PrintTrait::<Message> {
     fn print(self: Message) {
-        print_felt252('___MESSAGE BEGINS___');
+        ('___MESSAGE BEGINS___').print();
         match self {
-            Message::Quit(()) => print_felt252('Quit'),
-            Message::Echo(msg) => print_felt252(msg),
+            Message::Quit(()) => ('Quit').print(),
+            Message::Echo(msg) => msg.print(),
             Message::Move((a, b)) => {
-                print_felt252(a.into());
-                print_felt252(b.into())
+                a.print();
+                b.print();
             },
             Message::ChangeColor((
                 red, green, blue
             )) => {
-                print_felt252(red.into());
-                print_felt252(green.into());
-                print_felt252(blue.into())
+                red.print();
+                green.print();
+                blue.print();
             }
         }
-        print_felt252('___MESSAGE ENDS___');
+        ('___MESSAGE ENDS___').print();
     }
 }

@@ -67,7 +67,7 @@ fn main() -> anyhow::Result<()> {
     let args = Args::parse();
     let res = test_cairo_program(&args);
     if let Err(e) = res {
-        eprintln!("{}", e);
+        eprintln!("{e}");
         std::process::exit(1);
     }
     Ok(())
@@ -157,16 +157,16 @@ pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
         );
         Ok(result_string)
     } else {
-        result_string.push_str(format!("failures:").as_str());
+        result_string.push_str("failures:".to_string().as_str());
         for (failure, run_result) in failed.iter().zip_eq(failed_run_results) {
             result_string.push_str(format!("   {failure} - ").as_str());
             match run_result {
                 RunResultValue::Success(_) => {
                     result_string
-                        .push_str(format!("expected panic but finished successfully.").as_str());
+                        .push_str("expected panic but finished successfully.".to_string().as_str());
                 }
                 RunResultValue::Panic(values) => {
-                    result_string.push_str(format!("panicked with [").as_str());
+                    result_string.push_str("panicked with [".to_string().as_str());
                     for value in &values {
                         match as_cairo_short_string(value) {
                             Some(as_string) => result_string
@@ -174,7 +174,7 @@ pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
                             None => result_string.push_str(format!("{value}, ").as_str()),
                         }
                     }
-                    result_string.push_str(format!("].").as_str());
+                    result_string.push_str("].".to_string().as_str());
                 }
             }
         }

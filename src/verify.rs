@@ -29,7 +29,7 @@ pub fn verify<'a>(
             return Err(exercise);
         }
         let percentage = num_done as f32 / total as f32 * 100.0;
-        bar.set_message(format!("({:.1} %)", percentage));
+        bar.set_message(format!("({percentage:.1} %)"));
         bar.inc(1);
     }
     Ok(())
@@ -77,7 +77,7 @@ fn compile_and_run_cairo<'a, 'b>(
             "Compiling of {} failed! Please try again. Here's the output:",
             exercise
         );
-        println!("{}", error.to_string());
+        println!("{error}");
         Err(())
     } else {
         Ok(compilation_result.unwrap())
@@ -98,7 +98,7 @@ fn compile_and_test_cairo<'a, 'b>(
             "Testing of {} failed! Please try again. Here's the output:",
             exercise
         );
-        println!("{}", error.to_string());
+        println!("{error}");
         Err(())
     } else {
         Ok(compilation_result.unwrap())

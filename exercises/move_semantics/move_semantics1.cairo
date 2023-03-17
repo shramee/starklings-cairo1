@@ -4,19 +4,23 @@
 // I AM NOT DONE
 
 use array::ArrayTrait;
-use debug::print;
+use array::ArrayTCloneImpl;
+use array::SpanTrait;
+use debug::PrintTrait;
+use clone::Clone;
 
 fn main() {
     let arr0 = ArrayTrait::new();
 
     let arr1 = fill_arr(arr0);
 
-    print(clone_array(@arr1));
+    // This is just a print statement for arrays.
+    arr1.span().snapshot.clone().print();
 
     //TODO fix the error here without modifying this line.
     arr1.append(88);
 
-    print(clone_array(@arr1));
+    arr1.span().snapshot.clone().print();
 }
 
 fn fill_arr(arr: Array<felt252>) -> Array<felt252> {
@@ -27,21 +31,4 @@ fn fill_arr(arr: Array<felt252>) -> Array<felt252> {
     arr.append(66);
 
     arr
-}
-
-
-// Don't change these functions! They are used to print the output.
-fn clone_array(arr: @Array<felt252>) -> Array<felt252> {
-    let mut new_arr = ArrayTrait::new();
-    clone_array_(arr, ref new_arr);
-    new_arr
-}
-
-fn clone_array_(src: @Array<felt252>, ref dst: Array<felt252>) {
-    if src.len() == dst.len() {
-        return ();
-    }
-    let value = *src.at(dst.len());
-    dst.append(value);
-    clone_array_(src, ref dst);
 }

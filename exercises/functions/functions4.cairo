@@ -8,11 +8,11 @@
 // to future exercises!)
 
 // I AM NOT DONE
-use traits::Into;
+use debug::PrintTrait;
 
 fn main() {
     let original_price = 51_u32;
-    debug::print_felt252(sale_price(original_price).into());
+    sale_price(original_price).print();
 }
 
 fn sale_price(price: u32) -> {

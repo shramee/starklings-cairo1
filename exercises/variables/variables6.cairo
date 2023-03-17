@@ -2,11 +2,11 @@
 // Execute `starklings hint variables6` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
-use traits::Into;
+use debug::PrintTrait;
 
 const NUMBER = 3;
 const SMALL_NUMBER = 3_u8;
 fn main() {
-    debug::print_felt252(NUMBER);
-    debug::print_felt252(SMALL_NUMBER.into());
+    NUMBER.print();
+    SMALL_NUMBER.print();
 }
