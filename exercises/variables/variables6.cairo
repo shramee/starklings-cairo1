@@ -7,6 +7,6 @@ use traits::Into;
 const NUMBER = 3;
 const SMALL_NUMBER = 3_u8;
 fn main() {
-    debug::print_felt(NUMBER);
-    debug::print_felt(SMALL_NUMBER.into());
+    debug::print_felt252(NUMBER);
+    debug::print_felt252(SMALL_NUMBER.into());
 }

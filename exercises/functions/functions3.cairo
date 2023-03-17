@@ -9,5 +9,5 @@ fn main() {
 }
 
 fn call_me(num: u64) {
-    debug::print_felt(num.into());
+    debug::print_felt252(num.into());
 }

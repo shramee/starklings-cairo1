@@ -1,3 +1,3 @@
-fn main() -> felt {
+fn main() -> felt252 {
     hi()
 }

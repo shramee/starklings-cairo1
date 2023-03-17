@@ -9,11 +9,11 @@ fn main() {
 
     let is_morning = true;
     if is_morning {
-        debug::print_felt('Good morning!');
+        debug::print_felt252('Good morning!');
     }
 
     let // Finish the rest of this line like the example! Or make it be false!
     if is_evening {
-        debug::print_felt('Good evening!');
+        debug::print_felt252('Good evening!');
     }
 }

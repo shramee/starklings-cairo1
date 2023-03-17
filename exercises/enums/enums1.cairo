@@ -4,7 +4,7 @@
 // I AM NOT DONE
 
 use debug::print;
-use debug::print_felt;
+use debug::print_felt252;
 enum Message { // TODO: define a few types of messages as used below
 }
 
@@ -22,10 +22,10 @@ trait PrintTrait<T> {
 impl MessagePrintImpl of PrintTrait::<Message> {
     fn print(self: Message) {
         match self {
-            Message::Quit(()) => print_felt('Quit'),
-            Message::Echo(()) => print_felt('Echo'),
-            Message::Move(()) => print_felt('Move'),
-            Message::ChangeColor(()) => print_felt('ChangeColor')
+            Message::Quit(()) => print_felt252('Quit'),
+            Message::Echo(()) => print_felt252('Echo'),
+            Message::Move(()) => print_felt252('Move'),
+            Message::ChangeColor(()) => print_felt252('ChangeColor')
         }
     }
 }

@@ -7,16 +7,15 @@
 
 use array::ArrayTrait;
 use option::OptionTrait;
-impl DropOptionFelt of Drop::<Option<felt>>;
 
 // Don't modify this function
-fn create_array() -> Array<felt> {
+fn create_array() -> Array<felt252> {
     let mut a = ArrayTrait::new();
     a.append(42);
     a
 }
 
-fn remove_element_from_array(ref a: Array<felt>){
+fn remove_element_from_array(ref a: Array<felt252>){
     //TODO something to do here...Is there an array method I can use?
 }
 

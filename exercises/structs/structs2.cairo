@@ -6,13 +6,13 @@
 
 #[derive(Copy, Drop)]
 struct Order {
-    name: felt,
-    year: felt,
+    name: felt252,
+    year: felt252,
     made_by_phone: bool,
     made_by_mobile: bool,
     made_by_email: bool,
-    item_number: felt,
-    count: felt,
+    item_number: felt252,
+    count: felt252,
 }
 
 fn create_order_template() -> Order {

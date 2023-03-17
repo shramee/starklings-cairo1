@@ -6,7 +6,7 @@ use traits::Into;
 
 fn main() {
     let number = 1_u8; // don't change this line
-    debug::print_felt(number.into());
+    debug::print_felt252(number.into());
     number = 3; // don't rename this variable
-    debug::print_felt(number);
+    debug::print_felt252(number);
 }

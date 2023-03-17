@@ -1,12 +1,12 @@
 // Integer types implement basic comparison and arithmetic operators.
-// Felt operations should be avoided where possible, as they could have unwanted behavior.
+// Felt252 operations should be avoided where possible, as they could have unwanted behavior.
 
 // I AM NOT DONE
 
 // TODO
 // Return the solution of x^3 + y - 2
 
-use debug::print_felt;
+use debug::print_felt252;
 use traits::Into;
 
 fn poly(x: usize, y: usize) -> usize {
@@ -19,7 +19,7 @@ fn poly(x: usize, y: usize) -> usize {
 #[test]
 fn test_poly() {
     let res = poly(5_usize, 3_usize);
-    print_felt(res.into());
+    print_felt252(res.into());
     assert(res == 126_usize, 'Error message');
     assert(res < 300_usize, 'res < 300');
     assert(res <= 300_usize, 'res <= 300');

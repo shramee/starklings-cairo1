@@ -6,5 +6,5 @@
 
 fn main() {
     x = 5;
-    debug::print_felt(x);
+    debug::print_felt252(x);
 }

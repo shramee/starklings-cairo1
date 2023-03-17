@@ -11,19 +11,19 @@
 
 #[derive(Copy, Drop)]
 struct Fish {
-    noise: felt,
+    noise: felt252,
     distance: u32,
 }
 
 #[derive(Copy, Drop)]
 struct Dog {
-    noise: felt,
+    noise: felt252,
     distance: u32,
 }
 
 trait AnimalTrait<T> {
     fn new() -> T;
-    fn make_noise(self: T) -> felt;
+    fn make_noise(self: T) -> felt252;
     fn get_distance(self: T) -> u32;
 }
 
@@ -39,7 +39,7 @@ impl AnimalFishImpl of AnimalTrait::<Fish> {
     fn new() -> Fish {
         Fish { noise: 'blub', distance: 0_u32 }
     }
-    fn make_noise(self: Fish) -> felt {
+    fn make_noise(self: Fish) -> felt252 {
         self.noise
     }
     fn get_distance(self: Fish) -> u32 {
@@ -51,7 +51,7 @@ impl AnimalDogImpl of AnimalTrait::<Dog> {
     fn new() -> Dog {
         Dog { noise: 'woof', distance: 0_u32 }
     }
-    fn make_noise(self: Dog) -> felt {
+    fn make_noise(self: Dog) -> felt252 {
         self.noise
     }
     fn get_distance(self: Dog) -> u32 {

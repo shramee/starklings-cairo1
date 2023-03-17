@@ -13,13 +13,13 @@ fn main() {
     if is_alphabetic(
         ref my_first_initial
     ) {
-        debug::print_felt('Alphabetical!');
+        debug::print_felt252('Alphabetical!');
     } else if is_numeric(
         ref my_first_initial
     ) {
-        debug::print_felt('Numerical!');
+        debug::print_felt252('Numerical!');
     } else {
-        debug::print_felt('Neither alphabetic nor numeric!');
+        debug::print_felt252('Neither alphabetic nor numeric!');
     }
 
     let // Finish this line like the example! What's your favorite short string?
@@ -27,17 +27,17 @@ fn main() {
     if is_alphabetic(
         ref your_character
     ) {
-        debug::print_felt('Alphabetical!');
+        debug::print_felt252('Alphabetical!');
     } else if is_numeric(
         ref your_character
     ) {
-        debug::print_felt('Numerical!');
+        debug::print_felt252('Numerical!');
     } else {
-        debug::print_felt('Neither alphabetic nor numeric!');
+        debug::print_felt252('Neither alphabetic nor numeric!');
     }
 }
 
-fn is_alphabetic(ref char: felt) -> bool {
+fn is_alphabetic(ref char: felt252) -> bool {
     if char >= 'a' {
         if char <= 'z' {
             return true;
@@ -51,11 +51,33 @@ fn is_alphabetic(ref char: felt) -> bool {
     false
 }
 
-fn is_numeric(ref char: felt) -> bool {
+fn is_numeric(ref char: felt252) -> bool {
     if char >= '0' {
         if char <= '9' {
             return true;
         }
     }
     false
+}
+
+// Note: the following code is not part of the challenge, it's just here to make the code above work.
+// Direct felt comparisons have been removed from the core library, so we need to implement them ourselves.
+// There will probably be a string / short string type in the future
+impl PartialOrdFelt of PartialOrd::<felt252> {
+    #[inline(always)]
+    fn le(a: felt252, b: felt252) -> bool {
+        !(b < a)
+    }
+    #[inline(always)]
+    fn ge(a: felt252, b: felt252) -> bool {
+        !(a < b)
+    }
+    #[inline(always)]
+    fn lt(a: felt252, b: felt252) -> bool {
+        integer::u256_from_felt252(a) < integer::u256_from_felt252(b)
+    }
+    #[inline(always)]
+    fn gt(a: felt252, b: felt252) -> bool {
+        b < a
+    }
 }

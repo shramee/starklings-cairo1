@@ -5,21 +5,21 @@
 
 use option::OptionTrait;
 use debug::print;
-use debug::print_felt;
+use debug::print_felt252;
 use array::ArrayTrait;
 use traits::Into;
 
 #[derive(Drop)]
 struct Student {
-    name: felt,
-    courses: Array<Option<felt>>,
+    name: felt252,
+    courses: Array<Option<felt252>>,
 }
 
 
 fn display_grades(student: @Student, index: usize) {
     // don't mind these lines! They are required when
     // running recursive functions.
-    match gas::get_gas() {
+    match gas::withdraw_gas() {
         Option::Some(_) => {},
         Option::None(_) => {
             let mut data = ArrayTrait::new();
@@ -43,7 +43,7 @@ fn display_grades(student: @Student, index: usize) {
     // TODO: Modify the following lines so that if there is a grade for the course, it is printed.
     //       Otherwise, print "No grade".
     // 
-    print_felt(course.unwrap());
+    print_felt252(course.unwrap());
     display_grades(student, index + 1_usize);
 }
 
@@ -51,7 +51,7 @@ fn display_grades(student: @Student, index: usize) {
 #[test]
 #[available_gas(20000000)]
 fn test_all_defined() {
-    let mut courses = ArrayTrait::<Option<felt>>::new();
+    let mut courses = ArrayTrait::<Option<felt252>>::new();
     courses.append(Option::Some('A'));
     courses.append(Option::Some('B'));
     courses.append(Option::Some('C'));
@@ -64,7 +64,7 @@ fn test_all_defined() {
 #[test]
 #[available_gas(20000000)]
 fn test_some_empty() {
-    let mut courses = ArrayTrait::<Option<felt>>::new();
+    let mut courses = ArrayTrait::<Option<felt252>>::new();
     courses.append(Option::Some('A'));
     courses.append(Option::None(()));
     courses.append(Option::Some('B'));
@@ -73,8 +73,3 @@ fn test_some_empty() {
     let mut student = Student { name: 'Bob', courses: courses };
     display_grades(@student, 0_usize);
 }
-
-
-impl OptionFeltDrop of Drop::<Option<felt>>;
-impl OptionFeltCopy of Copy::<Option<felt>>;
-impl OptionArrayDrop of Drop::<Array<Option<felt>>>;

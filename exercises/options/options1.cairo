@@ -30,5 +30,3 @@ fn raw_value() {
     let icecreams = maybe_icecream(12_usize);
     assert(icecreams == 5_usize, 'err_6');
 }
-
-impl OptionUsizeDrop of Drop::<Option<usize>>;
