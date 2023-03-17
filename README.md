@@ -16,12 +16,11 @@
 ## Setup and run
 
 0. Make sure you have Rust and Cargo installed with `nightly` toolchain. With rustup,
+
    - `curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly`
    - Or `Customise installation` then `Default toolchain?` set to `nightly` and everything else empty.
 
-<!-- add `git clone https://github.com/vikkydataseo/starklings-cairo1.git` to avoid the error `error: could not find `Cargo.toml`  -->
-
-1. Run `git clone https://github.com/vikkydataseo/starklings-cairo1.git` to clone the repo
+1. Run `git clone https://github.com/shramee/starklings-cairo1.git` to clone the repo
 2. Run `cd starklings-cairo1`
 3. Run `cargo run --bin starklings`, this might take a while the first time.
 4. You should see an intro message a little like this.
