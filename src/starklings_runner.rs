@@ -35,7 +35,7 @@ fn main() -> anyhow::Result<()> {
     let args = Args::parse();
     let res = run_cairo_program(&args);
     if let Err(e) = res {
-        eprintln!("{}", e);
+        eprintln!("{e}");
         std::process::exit(1);
     }
     Ok(())

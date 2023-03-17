@@ -110,10 +110,8 @@ impl Exercise {
     }
 
     pub fn state(&self) -> State {
-        let mut source_file = File::open(&self.path).expect(&format!(
-            "We were unable to open the exercise file! {:?}",
-            self.path
-        ));
+        let mut source_file = File::open(&self.path).unwrap_or_else(|_| panic!("We were unable to open the exercise file! {:?}",
+            self.path));
 
         let source = {
             let mut s = String::new();
@@ -171,7 +169,7 @@ impl Display for Exercise {
 
 #[inline]
 fn clean() {
-    let _ignored = remove_file(&temp_file());
+    let _ignored = remove_file(temp_file());
 }
 
 #[cfg(test)]

@@ -84,7 +84,7 @@ impl RustAnalyzerProject {
 
         println!("Determined toolchain: {}\n", &toolchain);
 
-        self.sysroot_src = (std::path::Path::new(&*toolchain)
+        self.sysroot_src = (std::path::Path::new(toolchain)
             .join("lib")
             .join("rustlib")
             .join("src")
