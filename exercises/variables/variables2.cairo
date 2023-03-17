@@ -6,8 +6,8 @@
 fn main() {
     let x;
     if x == 10 {
-        debug::print_felt('x is ten!');
+        debug::print_felt252('x is ten!');
     } else {
-        debug::print_felt('x is not ten!');
+        debug::print_felt252('x is not ten!');
     }
 }

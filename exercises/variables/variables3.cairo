@@ -4,6 +4,6 @@
 // I AM NOT DONE
 
 fn main() {
-    let x: felt;
-    debug::print_felt(x);
+    let x: felt252;
+    debug::print_felt252(x);
 }

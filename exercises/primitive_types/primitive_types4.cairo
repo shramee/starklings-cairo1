@@ -18,11 +18,11 @@ fn sum_big_numbers(x: u8, y: u8) -> u8 {
     x + y
 }
 
-fn convert_to_felt(x: u8) -> felt {
-    //TODO return x as a felt.
+fn convert_to_felt(x: u8) -> felt252 {
+    //TODO return x as a felt252.
 }
 
-fn convert_felt_to_u8(x: felt) -> u8 {
+fn convert_felt_to_u8(x: felt252) -> u8 {
     //TODO return x as a u8.
 }
 

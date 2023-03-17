@@ -12,12 +12,12 @@
 
 #[derive(Copy, Drop)]
 struct Animal {
-    noise: felt
+    noise: felt252
 }
 
 trait AnimalTrait {
-    fn new(noise: felt) -> Animal;
-    fn make_noise(self: Animal) -> felt;
+    fn new(noise: felt252) -> Animal;
+    fn make_noise(self: Animal) -> felt252;
 }
 
 impl AnimalImpl of AnimalTrait {// TODO: implement the trait AnimalTrait for Animal

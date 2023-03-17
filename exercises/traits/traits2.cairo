@@ -17,17 +17,17 @@
 
 #[derive(Copy, Drop)]
 struct Cat {
-    noise: felt, 
+    noise: felt252,
 }
 
 #[derive(Copy, Drop)]
 struct Cow {
-    noise: felt, 
+    noise: felt252,
 }
 
 trait AnimalTrait<T> {
     fn new() -> T;
-    fn make_noise(self: T) -> felt;
+    fn make_noise(self: T) -> felt252;
 }
 
 impl CatImpl of AnimalTrait::<Cat> {

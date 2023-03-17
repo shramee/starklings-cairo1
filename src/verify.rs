@@ -46,10 +46,7 @@ fn compile_and_run_interactively(exercise: &Exercise) -> Result<bool, ()> {
 
     progress_bar.finish_and_clear();
 
-    Ok(prompt_for_completion(
-        exercise,
-        Some(run_state)
-    ))
+    Ok(prompt_for_completion(exercise, Some(run_state)))
 }
 
 // Tests the given Exercise and run the resulting binary in an interactive mode
@@ -63,10 +60,7 @@ fn compile_and_test_interactively(exercise: &Exercise) -> Result<bool, ()> {
 
     progress_bar.finish_and_clear();
 
-    Ok(prompt_for_completion(
-        exercise,
-        Some(run_state),
-    ))
+    Ok(prompt_for_completion(exercise, Some(run_state)))
 }
 
 // Compile the given Exercise and return an object with information

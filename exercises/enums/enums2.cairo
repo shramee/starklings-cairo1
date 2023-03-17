@@ -4,12 +4,12 @@
 // I AM NOT DONE
 
 use debug::print;
-use debug::print_felt;
+use debug::print_felt252;
 use array::ArrayTrait;
 use traits::Into;
 
-#[derive(Copy)]
-enum Message {// TODO: define the different variants used below
+#[derive(Copy, Drop)]
+enum Message { // TODO: define the different variants used below
 }
 
 
@@ -51,24 +51,22 @@ trait PrintTrait<T> {
 
 impl MessagePrintImpl of PrintTrait::<Message> {
     fn print(self: Message) {
-        print_felt('___MESSAGE BEGINS___');
+        print_felt252('___MESSAGE BEGINS___');
         match self {
-            Message::Quit(()) => print_felt('Quit'),
-            Message::Echo(msg) => print_felt(msg),
+            Message::Quit(()) => print_felt252('Quit'),
+            Message::Echo(msg) => print_felt252(msg),
             Message::Move((a, b)) => {
-                print_felt(a.into());
-                print_felt(b.into())
+                print_felt252(a.into());
+                print_felt252(b.into())
             },
             Message::ChangeColor((
                 red, green, blue
             )) => {
-                print_felt(red.into());
-                print_felt(green.into());
-                print_felt(blue.into())
+                print_felt252(red.into());
+                print_felt252(green.into());
+                print_felt252(blue.into())
             }
         }
-        print_felt('___MESSAGE ENDS___');
+        print_felt252('___MESSAGE ENDS___');
     }
 }
-
-impl MessageArrayDrop of Drop::<Array<Message>>;

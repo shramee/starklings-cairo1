@@ -9,18 +9,18 @@
 use array::ArrayTrait;
 #[derive(Copy, Drop)]
 struct Package {
-    sender_country: felt,
-    recipient_country: felt,
+    sender_country: felt252,
+    recipient_country: felt252,
     weight_in_grams: usize,
 }
 
 trait PackageTrait {
-    fn new(sender_country: felt, recipient_country: felt, weight_in_grams: usize) -> Package;
+    fn new(sender_country: felt252, recipient_country: felt252, weight_in_grams: usize) -> Package;
     fn is_international(ref self: Package) -> //???;
     fn get_fees(ref self: Package, cents_per_gram: usize) -> //???;
 }
 impl PackageImpl of PackageTrait {
-    fn new(sender_country: felt, recipient_country: felt, weight_in_grams: usize) -> Package {
+    fn new(sender_country: felt252, recipient_country: felt252, weight_in_grams: usize) -> Package {
         if weight_in_grams <= 0_usize {
             let mut data = ArrayTrait::new();
             data.append('x');

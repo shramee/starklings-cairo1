@@ -8,5 +8,5 @@ fn main() {
 }
 
 fn call_me(num:) {
-    debug::print_felt(num);
+    debug::print_felt252(num);
 }

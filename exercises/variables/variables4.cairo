@@ -5,7 +5,7 @@
 
 fn main() {
     let x = 3;
-    debug::print_felt(x);
+    debug::print_felt252(x);
     x = 5; // don't change this line
-    debug::print_felt(x);
+    debug::print_felt252(x);
 }

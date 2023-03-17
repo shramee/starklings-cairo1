@@ -20,7 +20,7 @@ fn main() {
     print(clone_array(@arr1));
 }
 
-fn fill_arr(arr: Array<felt>) -> Array<felt> {
+fn fill_arr(arr: Array<felt252>) -> Array<felt252> {
     arr.append(22);
     arr.append(44);
     arr.append(66);
@@ -30,13 +30,13 @@ fn fill_arr(arr: Array<felt>) -> Array<felt> {
 
 
 // Don't change these functions! They are used to print the output.
-fn clone_array(arr: @Array<felt>) -> Array<felt> {
+fn clone_array(arr: @Array<felt252>) -> Array<felt252> {
     let mut new_arr = ArrayTrait::new();
     clone_array_(arr, ref new_arr);
     new_arr
 }
 
-fn clone_array_(src: @Array<felt>, ref dst: Array<felt>) {
+fn clone_array_(src: @Array<felt252>, ref dst: Array<felt252>) {
     if src.len() == dst.len() {
         return ();
     }

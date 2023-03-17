@@ -1,13 +1,13 @@
 use regex::Regex;
 use serde::Deserialize;
 
+use crate::starklings_runner::{run_cairo_program, Args as RunnerArgs};
+use crate::starklings_tester::{test_cairo_program, Args as TesterArgs};
 use std::fmt::{self, Display, Formatter};
 use std::fs::{remove_file, File};
 use std::io::Read;
 use std::path::PathBuf;
 use std::process::{self};
-use crate::starklings_runner::{Args as RunnerArgs,run_cairo_program};
-use crate::starklings_tester::{Args as TesterArgs ,test_cairo_program};
 
 const I_AM_DONE_REGEX: &str = r"(?m)^\s*///?\s*I\s+AM\s+NOT\s+DONE";
 const CONTEXT: usize = 2;
@@ -92,16 +92,15 @@ impl Drop for FileHandle {
 
 impl Exercise {
     pub fn run_cairo(&self) -> anyhow::Result<String> {
-        run_cairo_program(&RunnerArgs{
+        run_cairo_program(&RunnerArgs {
             path: self.path.to_str().unwrap().parse()?,
             available_gas: None,
             print_full_memory: false,
         })
-
     }
 
     pub fn test_cairo(&self) -> anyhow::Result<String> {
-        test_cairo_program(&TesterArgs{
+        test_cairo_program(&TesterArgs {
             path: self.path.to_str().unwrap().parse()?,
             filter: "".to_string(),
             include_ignored: false,

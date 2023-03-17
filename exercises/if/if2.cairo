@@ -6,7 +6,7 @@
 
 // I AM NOT DONE
 
-fn foo_if_fizz(fizzish: felt) -> felt {
+fn foo_if_fizz(fizzish: felt252) -> felt252 {
     // Complete this function using if, else if and/or else blocks.
     // If fizzish is,
     // 'fizz', return 'foo'
