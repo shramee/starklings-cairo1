@@ -3,8 +3,7 @@
 // You can't change anything except adding or removing references.
 
 // I AM NOT DONE
-use debug::print_felt252;
-use traits::Into;
+use debug::PrintTrait;
 
 #[derive(Drop)]
 struct Number {
@@ -28,5 +27,5 @@ fn get_value(number: Number) -> u32 {
 fn set_value(number: Number) {
     let value = 2222222_u32;
     number = Number { value };
-    debug::print_felt252(number.value.into());
+    number.value.print();
 }

@@ -2,12 +2,13 @@
 // Execute `starklings hint variables2` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
+use debug::PrintTrait;
 
 fn main() {
     let x;
     if x == 10 {
-        debug::print_felt252('x is ten!');
+        ('x is ten!').print();
     } else {
-        debug::print_felt252('x is not ten!');
+        ('x is not ten!').print();
     }
 }

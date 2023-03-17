@@ -4,6 +4,8 @@
 
 // I AM NOT DONE
 
+use debug::PrintTrait;
+
 #[derive(Drop, Copy)]
 enum Message { // TODO: implement the message variant types based on their usage below
 }
@@ -39,7 +41,7 @@ impl StateImpl of StateTrait {
     }
 
     fn echo(ref self: State, s: felt252) {
-        debug::print_felt252(s);
+        s.print();
     }
 
     fn move_position(ref self: State, p: Point) {

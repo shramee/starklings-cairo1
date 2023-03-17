@@ -3,7 +3,7 @@
 // Execute `starklings hint move_semantics2` or use the `hint` watch subcommand for a hint.
 
 use array::ArrayTrait;
-use debug::print;
+use debug::PrintTrait;
 
 // I AM NOT DONE
 
@@ -13,11 +13,11 @@ fn main() {
     let mut arr1 = fill_array(arr0);
 
     // Do not change the following line!
-    print(arr0);
+    arr0.print();
 
     arr1.append(88);
 
-    print(arr1);
+    arr1.print();
 }
 
 fn fill_array(arr: Array<felt252>) -> Array<felt252> {

@@ -5,7 +5,8 @@
 
 use array::ArrayTrait;
 use array::ArrayTCloneImpl;
-use debug::print;
+use array::SpanTrait;
+use debug::PrintTrait;
 use clone::Clone;
 
 fn main() {
@@ -13,12 +14,13 @@ fn main() {
 
     let arr1 = fill_arr(arr0);
 
-    print((@arr1).clone());
+    // This is just a print statement for arrays.
+    arr1.span().snapshot.clone().print();
 
     //TODO fix the error here without modifying this line.
     arr1.append(88);
 
-    print((@arr1).clone());
+    arr1.span().snapshot.clone().print();
 }
 
 fn fill_arr(arr: Array<felt252>) -> Array<felt252> {

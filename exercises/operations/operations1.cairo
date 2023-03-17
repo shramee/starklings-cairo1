@@ -6,8 +6,7 @@
 // TODO
 // Return the solution of x^3 + y - 2
 
-use debug::print_felt252;
-use traits::Into;
+use debug::PrintTrait;
 
 fn poly(x: usize, y: usize) -> usize {
     // FILL ME
@@ -19,7 +18,7 @@ fn poly(x: usize, y: usize) -> usize {
 #[test]
 fn test_poly() {
     let res = poly(5_usize, 3_usize);
-    print_felt252(res.into());
+    res.print();
     assert(res == 126_usize, 'Error message');
     assert(res < 300_usize, 'res < 300');
     assert(res <= 300_usize, 'res <= 300');
