@@ -15,10 +15,10 @@
 
 ## Setup and run
 
-0. Make sure you have Rust and Cargo installed with `nightly` toolchain. With rustup,
+0. Make sure you have Rust and Cargo installed with the `default` toolchain. With rustup,
 
-   - `curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly`
-   - Or `Customise installation` then `Default toolchain?` set to `nightly` and everything else empty.
+   - `curl https://sh.rustup.rs -sSf | sh -s`
+   - Or `Customise installation` then `Default toolchain?` set to `stable` and everything else empty.
 
 1. Run `git clone https://github.com/shramee/starklings-cairo1.git` to clone the repo
 2. Run `cd starklings-cairo1`
