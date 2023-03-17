@@ -6,22 +6,24 @@
 
 // I AM NOT DONE
 use array::ArrayTrait;
+use array::ArrayTCloneImpl;
+use clone::Clone;
 use debug::print;
 
 fn main() {
     let arr0 = ArrayTrait::<felt252>::new();
 
-    let mut arr1 = fill_arr();
+    let mut arr1 = fill_arr(arr0);
 
-    print(clone_array(@arr1));
+    print((@arr1).clone());
 
     arr1.append(88);
 
-    print(clone_array(@arr1));
+    print((@arr1).clone());
 }
 
-// `fill_arr()` no longer takes `arr: Array<felt252>` as argument
-fn fill_arr() -> Array<felt252> {
+// `fill_arr()` should no longer takes `arr: Array<felt252>` as argument
+fn fill_arr(arr: Array<felt252>) -> Array<felt252> {
     let mut arr = arr;
 
     arr.append(22);
@@ -31,19 +33,3 @@ fn fill_arr() -> Array<felt252> {
     arr
 }
 
-// You can use this function to clone an array by calling
-// `clone_array(@arr0)`. It will return a new array with the same content.
-fn clone_array(arr: @Array<felt252>) -> Array<felt252> {
-    let mut new_arr = ArrayTrait::new();
-    clone_array_(arr, ref new_arr);
-    new_arr
-}
-
-fn clone_array_(src: @Array<felt252>, ref dst: Array<felt252>) {
-    if src.len() == dst.len() {
-        return ();
-    }
-    let value = *src.at(dst.len());
-    dst.append(value);
-    clone_array_(src, ref dst);
-}
