@@ -15,12 +15,13 @@
 
 ## Setup and run
 
-1. Make sure you have Rust and Cargo installed with the `default` toolchain.  
-   With rustup `curl https://sh.rustup.rs -sSf | sh -s`
-2. Clone the repo and go in the directory,  
+Make sure you have Rust and Cargo installed with the `default` toolchain.  
+With rustup `curl https://sh.rustup.rs -sSf | sh -s`
+
+1. Clone the repo and go in the directory,  
    `git clone https://github.com/shramee/starklings-cairo1.git && cd starklings-cairo1`.
-3. Run `cargo run --bin starklings`, this might take a while the first time.
-4. You should see this intro message, run `cargo run --bin starklings watch` when you are ready!
+2. Run `cargo run --bin starklings`, this might take a while the first time.
+3. You should see this intro message, run `cargo run --bin starklings watch` when you are ready!
 
 ```
 starklings - An interactive tutorial to get started with Cairo and Starknet
