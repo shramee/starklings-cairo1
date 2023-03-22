@@ -22,7 +22,7 @@ fn test_poly() {
     assert(res == 126_usize, 'Error message');
     assert(res < 300_usize, 'res < 300');
     assert(res <= 300_usize, 'res <= 300');
-    assert(res > 20_usize, 'res > 2');
+    assert(res > 2_usize, 'res > 2');
     assert(res >= 2_usize, 'res >= 2');
     assert(res != 27_usize, 'res != 27');
 }
