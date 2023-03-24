@@ -121,6 +121,14 @@ impl ArrayTCloneImpl<T, impl TClone: Clone::<T>, impl TDrop: Drop::<T>> of Clone
 fn clone_loop<T, impl TClone: Clone::<T>, impl TDrop: Drop::<T>>(
     mut span: Span<T>, ref response: Array<T>
 ) {
+    match withdraw_gas() {
+        Option::Some(_) => {},
+        Option::None(_) => {
+            let mut data = array_new();
+            array_append(ref data, 'Out of gas');
+            panic(data);
+        },
+    }
     match span.pop_front() {
         Option::Some(v) => {
             response.append(TClone::clone(v));

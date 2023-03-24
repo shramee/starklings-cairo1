@@ -18,7 +18,6 @@ fn poly(x: usize, y: usize) -> usize {
 #[test]
 fn test_poly() {
     let res = poly(5_usize, 3_usize);
-    res.print();
     assert(res == 126_usize, 'Error message');
     assert(res < 300_usize, 'res < 300');
     assert(res <= 300_usize, 'res <= 300');

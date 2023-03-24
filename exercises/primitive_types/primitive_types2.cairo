@@ -63,7 +63,7 @@ fn is_numeric(ref char: felt252) -> bool {
 }
 
 // Note: the following code is not part of the challenge, it's just here to make the code above work.
-// Direct felt comparisons have been removed from the core library, so we need to implement them ourselves.
+// Direct felt252 comparisons have been removed from the core library, so we need to implement them ourselves.
 // There will probably be a string / short string type in the future
 impl PartialOrdFelt of PartialOrd::<felt252> {
     #[inline(always)]
