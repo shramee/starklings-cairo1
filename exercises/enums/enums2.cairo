@@ -35,6 +35,14 @@ impl MessageImpl of MessageTrait::<Message> {
 }
 
 fn print_messages_recursive(messages: Array<Message>, index: u32) {
+    match gas::withdraw_gas() {
+        Option::Some(_) => {},
+        Option::None(_) => {
+            let mut data = ArrayTrait::<felt252>::new();
+            data.append('OOG');
+            panic(data);
+        },
+    }
     if index >= messages.len() {
         return ();
     }

@@ -94,7 +94,7 @@ impl Exercise {
     pub fn run_cairo(&self) -> anyhow::Result<String> {
         run_cairo_program(&RunnerArgs {
             path: self.path.to_str().unwrap().parse()?,
-            available_gas: None,
+            available_gas: Some(20000000000),
             print_full_memory: false,
         })
     }
