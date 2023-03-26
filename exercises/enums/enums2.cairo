@@ -1,7 +1,6 @@
 // enums2.cairo
 // Execute `starklings hint enums2` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
 
 use debug::PrintTrait;
 use array::ArrayTrait;
@@ -9,6 +8,7 @@ use traits::Into;
 
 #[derive(Copy, Drop)]
 enum Message { // TODO: define the different variants used below
+Quit:(), Echo:(felt252), Move:(u32,u32), ChangeColor:(u8,u8,u8)
 }
 
 

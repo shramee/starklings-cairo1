@@ -4,12 +4,20 @@
 // Write a function that calculates the price of an order of apples given
 // the quantity bought. No hints this time!
 
-// I AM NOT DONE
 
 // Put your function here!
-// fn calculate_price_of_apples{
+fn calculate_price_of_apples(apples:usize) -> (usize){
+    let mut price:usize = 3_usize;
+    let quantity:usize = 40_usize;
 
-// }
+    if apples <= quantity {
+    return apples * price; 
+    } else {
+    price = 2_usize;
+    return apples * price;
+    }
+    
+}
 
 
 // Do not change the tests!
@@ -23,5 +31,5 @@ fn verify_test() {
     assert(105_usize == price1, 'Incorrect price');
     assert(120_usize == price2, 'Incorrect price');
     assert(82_usize == price3, 'Incorrect price');
-    assert(130_usize == price4, 'Incorrect price');
+    assert(130_usize == price4, 'Incorrect price'); 
 }

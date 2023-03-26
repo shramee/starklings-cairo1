@@ -3,7 +3,6 @@
 // (no lines with multiple semicolons necessary!)
 // Execute `starklings hint move_semantics3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
 
 use array::ArrayTrait;
 use array::ArrayTCloneImpl;
@@ -23,7 +22,7 @@ fn main() {
     arr1.span().snapshot.clone().print();
 }
 
-fn fill_arr(arr: Array<felt252>) -> Array<felt252> {
+fn fill_arr(mut arr: Array<felt252>) -> Array<felt252> {
     arr.append(22);
     arr.append(44);
     arr.append(66);
