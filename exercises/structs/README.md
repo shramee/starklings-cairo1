@@ -12,4 +12,4 @@ struct Rectangle {
 
 ## Further information
 
-- [Structures](https://link.medium.com/MeQ1Agthrxb#ff54]
+- [Structures](https://link.medium.com/c8TqX7R3qxb#ff54]
