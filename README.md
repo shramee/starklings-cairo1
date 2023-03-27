@@ -59,6 +59,10 @@ Got all that? Great! To get started, run `starklings watch` in order to get the
 first exercise. Make sure to have your editor open!
 ```
 
+## VSCode extension & language server
+
+In order to have syntax highlighting and language server features, you will need to install the Cairo Language Server. The instructions available in the [Cairo repository](https://github.com/starkware-libs/cairo/tree/main/vscode-cairo)
+
 ## Inspiration
 
 -   [Rustlings](https://github.com/rust-lang/rustlings), starklings is forked from Rustlings. Thanks to all the original [authors and contributors](https://github.com/rust-lang/rustlings)
