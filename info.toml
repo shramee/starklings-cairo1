@@ -76,8 +76,8 @@ because we want to assign a different typed value to an existing variable. Somet
 you may also like to reuse existing variable names because you are just converting
 values to different types like in this exercise.
 Fortunately Cairo has a powerful solution to this problem: 'Shadowing'!
-You can see an example of variables and 'shadowing' here: https://link.medium.com/c8TqX7R3qxb#4fe8
-You can read about the different integer types here: https://link.medium.com/c8TqX7R3qxb#6d64
+You can see an example of variables and 'shadowing' here: https://medium.com/nethermind-eth/a-first-look-at-cairo-1-0-a-safer-stronger-simpler-provable-programming-language-892ce4c07b38#4fe8
+You can read about the different integer types here: https://medium.com/nethermind-eth/a-first-look-at-cairo-1-0-a-safer-stronger-simpler-provable-programming-language-892ce4c07b38#6d64
 If you want to learn more about this concept, you can also read about it in the Rust Book:
 https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html#shadowing
 Try to solve this exercise afterwards using this technique."""
@@ -92,7 +92,7 @@ variable available: constants.
 Constants are always immutable and they are declared with keyword 'const' rather
 than keyword 'let'.
 Constants types must also always be annotated.
-You can read about the different integer types here: https://link.medium.com/c8TqX7R3qxb#6d64
+You can read about the different integer types here: https://medium.com/nethermind-eth/a-first-look-at-cairo-1-0-a-safer-stronger-simpler-provable-programming-language-892ce4c07b38#6d64
 """
 
 # PRIMITIVE TYPES
@@ -125,7 +125,7 @@ name = "primitive_types4"
 path = "exercises/primitive_types/primitive_types4.cairo"
 mode = "test"
 hint = """
-There are multiple integer types in Cairo. You can read about them here: https://link.medium.com/c8TqX7R3qxb#6d64
+There are multiple integer types in Cairo. You can read about them here: https://medium.com/nethermind-eth/a-first-look-at-cairo-1-0-a-safer-stronger-simpler-provable-programming-language-892ce4c07b38#6d64
 If you try to sum two integers and the result is bigger than the biggest integer of this type, you'll get a compilation error.
 You can convert integers to felts using the `.into()` method. Make sure that you imported the `Into` trait.
 You can convert felts to integers using the `.try_into()` method. Make sure that you imported the `TryInto` trait.
@@ -195,7 +195,7 @@ mode = "compile"
 hint = """
 This time, the function *declaration* is okay, but there's something wrong
 with the place where we're calling the function.
-Remember how we can use a suffix to specify the type of a literal? https://link.medium.com/c8TqX7R3qxb#6d64
+Remember how we can use a suffix to specify the type of a literal? https://medium.com/nethermind-eth/a-first-look-at-cairo-1-0-a-safer-stronger-simpler-provable-programming-language-892ce4c07b38#6d64
 As a reminder, you can freely play around with different solutions in Starklings!
 Watch mode will only jump to the next exercise if you remove the I AM NOT DONE comment."""
 
@@ -332,7 +332,7 @@ You'd use the struct like so,
 let john = Person { name: 'John', age: 29 };
 
 
-Read more about structs in the Structs section of this article: https://link.medium.com/c8TqX7R3qxb#ff54 """
+Read more about structs in the Structs section of this article: https://medium.com/nethermind-eth/a-first-look-at-cairo-1-0-a-safer-stronger-simpler-provable-programming-language-892ce4c07b38#ff54 """
 
 
 [[exercises]]
@@ -348,7 +348,7 @@ There are some shortcuts that can be taken when destructuring structs,
 let Foo {x, y} = foo; // Creates variables x and y with values foo.x and foo.y
 let Foo {x: a, y: b} = foo; // Creates variables a and b with values foo.x and foo.y
 ```
-Read more about structs in the Structs section of this article: https://link.medium.com/c8TqX7R3qxb#ff54 """
+Read more about structs in the Structs section of this article: https://medium.com/nethermind-eth/a-first-look-at-cairo-1-0-a-safer-stronger-simpler-provable-programming-language-892ce4c07b38#ff54 """
 
 [[exercises]]
 name = "structs3"
@@ -360,7 +360,7 @@ For is_international: What makes a package international? Seems related to the p
 For get_fees: This method takes an additional argument, is there a field in the Package struct that this relates to?
 
 Looking at the test functions will also help you understand more about the syntax.
-This section will help you understanding more about impls and traits: https://link.medium.com/c8TqX7R3qxb#83b5.
+This section will help you understanding more about impls and traits: https://medium.com/nethermind-eth/a-first-look-at-cairo-1-0-a-safer-stronger-simpler-provable-programming-language-892ce4c07b38#83b5.
 """
 
 
