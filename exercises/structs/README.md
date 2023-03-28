@@ -12,4 +12,4 @@ struct Rectangle {
 
 ## Further information
 
-- [Structures](https://link.medium.com/c8TqX7R3qxb#ff54]
+- [Structures](https://medium.com/nethermind-eth/a-first-look-at-cairo-1-0-a-safer-stronger-simpler-provable-programming-language-892ce4c07b38#ff54]
