@@ -5,8 +5,8 @@ They are declared like so:
 
 ```rust
 struct Rectangle {
-    width: felt,
-    height: felt,
+    width: felt252,
+    height: felt252,
 }
 ```
 
