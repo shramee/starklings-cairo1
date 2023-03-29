@@ -1,5 +1,5 @@
 // Remember last time you calculated division in Cairo0?
-// Now Cairo1 has native integer types e.g. u8, u32, ...u256, usize which support more operators then felts
+// Now Cairo1 has native integer types e.g. u8, u32, ...u256, usize which support more operators than felts
 // And always watch out for overflows e.g in the last test
 // Let try to use them
 
