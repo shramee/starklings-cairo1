@@ -323,8 +323,8 @@ Here is how we describe a person struct that stores a name and an age,
 
 #[derive(Copy, Drop)]
 struct Person {
-    name: felt,
-    age: felt,
+    name: felt252,
+    age: felt252,
 }
 
 You'd use the struct like so,
