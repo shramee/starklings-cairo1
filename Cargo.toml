@@ -2,10 +2,10 @@
 name = "starklings"
 version = "0.1.0"
 authors = [
-  "Shramee <shramee@gmail.com>",
+  "Shramee <shramee.srivastav@gmail.com>",
   "Mathieu <msaug@protonmail.com>",
-	# Authors of original rustlings
-	"Liv <mokou@fastmail.com>",
+  # Authors of original rustlings
+  "Liv <mokou@fastmail.com>",
   "Carol (Nichols || Goulding) <carol.nichols@gmail.com>",
 ]
 edition = "2021"
