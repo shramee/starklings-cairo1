@@ -7,6 +7,6 @@ This has to do with the fact that once a memory slot is written to, it cannot be
 
 ## Further information
 
-- [Arrays](https://medium.com/nethermind-eth/a-first-look-at-cairo-1-0-a-safer-stronger-simpler-provable-programming-language-892ce4c07b38#570c)
+- [Arrays](https://link.medium.com/c8TqX7R3qxb#570c)
 - [Core library](https://github.com/starkware-libs/cairo/blob/main/corelib/src/array.cairo)
-- [Cairo memory model](https://medium.com/nethermind-eth/cairo-fundamentals-stacked-up-against-evm-and-solidity-1d8d4e12b2c3#2c01)
+- [Cairo memory model](https://link.medium.com/o5ZpTQOPuxb#2c01)
