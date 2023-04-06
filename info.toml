@@ -396,7 +396,7 @@ There's a few ways to fix this, try them all if you want:
    first `print`
 3. Make `fill_arr` borrow an immutable view of its argument instead of taking ownership by using the snapshot operator `@`,
    and then copy the data within the function in order to return an owned
-   `Array<felt>`. This requires an explicit clone of the array and should generally be avoided in Cairo, as the memory is write-once and cloning can be expensive."""
+   `Array<felt>`. This requires an explicit clone of the array and should generally be avoided in Cairo, as the memory is write-once and cloning can be expensive. To clone an object, you will need to import the trait `clone::Clone` and the implementation of the Clone trait for the array located in `array::ArrayTCloneImpl`"""
 
 [[exercises]]
 name = "move_semantics3"

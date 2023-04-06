@@ -14,10 +14,6 @@ fn main() {
 
     // Do not change the following line!
     arr0.print();
-
-    arr1.append(88);
-
-    arr1.print();
 }
 
 fn fill_array(arr: Array<felt252>) -> Array<felt252> {
