@@ -16,7 +16,7 @@ struct Point {
     y: u8,
 }
 
-#[derive(Copy)]
+#[derive(Drop, Copy)]
 struct State {
     color: (u8, u8, u8),
     position: Point,
@@ -74,7 +74,7 @@ fn test_match_message_call() {
 }
 
 
-impl TripleTuplePartialEq of PartialEq::<(u8, u8, u8)> {
+impl TripleTuplePartialEq of PartialEq<(u8, u8, u8)> {
     #[inline(always)]
     fn eq(a: (u8, u8, u8), b: (u8, u8, u8)) -> bool {
         let (a0, a1, a2) = a;

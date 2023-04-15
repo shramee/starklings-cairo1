@@ -16,11 +16,11 @@ fn main() {
 
     let mut arr1 = fill_arr(arr0);
 
-    arr1.span().snapshot.clone().print();
+    arr1.clone().print();
 
     arr1.append(88);
 
-    arr1.span().snapshot.clone().print();
+    arr1.clone().print();
 }
 
 // `fill_arr()` should no longer takes `arr: Array<felt252>` as argument
