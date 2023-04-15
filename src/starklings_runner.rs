@@ -65,9 +65,13 @@ pub fn run_cairo_program(args: &Args) -> anyhow::Result<String> {
         .with_context(|| "Compilation failed without any diagnostics.")?;
     let runner = SierraCasmRunner::new(
         replace_sierra_ids_in_program(db, &sierra_program),
-        if args.available_gas.is_some() { Some(Default::default()) } else { None },
+        if args.available_gas.is_some() {
+            Some(Default::default())
+        } else {
+            None
+        },
     )
-        .with_context(|| "Failed setting up runner.")?;
+    .with_context(|| "Failed setting up runner.")?;
     let result = runner
         .run_function("::main", &[], args.available_gas)
         .with_context(|| "Failed to run the function.")?;

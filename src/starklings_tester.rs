@@ -1,6 +1,5 @@
 //! Compiles and runs a Cairo program.
 
-
 use std::path::Path;
 use std::sync::{Arc, Mutex};
 
@@ -18,13 +17,13 @@ use cairo_lang_filesystem::db::init_dev_corelib;
 use cairo_lang_filesystem::ids::CrateId;
 use cairo_lang_plugins::get_default_plugins;
 
+use cairo_lang_lowering::ids::ConcreteFunctionWithBodyId;
 use cairo_lang_runner::short_string::as_cairo_short_string;
 use cairo_lang_runner::{RunResultValue, SierraCasmRunner};
 use cairo_lang_semantic::db::SemanticGroup;
 use cairo_lang_semantic::items::functions::GenericFunctionId;
 use cairo_lang_semantic::literals::LiteralLongId;
 use cairo_lang_semantic::plugin::SemanticPlugin;
-use cairo_lang_lowering::ids::ConcreteFunctionWithBodyId;
 use cairo_lang_semantic::{ConcreteFunction, FunctionLongId};
 use cairo_lang_sierra::extensions::gas::CostTokenType;
 use cairo_lang_sierra::ids::FunctionId;
@@ -39,8 +38,8 @@ use cairo_lang_syntax::attribute::structured::{Attribute, AttributeArg, Attribut
 
 use cairo_lang_syntax::node::db::SyntaxGroup;
 use cairo_lang_syntax::node::{ast, Terminal, Token};
-use cairo_lang_utils::OptionHelper;
 use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
+use cairo_lang_utils::OptionHelper;
 use clap::Parser;
 use colored::Colorize;
 use itertools::{chain, Itertools};
@@ -372,7 +371,9 @@ pub fn try_extract_test_config(
 ) -> Result<Option<TestConfig>, Vec<PluginDiagnostic>> {
     let test_attr = attrs.iter().find(|attr| attr.id.as_str() == "test");
     let ignore_attr = attrs.iter().find(|attr| attr.id.as_str() == "ignore");
-    let available_gas_attr = attrs.iter().find(|attr| attr.id.as_str() == "available_gas");
+    let available_gas_attr = attrs
+        .iter()
+        .find(|attr| attr.id.as_str() == "available_gas");
     let should_panic_attr = attrs.iter().find(|attr| attr.id.as_str() == "should_panic");
     let mut diagnostics = vec![];
     if let Some(attr) = test_attr {
@@ -383,7 +384,10 @@ pub fn try_extract_test_config(
             });
         }
     } else {
-        for attr in [ignore_attr, available_gas_attr, should_panic_attr].into_iter().flatten() {
+        for attr in [ignore_attr, available_gas_attr, should_panic_attr]
+            .into_iter()
+            .flatten()
+        {
             diagnostics.push(PluginDiagnostic {
                 stable_ptr: attr.id_stable_ptr.untyped(),
                 message: "Attribute should only appear on tests.".into(),
@@ -402,12 +406,14 @@ pub fn try_extract_test_config(
         false
     };
     let available_gas = if let Some(attr) = available_gas_attr {
-        if let [
-        AttributeArg {
-            variant: AttributeArgVariant::Unnamed { value: ast::Expr::Literal(literal), .. },
+        if let [AttributeArg {
+            variant:
+                AttributeArgVariant::Unnamed {
+                    value: ast::Expr::Literal(literal),
+                    ..
+                },
             ..
-        },
-        ] = &attr.args[..]
+        }] = &attr.args[..]
         {
             literal.token(db).text(db).parse::<usize>().ok()
         } else {

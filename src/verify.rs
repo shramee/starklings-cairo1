@@ -65,10 +65,7 @@ fn compile_and_test_interactively(exercise: &Exercise) -> Result<bool, ()> {
 
 // Compile the given Exercise and return an object with information
 // about the state of the compilation
-fn compile_and_run_cairo<'a, 'b>(
-    exercise: &'a Exercise,
-    progress_bar: &'b ProgressBar,
-) -> Result<String, ()> {
+fn compile_and_run_cairo(exercise: &Exercise, progress_bar: &ProgressBar) -> Result<String, ()> {
     let compilation_result = exercise.run_cairo();
 
     if let Some(error) = compilation_result.as_ref().err() {
@@ -86,10 +83,7 @@ fn compile_and_run_cairo<'a, 'b>(
 
 // Tests the given Exercise and return an object with information
 // about the state of the tests
-fn compile_and_test_cairo<'a, 'b>(
-    exercise: &'a Exercise,
-    progress_bar: &'b ProgressBar,
-) -> Result<String, ()> {
+fn compile_and_test_cairo(exercise: &Exercise, progress_bar: &ProgressBar) -> Result<String, ()> {
     let compilation_result = exercise.test_cairo();
 
     if let Some(error) = compilation_result.as_ref().err() {
