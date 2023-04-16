@@ -1,5 +1,4 @@
 use traits::Default;
-use traits::Felt252DictValue;
 
 extern type Nullable<T>;
 
@@ -19,13 +18,6 @@ impl NullableDrop<T, impl TDrop: Drop<T>> of Drop<Nullable<T>>;
 impl NullableDefault<T> of Default<Nullable<T>> {
     #[inline(always)]
     fn default() -> Nullable<T> nopanic {
-        null()
-    }
-}
-
-impl NullableFelt252DictValue<T> of Felt252DictValue<Nullable<T>> {
-    #[inline(always)]
-    fn zero_default() -> Nullable<T> nopanic {
         null()
     }
 }

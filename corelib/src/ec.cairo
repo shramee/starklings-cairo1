@@ -1,5 +1,6 @@
 use array::ArrayTrait;
 use zeroable::IsZeroResult;
+use zeroable::NonZeroIntoImpl;
 use traits::Into;
 
 mod StarkCurve {
@@ -105,22 +106,22 @@ fn ec_mul(p: EcPoint, m: felt252) -> EcPoint {
 impl EcPointAdd of Add<EcPoint> {
     /// Computes the sum of two points on the curve.
     // TODO(lior): Implement using a libfunc to make it more efficient.
-    fn add(lhs: EcPoint, rhs: EcPoint) -> EcPoint {
-        let lhs_nz = match ec_point_is_zero(lhs) {
+    fn add(p: EcPoint, q: EcPoint) -> EcPoint {
+        let p_nz = match ec_point_is_zero(p) {
             IsZeroResult::Zero(()) => {
-                return rhs;
+                return q;
             },
             IsZeroResult::NonZero(pt) => pt,
         };
-        let rhs_nz = match ec_point_is_zero(rhs) {
+        let q_nz = match ec_point_is_zero(q) {
             IsZeroResult::Zero(()) => {
-                return lhs;
+                return p;
             },
             IsZeroResult::NonZero(pt) => pt,
         };
         let mut state = ec_state_init();
-        ec_state_add(ref state, lhs_nz);
-        ec_state_add(ref state, rhs_nz);
+        ec_state_add(ref state, p_nz);
+        ec_state_add(ref state, q_nz);
         ec_state_finalize(state)
     }
 }
@@ -134,16 +135,16 @@ impl EcPointAddEq of AddEq<EcPoint> {
 
 impl EcPointSub of Sub<EcPoint> {
     /// Computes the difference between two points on the curve.
-    fn sub(lhs: EcPoint, rhs: EcPoint) -> EcPoint {
-        match ec_point_is_zero(rhs) {
+    fn sub(p: EcPoint, q: EcPoint) -> EcPoint {
+        match ec_point_is_zero(q) {
             IsZeroResult::Zero(()) => {
-                // lhs - 0 = lhs.
-                return lhs;
+                // p - 0 = p.
+                return p;
             },
             IsZeroResult::NonZero(_) => {},
         };
-        // lhs - rhs = lhs + (-rhs).
-        lhs + ec_neg(rhs)
+        // p - q = p + (-q).
+        p + ec_neg(q)
     }
 }
 

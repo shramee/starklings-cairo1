@@ -94,7 +94,7 @@ pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
         plugins.push(Arc::new(StarkNetPlugin::default()));
     }
     let db = &mut RootDatabase::builder()
-        .with_cfg(CfgSet::from_iter([Cfg::name("test")]))
+        .with_cfg(CfgSet::from_iter([Cfg::tag("test")]))
         .with_plugins(plugins)
         .detect_corelib()
         .build()?;
@@ -138,7 +138,6 @@ pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
             })
             .collect();
     let all_tests = find_all_tests(db, main_crate_ids);
-
     let sierra_program = db
         .get_sierra_program_for_functions(
             chain!(
@@ -153,7 +152,6 @@ pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
         .with_context(|| "Compilation failed without any diagnostics.")?;
     let sierra_program = replace_sierra_ids_in_program(db, &sierra_program);
     let total_tests_count = all_tests.len();
-
     let named_tests = all_tests
         .into_iter()
         .map(|(func_id, mut test)| {
@@ -468,6 +466,7 @@ pub fn try_extract_test_config(
         })
     })
 }
+
 /// Tries to extract the relevant expected panic values.
 fn extract_panic_values(db: &dyn SyntaxGroup, attr: &Attribute) -> Option<Vec<Felt252>> {
     let [
@@ -487,11 +486,17 @@ fn extract_panic_values(db: &dyn SyntaxGroup, attr: &Attribute) -> Option<Vec<Fe
         .elements(db)
         .into_iter()
         .map(|value| match value {
-            ast::Expr::Literal(literal) => {
-                Some(literal.numeric_value(db).unwrap_or_default().into())
-            }
-            ast::Expr::ShortString(literal) => {
-                Some(literal.numeric_value(db).unwrap_or_default().into())
+            ast::Expr::Literal(literal) => Felt252::try_from(
+                LiteralLongId::try_from(literal.token(db).text(db))
+                    .ok()?
+                    .value,
+            )
+            .ok(),
+            ast::Expr::ShortString(short_string_syntax) => {
+                let text = short_string_syntax.text(db);
+                let (literal, _) = text[1..].rsplit_once('\'')?;
+                let unescaped_literal = unescape(literal).ok()?;
+                Some(Felt252::from_bytes_be(unescaped_literal.as_bytes()))
             }
             _ => None,
         })

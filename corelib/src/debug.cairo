@@ -1,5 +1,6 @@
 use array::ArrayTrait;
 use traits::Into;
+use starknet::ContractAddressIntoFelt252;
 use option::Option;
 
 // Usage:
@@ -48,37 +49,37 @@ impl BoolPrintImpl of PrintTrait<bool> {
 
 impl ContractAddressPrintImpl of PrintTrait<starknet::ContractAddress> {
     fn print(self: starknet::ContractAddress) {
-        Into::<_, felt252>::into(self).print();
+        self.into().print();
     }
 }
 
 impl U8PrintImpl of PrintTrait<u8> {
     fn print(self: u8) {
-        Into::<_, felt252>::into(self).print();
+        self.into().print();
     }
 }
 
 impl U16PrintImpl of PrintTrait<u16> {
     fn print(self: u16) {
-        Into::<_, felt252>::into(self).print();
+        self.into().print();
     }
 }
 
 impl U32PrintImpl of PrintTrait<u32> {
     fn print(self: u32) {
-        Into::<_, felt252>::into(self).print();
+        self.into().print();
     }
 }
 
 impl U64PrintImpl of PrintTrait<u64> {
     fn print(self: u64) {
-        Into::<_, felt252>::into(self).print();
+        self.into().print();
     }
 }
 
 impl U128PrintImpl of PrintTrait<u128> {
     fn print(self: u128) {
-        Into::<_, felt252>::into(self).print();
+        self.into().print();
     }
 }
 
