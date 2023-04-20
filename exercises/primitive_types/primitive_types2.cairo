@@ -33,7 +33,7 @@ fn main() {
     } else if is_numeric(
         ref your_character
     ) {
-       ('Numerical!').print();
+        ('Numerical!').print();
     } else {
         ('Neither alphabetic nor numeric!').print();
     }
@@ -65,21 +65,21 @@ fn is_numeric(ref char: felt252) -> bool {
 // Note: the following code is not part of the challenge, it's just here to make the code above work.
 // Direct felt252 comparisons have been removed from the core library, so we need to implement them ourselves.
 // There will probably be a string / short string type in the future
-impl PartialOrdFelt of PartialOrd::<felt252> {
+impl PartialOrdFelt of PartialOrd<felt252> {
     #[inline(always)]
-    fn le(a: felt252, b: felt252) -> bool {
-        !(b < a)
+    fn le(lhs: felt252, rhs: felt252) -> bool {
+        !(rhs < lhs)
     }
     #[inline(always)]
-    fn ge(a: felt252, b: felt252) -> bool {
-        !(a < b)
+    fn ge(lhs: felt252, rhs: felt252) -> bool {
+        !(lhs < rhs)
     }
     #[inline(always)]
-    fn lt(a: felt252, b: felt252) -> bool {
-        integer::u256_from_felt252(a) < integer::u256_from_felt252(b)
+    fn lt(lhs: felt252, rhs: felt252) -> bool {
+        integer::u256_from_felt252(lhs) < integer::u256_from_felt252(rhs)
     }
     #[inline(always)]
-    fn gt(a: felt252, b: felt252) -> bool {
-        b < a
+    fn gt(lhs: felt252, rhs: felt252) -> bool {
+        rhs < lhs
     }
 }

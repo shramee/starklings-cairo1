@@ -76,13 +76,13 @@ fn test_match_message_call() {
 
 impl TripleTuplePartialEq of PartialEq<(u8, u8, u8)> {
     #[inline(always)]
-    fn eq(a: (u8, u8, u8), b: (u8, u8, u8)) -> bool {
-        let (a0, a1, a2) = a;
-        let (b0, b1, b2) = b;
+    fn eq(lhs: (u8, u8, u8), rhs: (u8, u8, u8)) -> bool {
+        let (a0, a1, a2) = lhs;
+        let (b0, b1, b2) = rhs;
         a0 == b0 & a1 == b1 & a2 == b2
     }
     #[inline(always)]
-    fn ne(a: (u8, u8, u8), b: (u8, u8, u8)) -> bool {
-        !(a == b)
+    fn ne(lhs: (u8, u8, u8), rhs: (u8, u8, u8)) -> bool {
+        !(lhs == rhs)
     }
 }
