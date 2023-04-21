@@ -4,4 +4,4 @@
 
 ## Further information
 
-- [Return statements and if expressions](https://medium.com/nethermind-eth/a-first-look-at-cairo-1-0-a-safer-stronger-simpler-provable-programming-language-892ce4c07b38#d97c)
+- [If expressions](https://cairo-book.github.io/ch02-05-control-flow.html#if-expressions)
