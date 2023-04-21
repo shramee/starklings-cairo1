@@ -218,6 +218,24 @@ path = "exercises/quizs/quizs1.cairo"
 mode = "test"
 hint = """No hints this time ;)"""
 
+# LOOPS
+
+[[exercises]]
+name = "loops1"
+path = "exercises/loops/loops1.cairo"
+mode = "test"
+hint = """
+The `break` condition is reached too early. Can you introduce a condition so that the loop runs a little more?"""
+
+[[exercises]]
+name = "loops2"
+path = "exercises/loops/loops2.cairo"
+mode = "test"
+hint = """
+You can return values from loops by adding the value you want returned after the `break` expression you use to stop the loop. Don't forget that assigning a variable to the value returned from a `loop` is an expression, and thus must end with a semicolomn.
+"""
+
+
 # ENUMS
 
 [[exercises]]
