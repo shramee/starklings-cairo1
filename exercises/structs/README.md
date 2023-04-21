@@ -12,4 +12,6 @@ struct Rectangle {
 
 ## Further information
 
-- [Structures](https://medium.com/nethermind-eth/a-first-look-at-cairo-1-0-a-safer-stronger-simpler-provable-programming-language-892ce4c07b38#ff54]
+- [Defining and instanciating Structs](https://cairo-book.github.io/ch04-01-defining-and-instantiating-structs.html)
+- [An example program using structs](https://cairo-book.github.io/ch04-02-an-example-program-using-structs.html)
+- [The Method syntax](https://cairo-book.github.io/ch04-03-method-syntax.html)
