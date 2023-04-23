@@ -90,9 +90,7 @@ fn main() -> anyhow::Result<()> {
 pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
     // TODO(orizi): Use `get_default_plugins` and just update the config plugin.
     let mut plugins: Vec<Arc<dyn SemanticPlugin>> = get_default_plugins();
-    if args.starknet {
-        plugins.push(Arc::new(StarkNetPlugin::default()));
-    }
+    plugins.push(Arc::new(StarkNetPlugin::default()));
     let db = &mut RootDatabase::builder()
         .with_cfg(CfgSet::from_iter([Cfg::name("test")]))
         .with_plugins(plugins)

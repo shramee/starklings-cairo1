@@ -502,3 +502,38 @@ If you're having trouble updating the distance value in the `Fish` and `Dog` imp
 2. Update the distance variable
 3. Reconstruct `self` with the updated variables (`self = MyStruct { ... }`) 
 """
+
+# STARKNET
+
+[[exercises]]
+name = "starknet1"
+path = "exercises/starknet/basics/starknet1.cairo"
+mode = "test"
+hint = """ 
+The constructor can take arguments, just like any other function.
+"""
+
+[[exercises]]
+name = "starknet2"
+path = "exercises/starknet/basics/starknet2.cairo"
+mode = "test"
+hint = """ 
+Take a look at the constructor function to see how we can write values to storage.
+"""
+
+[[exercises]]
+name = "starknet3"
+path = "exercises/starknet/basics/starknet3.cairo"
+mode = "test"
+hint = """ 
+Similar to the previous exercise, but this time we want to `read` a value from storage.
+"""
+
+[[exercises]]
+name = "starknet1"
+path = "exercises/starknet/basics/starknet4.cairo"
+mode = "test"
+hint = """ 
+You can storage mappings by using the LegacyMap<T, U> type. In this exercise, each user has a
+balance stored in the contract using a mapping from its address (of type ContractAddress) to its balance (u64).
+"""
