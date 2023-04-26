@@ -1,6 +1,7 @@
 //! Compiles and runs a Cairo program.
 
 use std::path::Path;
+use std::sync::Arc;
 
 use anyhow::{Context, Ok};
 use cairo_lang_compiler::db::RootDatabase;
@@ -8,9 +9,12 @@ use cairo_lang_compiler::diagnostics::DiagnosticsReporter;
 use cairo_lang_compiler::project::setup_project;
 use cairo_lang_diagnostics::ToOption;
 use cairo_lang_filesystem::db::init_dev_corelib;
+use cairo_lang_plugins::get_default_plugins;
 use cairo_lang_runner::SierraCasmRunner;
+use cairo_lang_semantic::plugin::SemanticPlugin;
 use cairo_lang_sierra_generator::db::SierraGenGroup;
 use cairo_lang_sierra_generator::replace_ids::replace_sierra_ids_in_program;
+use cairo_lang_starknet::plugin::StarkNetPlugin;
 use clap::Parser;
 
 const CORELIB_DIR_NAME: &str = "corelib/src";
@@ -42,7 +46,12 @@ fn main() -> anyhow::Result<()> {
 }
 
 pub fn run_cairo_program(args: &Args) -> anyhow::Result<String> {
-    let db = &mut RootDatabase::builder().build()?;
+    let mut plugins: Vec<Arc<dyn SemanticPlugin>> = get_default_plugins();
+    plugins.push(Arc::new(StarkNetPlugin::default()));
+    let db = &mut RootDatabase::builder()
+        .with_plugins(plugins)
+        .detect_corelib()
+        .build()?;
     let mut corelib_dir = std::env::current_exe()
         .unwrap_or_else(|e| panic!("Problem getting the executable path: {e:?}"));
     corelib_dir.pop();
