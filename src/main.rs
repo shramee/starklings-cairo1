@@ -294,9 +294,7 @@ fn main() {
 
         Subcommands::Watch(_subargs) => match watch(&exercises) {
             Err(e) => {
-                println!(
-                    "Error: Could not watch your progress. Error message was {e:?}."
-                );
+                println!("Error: Could not watch your progress. Error message was {e:?}.");
                 println!("Most likely you've run out of disk space or your 'inotify limit' has been reached.");
                 std::process::exit(1);
             }

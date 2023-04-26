@@ -42,18 +42,18 @@ fn main() -> anyhow::Result<()> {
 }
 
 pub fn run_cairo_program(args: &Args) -> anyhow::Result<String> {
-    let mut db = RootDatabase::default();
+    let db = &mut RootDatabase::builder().build()?;
     let mut corelib_dir = std::env::current_exe()
         .unwrap_or_else(|e| panic!("Problem getting the executable path: {e:?}"));
     corelib_dir.pop();
     corelib_dir.pop();
     corelib_dir.pop();
     corelib_dir.push(CORELIB_DIR_NAME);
-    init_dev_corelib(&mut db, corelib_dir);
+    init_dev_corelib(db, corelib_dir);
 
-    let main_crate_ids = setup_project(&mut db, Path::new(&args.path))?;
+    let main_crate_ids = setup_project(db, Path::new(&args.path))?;
 
-    if DiagnosticsReporter::stderr().check(&mut db) {
+    if DiagnosticsReporter::stderr().check(db) {
         anyhow::bail!("failed to compile: {}", args.path);
     }
 
@@ -64,8 +64,12 @@ pub fn run_cairo_program(args: &Args) -> anyhow::Result<String> {
         .to_option()
         .with_context(|| "Compilation failed without any diagnostics.")?;
     let runner = SierraCasmRunner::new(
-        replace_sierra_ids_in_program(&mut db, &sierra_program),
-        args.available_gas.is_some(),
+        replace_sierra_ids_in_program(db, &sierra_program),
+        if args.available_gas.is_some() {
+            Some(Default::default())
+        } else {
+            None
+        },
     )
     .with_context(|| "Failed setting up runner.")?;
     let result = runner

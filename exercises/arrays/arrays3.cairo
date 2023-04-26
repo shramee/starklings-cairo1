@@ -24,6 +24,3 @@ fn test_arrays3() {
     // You should not change the index accessed.
     a.at(2_usize);
 }
-
-// Don't mind this
-impl DropFeltSnapshot of Drop::<@felt252>;

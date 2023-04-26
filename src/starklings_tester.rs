@@ -1,36 +1,50 @@
 //! Compiles and runs a Cairo program.
 
-use std::collections::HashSet;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
 
 use anyhow::{bail, Context};
+use cairo_felt::Felt252;
 use cairo_lang_compiler::db::RootDatabase;
 use cairo_lang_compiler::diagnostics::DiagnosticsReporter;
 use cairo_lang_compiler::project::setup_project;
 use cairo_lang_debug::DebugWithDb;
 use cairo_lang_defs::ids::{FreeFunctionId, FunctionWithBodyId, ModuleItemId};
+use cairo_lang_defs::plugin::PluginDiagnostic;
 use cairo_lang_diagnostics::ToOption;
+use cairo_lang_filesystem::cfg::{Cfg, CfgSet};
 use cairo_lang_filesystem::db::init_dev_corelib;
 use cairo_lang_filesystem::ids::CrateId;
-use cairo_lang_plugins::config::ConfigPlugin;
-use cairo_lang_plugins::derive::DerivePlugin;
-use cairo_lang_plugins::panicable::PanicablePlugin;
+use cairo_lang_plugins::get_default_plugins;
+
+use cairo_lang_lowering::ids::ConcreteFunctionWithBodyId;
 use cairo_lang_runner::short_string::as_cairo_short_string;
 use cairo_lang_runner::{RunResultValue, SierraCasmRunner};
 use cairo_lang_semantic::db::SemanticGroup;
 use cairo_lang_semantic::items::functions::GenericFunctionId;
+use cairo_lang_semantic::literals::LiteralLongId;
 use cairo_lang_semantic::plugin::SemanticPlugin;
-use cairo_lang_semantic::{ConcreteFunction, ConcreteFunctionWithBodyId, FunctionLongId};
+use cairo_lang_semantic::{ConcreteFunction, FunctionLongId};
+use cairo_lang_sierra::extensions::gas::CostTokenType;
+use cairo_lang_sierra::ids::FunctionId;
 use cairo_lang_sierra_generator::db::SierraGenGroup;
 use cairo_lang_sierra_generator::replace_ids::replace_sierra_ids_in_program;
+use cairo_lang_sierra_to_casm::metadata::MetadataComputationConfig;
+use cairo_lang_starknet::casm_contract_class::ENTRY_POINT_COST;
+use cairo_lang_starknet::contract::{find_contracts, get_module_functions};
+use cairo_lang_starknet::plugin::consts::{CONSTRUCTOR_MODULE, EXTERNAL_MODULE, L1_HANDLER_MODULE};
 use cairo_lang_starknet::plugin::StarkNetPlugin;
-use cairo_lang_syntax::node::ast::Expr;
-use cairo_lang_syntax::node::Token;
+use cairo_lang_syntax::attribute::structured::{Attribute, AttributeArg, AttributeArgVariant};
+
+use cairo_lang_syntax::node::db::SyntaxGroup;
+use cairo_lang_syntax::node::{ast, Terminal, Token};
+use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
+use cairo_lang_utils::OptionHelper;
 use clap::Parser;
 use colored::Colorize;
-use itertools::Itertools;
+use itertools::{chain, Itertools};
 use rayon::prelude::{IntoParallelIterator, ParallelIterator};
+use unescaper::unescape;
 
 const CORELIB_DIR_NAME: &str = "corelib/src";
 
@@ -75,17 +89,16 @@ fn main() -> anyhow::Result<()> {
 
 pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
     // TODO(orizi): Use `get_default_plugins` and just update the config plugin.
-    let mut plugins: Vec<Arc<dyn SemanticPlugin>> = vec![
-        Arc::new(DerivePlugin {}),
-        Arc::new(PanicablePlugin {}),
-        Arc::new(ConfigPlugin {
-            configs: HashSet::from(["test".to_string()]),
-        }),
-    ];
+    let mut plugins: Vec<Arc<dyn SemanticPlugin>> = get_default_plugins();
     if args.starknet {
-        plugins.push(Arc::new(StarkNetPlugin {}));
+        plugins.push(Arc::new(StarkNetPlugin::default()));
     }
-    let db = &mut RootDatabase::builder().with_plugins(plugins).build()?;
+    let db = &mut RootDatabase::builder()
+        .with_cfg(CfgSet::from_iter([Cfg::name("test")]))
+        .with_plugins(plugins)
+        .detect_corelib()
+        .build()?;
+
     let mut corelib_dir = std::env::current_exe()
         .unwrap_or_else(|e| panic!("Problem getting the executable path: {e:?}"));
     corelib_dir.pop();
@@ -99,21 +112,51 @@ pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
     if DiagnosticsReporter::stderr().check(db) {
         bail!("failed to compile: {}", args.path);
     }
+    let all_entry_points = if args.starknet {
+        find_contracts(db, &main_crate_ids)
+            .iter()
+            .flat_map(|contract| {
+                chain!(
+                    get_module_functions(db, contract, EXTERNAL_MODULE).unwrap(),
+                    get_module_functions(db, contract, CONSTRUCTOR_MODULE).unwrap(),
+                    get_module_functions(db, contract, L1_HANDLER_MODULE).unwrap()
+                )
+            })
+            .flat_map(|func_id| ConcreteFunctionWithBodyId::from_no_generics_free(db, func_id))
+            .collect()
+    } else {
+        vec![]
+    };
+    let function_set_costs: OrderedHashMap<FunctionId, OrderedHashMap<CostTokenType, i32>> =
+        all_entry_points
+            .iter()
+            .map(|func_id| {
+                (
+                    db.function_with_body_sierra(*func_id).unwrap().id.clone(),
+                    [(CostTokenType::Const, ENTRY_POINT_COST)].into(),
+                )
+            })
+            .collect();
     let all_tests = find_all_tests(db, main_crate_ids);
+
     let sierra_program = db
         .get_sierra_program_for_functions(
-            all_tests
-                .iter()
-                .flat_map(|t| ConcreteFunctionWithBodyId::from_no_generics_free(db, t.func_id))
-                .collect(),
+            chain!(
+                all_entry_points.into_iter(),
+                all_tests.iter().flat_map(|(func_id, _cfg)| {
+                    ConcreteFunctionWithBodyId::from_no_generics_free(db, *func_id)
+                })
+            )
+            .collect(),
         )
         .to_option()
         .with_context(|| "Compilation failed without any diagnostics.")?;
     let sierra_program = replace_sierra_ids_in_program(db, &sierra_program);
     let total_tests_count = all_tests.len();
+
     let named_tests = all_tests
         .into_iter()
-        .map(|mut test| {
+        .map(|(func_id, mut test)| {
             // Un-ignoring all the tests in `include-ignored` mode.
             if args.include_ignored {
                 test.ignored = false;
@@ -123,8 +166,8 @@ pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
                     "{:?}",
                     FunctionLongId {
                         function: ConcreteFunction {
-                            generic_function: GenericFunctionId::Free(test.func_id),
-                            generic_args: vec![],
+                            generic_function: GenericFunctionId::Free(func_id),
+                            generic_args: vec![]
                         }
                     }
                     .debug(db)
@@ -142,7 +185,7 @@ pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
         failed,
         ignored,
         failed_run_results,
-    } = run_tests(named_tests, sierra_program)?;
+    } = run_tests(named_tests, sierra_program, function_set_costs)?;
     let mut result_string = String::new();
     if failed.is_empty() {
         result_string.push_str(
@@ -162,8 +205,11 @@ pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
             result_string.push_str(format!("   {failure} - ").as_str());
             match run_result {
                 RunResultValue::Success(_) => {
-                    result_string
-                        .push_str("expected panic but finished successfully.".to_string().as_str());
+                    result_string.push_str(
+                        "expected panic but finished successfully."
+                            .to_string()
+                            .as_str(),
+                    );
                 }
                 RunResultValue::Panic(values) => {
                     result_string.push_str("panicked with [".to_string().as_str());
@@ -203,9 +249,13 @@ struct TestsSummary {
 fn run_tests(
     named_tests: Vec<(String, TestConfig)>,
     sierra_program: cairo_lang_sierra::program::Program,
+    function_set_costs: OrderedHashMap<FunctionId, OrderedHashMap<CostTokenType, i32>>,
 ) -> anyhow::Result<TestsSummary> {
-    let runner =
-        SierraCasmRunner::new(sierra_program, true).with_context(|| "Failed setting up runner.")?;
+    let runner = SierraCasmRunner::new(
+        sierra_program,
+        Some(MetadataComputationConfig { function_set_costs }),
+    )
+    .with_context(|| "Failed setting up runner.")?;
     println!("running {} tests", named_tests.len());
     let wrapped_summary = Mutex::new(Ok(TestsSummary {
         passed: vec![],
@@ -221,16 +271,23 @@ fn run_tests(
             }
             let result = runner
                 .run_function(name.as_str(), &[], test.available_gas)
-                .with_context(|| "Failed to run the function.")?;
+                .with_context(|| format!("Failed to run the function `{}`.", name.as_str()))?;
             Ok((
                 name,
-                match (&result.value, test.expectation) {
-                    (RunResultValue::Success(_), TestExpectation::Success)
-                    | (RunResultValue::Panic(_), TestExpectation::Panics) => TestStatus::Success,
-                    (RunResultValue::Success(_), TestExpectation::Panics)
-                    | (RunResultValue::Panic(_), TestExpectation::Success) => {
-                        TestStatus::Fail(result.value)
-                    }
+                match &result.value {
+                    RunResultValue::Success(_) => match test.expectation {
+                        TestExpectation::Success => TestStatus::Success,
+                        TestExpectation::Panics(_) => TestStatus::Fail(result.value),
+                    },
+                    RunResultValue::Panic(value) => match test.expectation {
+                        TestExpectation::Success => TestStatus::Fail(result.value),
+                        TestExpectation::Panics(panic_expectation) => match panic_expectation {
+                            PanicExpectation::Exact(expected) if value != &expected => {
+                                TestStatus::Fail(result.value)
+                            }
+                            _ => TestStatus::Success,
+                        },
+                    },
                 },
             ))
         })
@@ -260,29 +317,35 @@ fn run_tests(
         });
     wrapped_summary.into_inner().unwrap()
 }
+/// Expectation for a panic case.
+pub enum PanicExpectation {
+    /// Accept any panic value.
+    Any,
+    /// Accept only this specific vector of panics.
+    Exact(Vec<Felt252>),
+}
 
 /// Expectation for a result of a test.
-enum TestExpectation {
+pub enum TestExpectation {
     /// Running the test should not panic.
     Success,
     /// Running the test should result in a panic.
-    Panics,
+    Panics(PanicExpectation),
 }
-
 /// The configuration for running a single test.
-struct TestConfig {
-    /// The function id of the test function.
-    func_id: FreeFunctionId,
+pub struct TestConfig {
     /// The amount of gas the test requested.
-    available_gas: Option<usize>,
+    pub available_gas: Option<usize>,
     /// The expected result of the run.
-    expectation: TestExpectation,
+    pub expectation: TestExpectation,
     /// Should the test be ignored.
-    ignored: bool,
+    pub ignored: bool,
 }
-
 /// Finds the tests in the requested crates.
-fn find_all_tests(db: &dyn SemanticGroup, main_crates: Vec<CrateId>) -> Vec<TestConfig> {
+fn find_all_tests(
+    db: &dyn SemanticGroup,
+    main_crates: Vec<CrateId>,
+) -> Vec<(FreeFunctionId, TestConfig)> {
     let mut tests = vec![];
     for crate_id in main_crates {
         let modules = db.crate_modules(crate_id);
@@ -290,56 +353,147 @@ fn find_all_tests(db: &dyn SemanticGroup, main_crates: Vec<CrateId>) -> Vec<Test
             let Ok(module_items) = db.module_items(*module_id) else {
                 continue;
             };
-
-            for item in module_items.iter() {
-                if let ModuleItemId::FreeFunction(func_id) = item {
-                    if let Ok(attrs) =
-                        db.function_with_body_attributes(FunctionWithBodyId::Free(*func_id))
-                    {
-                        let mut is_test = false;
-                        let mut available_gas = None;
-                        let mut ignored = false;
-                        let mut should_panic = false;
-                        for attr in attrs {
-                            match attr.id.as_str() {
-                                "test" => {
-                                    is_test = true;
-                                }
-                                "available_gas" => {
-                                    // TODO(orizi): Provide diagnostics when this does not match.
-                                    if let [Expr::Literal(literal)] = &attr.args[..] {
-                                        available_gas = literal
-                                            .token(db.upcast())
-                                            .text(db.upcast())
-                                            .parse::<usize>()
-                                            .ok();
-                                    }
-                                }
-                                "should_panic" => {
-                                    should_panic = true;
-                                }
-                                "ignore" => {
-                                    ignored = true;
-                                }
-                                _ => {}
-                            }
-                        }
-                        if is_test {
-                            tests.push(TestConfig {
-                                func_id: *func_id,
-                                available_gas,
-                                expectation: if should_panic {
-                                    TestExpectation::Panics
-                                } else {
-                                    TestExpectation::Success
-                                },
-                                ignored,
-                            })
-                        }
-                    }
-                }
-            }
+            tests.extend(
+                module_items.iter().filter_map(|item| {
+                    let ModuleItemId::FreeFunction(func_id) = item else { return None };
+                    let Ok(attrs) = db.function_with_body_attributes(FunctionWithBodyId::Free(*func_id)) else { return None };
+                    Some((*func_id, try_extract_test_config(db.upcast(), attrs).unwrap()?))
+                }),
+            );
         }
     }
     tests
+}
+
+/// Extracts the configuration of a tests from attributes, or returns the diagnostics if the
+/// attributes are set illegally.
+pub fn try_extract_test_config(
+    db: &dyn SyntaxGroup,
+    attrs: Vec<Attribute>,
+) -> Result<Option<TestConfig>, Vec<PluginDiagnostic>> {
+    let test_attr = attrs.iter().find(|attr| attr.id.as_str() == "test");
+    let ignore_attr = attrs.iter().find(|attr| attr.id.as_str() == "ignore");
+    let available_gas_attr = attrs
+        .iter()
+        .find(|attr| attr.id.as_str() == "available_gas");
+    let should_panic_attr = attrs.iter().find(|attr| attr.id.as_str() == "should_panic");
+    let mut diagnostics = vec![];
+    if let Some(attr) = test_attr {
+        if !attr.args.is_empty() {
+            diagnostics.push(PluginDiagnostic {
+                stable_ptr: attr.id_stable_ptr.untyped(),
+                message: "Attribute should not have arguments.".into(),
+            });
+        }
+    } else {
+        for attr in [ignore_attr, available_gas_attr, should_panic_attr]
+            .into_iter()
+            .flatten()
+        {
+            diagnostics.push(PluginDiagnostic {
+                stable_ptr: attr.id_stable_ptr.untyped(),
+                message: "Attribute should only appear on tests.".into(),
+            });
+        }
+    }
+    let ignored = if let Some(attr) = ignore_attr {
+        if !attr.args.is_empty() {
+            diagnostics.push(PluginDiagnostic {
+                stable_ptr: attr.id_stable_ptr.untyped(),
+                message: "Attribute should not have arguments.".into(),
+            });
+        }
+        true
+    } else {
+        false
+    };
+    let available_gas = if let Some(attr) = available_gas_attr {
+        if let [AttributeArg {
+            variant:
+                AttributeArgVariant::Unnamed {
+                    value: ast::Expr::Literal(literal),
+                    ..
+                },
+            ..
+        }] = &attr.args[..]
+        {
+            literal.token(db).text(db).parse::<usize>().ok()
+        } else {
+            diagnostics.push(PluginDiagnostic {
+                stable_ptr: attr.id_stable_ptr.untyped(),
+                message: "Attribute should have a single value argument.".into(),
+            });
+            None
+        }
+    } else {
+        None
+    };
+    let (should_panic, expected_panic_value) = if let Some(attr) = should_panic_attr {
+        if attr.args.is_empty() {
+            (true, None)
+        } else {
+            (
+                true,
+                extract_panic_values(db, attr).on_none(|| {
+                    diagnostics.push(PluginDiagnostic {
+                        stable_ptr: attr.args_stable_ptr.untyped(),
+                        message: "Expected panic must be of the form `expected = <tuple of \
+                                  felt252s>`."
+                            .into(),
+                    });
+                }),
+            )
+        }
+    } else {
+        (false, None)
+    };
+    if !diagnostics.is_empty() {
+        return Err(diagnostics);
+    }
+    Ok(if test_attr.is_none() {
+        None
+    } else {
+        Some(TestConfig {
+            available_gas,
+            expectation: if should_panic {
+                TestExpectation::Panics(if let Some(values) = expected_panic_value {
+                    PanicExpectation::Exact(values)
+                } else {
+                    PanicExpectation::Any
+                })
+            } else {
+                TestExpectation::Success
+            },
+            ignored,
+        })
+    })
+}
+/// Tries to extract the relevant expected panic values.
+fn extract_panic_values(db: &dyn SyntaxGroup, attr: &Attribute) -> Option<Vec<Felt252>> {
+    let [
+    AttributeArg {
+        variant: AttributeArgVariant::Named { name, value: panics, .. },
+        ..
+    }
+    ] = &attr.args[..] else {
+        return None;
+    };
+    if name != "expected" {
+        return None;
+    }
+    let ast::Expr::Tuple(panics) = panics else { return None };
+    panics
+        .expressions(db)
+        .elements(db)
+        .into_iter()
+        .map(|value| match value {
+            ast::Expr::Literal(literal) => {
+                Some(literal.numeric_value(db).unwrap_or_default().into())
+            }
+            ast::Expr::ShortString(literal) => {
+                Some(literal.numeric_value(db).unwrap_or_default().into())
+            }
+            _ => None,
+        })
+        .collect::<Option<Vec<_>>>()
 }

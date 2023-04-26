@@ -23,30 +23,31 @@ home = "0.5.3"
 glob = "0.3.0"
 
 # Cairo runner dependencies
-cairo-lang-runner = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-compiler = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-casm = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-debug = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-sierra = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-sierra-ap-change = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-sierra-gas = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-sierra-generator = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-sierra-to-casm = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-starknet = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-syntax = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
-cairo-lang-plugins = { git = "https://github.com/starkware-libs/cairo",rev = "v1.0.0-alpha.6"}
+cairo-lang-runner = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-compiler = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-casm = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-debug = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-sierra = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-sierra-ap-change = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-sierra-gas = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-sierra-generator = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-sierra-to-casm = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-starknet = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-syntax = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-plugins = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
+cairo-lang-lowering = { git = "https://github.com/starkware-libs/cairo",rev = "7b4bbf3d57230e0e307fbb634394f6e57b3c63cc"}
 
 
 anyhow = "1.0.66"
 ark-ff = "0.4.0-alpha.7"
 ark-std = "0.3.0"
-cairo-felt = "0.1.1"
-cairo-vm = "0.1.1"
+cairo-felt = "0.3.0-rc1"
+cairo-vm = "0.3.0-rc1"
 clap = { version = "4.0", features = ["derive"] }
 itertools = "0.10.3"
 num-bigint = "0.4"
@@ -55,6 +56,7 @@ salsa = "0.16.1"
 thiserror = "1.0.32"
 rayon = "0.9.0"
 colored = "2"
+unescaper = "0.1.1"
 
 [dev-dependencies]
 assert_cmd = "0.11.0"
