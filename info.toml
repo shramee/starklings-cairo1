@@ -530,10 +530,19 @@ Similar to the previous exercise, but this time we want to `read` a value from s
 """
 
 [[exercises]]
-name = "starknet1"
+name = "starknet4"
 path = "exercises/starknet/basics/starknet4.cairo"
 mode = "test"
 hint = """ 
 You can storage mappings by using the LegacyMap<T, U> type. In this exercise, each user has a
 balance stored in the contract using a mapping from its address (of type ContractAddress) to its balance (u64).
+"""
+
+[[exercises]]
+name = "starknet5"
+path = "exercises/starknet/interoperability/starknet5.cairo"
+mode = "test"
+hint = """ 
+You can call other contracts from inside a contract. To do this, you will need to create a Dispatcher object
+of the type of the called contract. Dispatchers have associated methods available under the `DispatcherTrait`, corresponding to the external functions of the contract that you want to call.
 """

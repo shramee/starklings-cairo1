@@ -1,6 +1,6 @@
 use core::traits::Into;
 use core::traits::Default;
-use integer::BoundedInt;
+use integer::{u16_sqrt, u32_sqrt, u64_sqrt, u8_sqrt, BoundedInt, u128_wrapping_sub };
 
 #[test]
 fn test_u8_operators() {
@@ -22,6 +22,12 @@ fn test_u8_operators() {
     assert(5_u8 >= 2_u8, '5 >= 2');
     assert(!(3_u8 > 3_u8), '!(3 > 3)');
     assert(3_u8 >= 3_u8, '3 >= 3');
+    assert(u8_sqrt(9) == 3, 'u8_sqrt(9) == 3');
+    assert(u8_sqrt(10) == 3, 'u8_sqrt(10) == 3');
+    assert(u8_sqrt(0x40) == 0x8, 'u8_sqrt(2^6) == 2^3');
+    assert(u8_sqrt(0xff) == 0xf, 'Wrong square root result.');
+    assert(u8_sqrt(1) == 1, 'u8_sqrt(1) == 1');
+    assert(u8_sqrt(0) == 0, 'u8_sqrt(0) == 0');
 }
 
 #[test]
@@ -110,6 +116,12 @@ fn test_u16_operators() {
     assert(5_u16 >= 2_u16, '5 >= 2');
     assert(!(3_u16 > 3_u16), '!(3 > 3)');
     assert(3_u16 >= 3_u16, '3 >= 3');
+    assert(u16_sqrt(9) == 3, 'u16_sqrt(9) == 3');
+    assert(u16_sqrt(10) == 3, 'u16_sqrt(10) == 3');
+    assert(u16_sqrt(0x400) == 0x20, 'u16_sqrt(2^10) == 2^5');
+    assert(u16_sqrt(0xffff) == 0xff, 'Wrong square root result.');
+    assert(u16_sqrt(1) == 1, 'u64_sqrt(1) == 1');
+    assert(u16_sqrt(0) == 0, 'u64_sqrt(0) == 0');
 }
 
 #[test]
@@ -198,6 +210,12 @@ fn test_u32_operators() {
     assert(5_u32 >= 2_u32, '5 >= 2');
     assert(!(3_u32 > 3_u32), '!(3 > 3)');
     assert(3_u32 >= 3_u32, '3 >= 3');
+    assert(u32_sqrt(9) == 3, 'u32_sqrt(9) == 3');
+    assert(u32_sqrt(10) == 3, 'u32_sqrt(10) == 3');
+    assert(u32_sqrt(0x100000) == 0x400, 'u32_sqrt(2^20) == 2^10');
+    assert(u32_sqrt(0xffffffff) == 0xffff, 'Wrong square root result.');
+    assert(u32_sqrt(1) == 1, 'u64_sqrt(1) == 1');
+    assert(u32_sqrt(0) == 0, 'u64_sqrt(0) == 0');
 }
 
 #[test]
@@ -286,6 +304,12 @@ fn test_u64_operators() {
     assert(5_u64 >= 2_u64, '5 >= 2');
     assert(!(3_u64 > 3_u64), '!(3 > 3)');
     assert(3_u64 >= 3_u64, '3 >= 3');
+    assert(u64_sqrt(9) == 3, 'u64_sqrt(9) == 3');
+    assert(u64_sqrt(10) == 3, 'u64_sqrt(10) == 3');
+    assert(u64_sqrt(0x10000000000) == 0x100000, 'u64_sqrt(2^40) == 2^20');
+    assert(u64_sqrt(0xffffffffffffffff) == 0xffffffff, 'Wrong square root result.');
+    assert(u64_sqrt(1) == 1, 'u64_sqrt(1) == 1');
+    assert(u64_sqrt(0) == 0, 'u64_sqrt(0) == 0');
 }
 
 #[test]
@@ -383,18 +407,15 @@ fn test_u128_operators() {
     assert((2_u128 & 2_u128) == 2_u128, '2 & 2 == 2');
     assert((2_u128 & 3_u128) == 2_u128, '2 & 3 == 2');
     assert((3_u128 ^ 6_u128) == 5_u128, '3 ^ 6 == 5');
-    assert(u128_sqrt(9_u128) == 3_u128, 'u128_sqrt(9) == 3');
-    assert(u128_sqrt(10_u128) == 3_u128, 'u128_sqrt(10) == 3');
+    assert(u128_sqrt(9) == 3, 'u128_sqrt(9) == 3');
+    assert(u128_sqrt(10) == 3, 'u128_sqrt(10) == 3');
+    assert(u128_sqrt(0x10000000000000000000000000) == 0x4000000000000, 'u128_sqrt(2^100) == 2^50');
     assert(
-        u128_sqrt(1267650600228229401496703205376_u128) == 1125899906842624_u128,
-        'u128_sqrt(2^100) == 2^50'
-    );
-    assert(
-        u128_sqrt(340282366920938463463374607431768211455_u128) == 18446744073709551615_u128,
+        u128_sqrt(0xffffffffffffffffffffffffffffffff) == 0xffffffffffffffff,
         'Wrong square root result.'
     );
-    assert(u128_sqrt(1_u128) == 1_u128, 'u128_sqrt(1) == 1');
-    assert(u128_sqrt(0_u128) == 0_u128, 'u128_sqrt(0) == 0');
+    assert(u128_sqrt(1) == 1, 'u128_sqrt(1) == 1');
+    assert(u128_sqrt(0) == 0, 'u128_sqrt(0) == 0');
 }
 
 fn pow_2_127() -> u128 {
@@ -427,6 +448,33 @@ fn test_u128_sub_overflow_3() {
 #[should_panic]
 fn test_u128_sub_overflow_4() {
     100_u128 - 1000_u128;
+}
+
+#[test]
+fn test_u128_wrapping_sub_1() {
+    let max_u128: u128 = BoundedInt::max();
+    let should_be_max = u128_wrapping_sub(0_u128, 1_u128);
+    assert(max_u128 == should_be_max, 'Should be max u128')
+}
+
+#[test]
+fn test_u128_wrapping_sub_2() {
+    let max_u128_minus_two: u128 = BoundedInt::max() - 2;
+    let should_be_max = u128_wrapping_sub(0_u128, 3_u128);
+    assert(max_u128_minus_two == should_be_max, 'Should be max u128 - 2')
+}
+
+#[test]
+fn test_u128_wrapping_sub_3() {
+    let max_u128_minus_899: u128 = BoundedInt::max() - 899;
+    let should_be_max = u128_wrapping_sub(100, 1000);
+    assert(max_u128_minus_899 == should_be_max, 'Should be max u128 - 899')
+}
+
+#[test]
+fn test_u128_wrapping_sub_4() {
+    let should_be_zero = u128_wrapping_sub(0_u128, 0_u128);
+    assert(should_be_zero == 0, 'Should be 0')
 }
 
 #[test]
@@ -638,7 +686,6 @@ fn test_max_u256_plus_1_overflow() {
     BoundedInt::max() + 1.into();
 }
 
-
 #[test]
 fn test_default_values() {
     assert(Default::default() == 0, '0 == 0');
@@ -658,4 +705,24 @@ fn test_default_felt252dict_values() {
     assert(Felt252DictValue::zero_default() == 0_u32, '0 == 0');
     assert(Felt252DictValue::zero_default() == 0_u64, '0 == 0');
     assert(Felt252DictValue::zero_default() == 0_u128, '0 == 0');
+}
+
+#[test]
+fn test_u256_sqrt() {
+    assert(u256_sqrt(9.into()) == 3, 'u256_sqrt(9) == 3');
+    assert(u256_sqrt(10.into()) == 3, 'u256_sqrt(10) == 3');
+    assert(
+        u256_sqrt(1267650600228229401496703205376.into()) == 1125899906842624,
+        'u256_sqrt(2^100) == 2^50'
+    );
+    assert(
+        u256_sqrt(340282366920938463463374607431768211455.into()) == 18446744073709551615,
+        'Wrong square root result.'
+    );
+    assert(u256_sqrt(1.into()) == 1, 'u256_sqrt(1) == 1');
+    assert(u256_sqrt(0.into()) == 0, 'u256_sqrt(0) == 0');
+
+    assert(u256_sqrt(BoundedInt::max()) == BoundedInt::max(), 'u256::MAX**0.5==u128::MAX');
+    let (high, low) = integer::u128_wide_mul(BoundedInt::max(), BoundedInt::max());
+    assert(u256_sqrt(as_u256(:high, :low)) == BoundedInt::max(), '(u128::MAX**2)**0.5==u128::MAX');
 }
