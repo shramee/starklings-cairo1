@@ -29,7 +29,7 @@ fn create_order_template() -> Order {
 #[test]
 fn test_your_order() {
     let order_template = create_order_template();
-    // TODO: Deserialize your order into multiple variables to make the assertions pass!
+    // TODO: Destructure your order into multiple variables to make the assertions pass!
     // let ...
 
     assert(name == 'Bob', 'Wrong name');
