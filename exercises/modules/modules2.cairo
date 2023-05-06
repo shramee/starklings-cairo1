@@ -1,8 +1,10 @@
 // I AM NOT DONE
+// These modules have some issues, can you fix?
+// Run `starklings hint modules2` or `hint` watch command for a hint.
+
 use debug::PrintTrait;
 const YEAR: felt252 = 2050;
 
-// These modules have some issues, can you fix?
 mod order {
     #[derive(Copy, Drop)]
     struct Order {
