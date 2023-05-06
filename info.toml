@@ -503,6 +503,23 @@ If you're having trouble updating the distance value in the `Fish` and `Dog` imp
 3. Reconstruct `self` with the updated variables (`self = MyStruct { ... }`) 
 """
 
+# MODULES
+
+[[exercises]]
+name = "modules1"
+path = "exercises/modules/modules1.cairo"
+mode = "test"
+hint = """"""
+
+[[exercises]]
+name = "modules2"
+path = "exercises/modules/modules2.cairo"
+mode = "test"
+hint = """
+While using functions/structs etc from outside the module,
+you can use full paths or `use` keyword to create shortcuts.
+"""
+
 # STARKNET
 
 [[exercises]]
