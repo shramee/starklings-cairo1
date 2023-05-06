@@ -510,7 +510,7 @@ name = "starknet1"
 path = "exercises/starknet/basics/starknet1.cairo"
 mode = "test"
 hint = """ 
-The constructor can take arguments, just like any other function.
+The functions are internal unless annotate. Check out the readme.md 😉
 """
 
 [[exercises]]
