@@ -24,8 +24,8 @@ Contract storage is represented as a `struct` with name `Storage`.
 struct Storage {
 	store: felt252, // Can be any type
 
-	// A u128 mapping to a bool
-	mapped: LegacyMap::<u128, bool>,
+	// A u32 mapping to a bool
+	mapped: LegacyMap::<u32, bool>,
 
 	// Use `tuple`s to have multiple values mapping
 	// Here a `ContractAddress` and a `u32` mapping to a Job struct
@@ -43,6 +43,16 @@ fn play {
 }
 ```
 
+`LegacyMap` types require a parameter with type matching the first generic type of the map when `read`/`write`.
+
+```rust
+#[external]
+fn play {
+	mapped::write( 83_u32, true );
+	let value = multi_map::read( 83_u32 ); // true
+}
+```
+
 ## `ContractAddress` type
 
 `ContractAddress` type is a semantic type for wallet/contract addresses.
@@ -53,6 +63,7 @@ use traits::TryInto; // Base TryInto trait
 use starknet::Felt252TryIntoContractAddress; // felt > ContractAddress impl
 use starknet::contract_address_to_felt252;
 use option::OptionTrait; // To unwrap
+use starknet::get_caller_address; // Gets caller address
 
 use debug::PrintTrait; // Just for printing
 #[test]
@@ -64,8 +75,9 @@ fn play() {
 	let owner_addr: ContractAddress = owner_felt.try_into().unwrap();
 	owner_addr.print();
 
+	let caller = get_caller_address();
 	// ContractAddress to Felt
-	let owner_felt: felt252 = contract_address_to_felt252(owner_addr);
+	let owner_felt: felt252 = contract_address_to_felt252(caller);
 	owner_felt.print();
 }
 ```
