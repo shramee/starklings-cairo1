@@ -509,33 +509,28 @@ If you're having trouble updating the distance value in the `Fish` and `Dog` imp
 name = "starknet1"
 path = "exercises/starknet/basics/starknet1.cairo"
 mode = "test"
-hint = """ 
-The functions are internal unless annotate. Check out the readme.md 😉
-"""
+hint = """"""
 
 [[exercises]]
 name = "starknet2"
 path = "exercises/starknet/basics/starknet2.cairo"
 mode = "test"
-hint = """ 
-Take a look at the constructor function to see how we can write values to storage.
-"""
+hint = """"""
 
 [[exercises]]
 name = "starknet3"
 path = "exercises/starknet/basics/starknet3.cairo"
 mode = "test"
-hint = """ 
 Similar to the previous exercise, but this time we want to `read` a value from storage.
 """
+hint = """ """
 
 [[exercises]]
 name = "starknet4"
 path = "exercises/starknet/basics/starknet4.cairo"
 mode = "test"
 hint = """ 
-You can storage mappings by using the LegacyMap<T, U> type. In this exercise, each user has a
-balance stored in the contract using a mapping from its address (of type ContractAddress) to its balance (u64).
+You can use LegacyMap<felt252, u32> for inventory.
 """
 
 [[exercises]]

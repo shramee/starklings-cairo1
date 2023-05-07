@@ -4,18 +4,16 @@
 // Jill says that contract should allow setting the owner when contract is deployed.
 // Help Jill rewrite the contract with a Storage and a constructor.
 // There is a `ContractAddress` type which should be used for Wallet addresses.
-// I AM NOT DONE
-// Execute `starklings hint starknet2` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
+
 #[contract]
-mod Jills_Contract {
+mod JillsContract {
     // This is required to use ContractAddress type
     use starknet::ContractAddress;
 
     struct Storage {
         // TODO: Add `contract_owner` storage, with ContractAddress type
-        
     }
 
     #[constructor]
@@ -25,7 +23,7 @@ mod Jills_Contract {
     }
 
     #[view]
-    fn whos_the_owner() -> ContractAddress {
+    fn get_owner() -> ContractAddress {
         // TODO: Read contract_owner storage
         
     }
@@ -41,15 +39,15 @@ mod test {
 
     use starknet::Felt252TryIntoContractAddress;
     use option::OptionTrait;
-    use super::Jills_Contract;
+    use super::JillsContract;
     #[test]
     #[available_gas(2000000000)]
-    fn test_starknet1() {
+    fn test_owner_setting() {
 
         let owner: felt252 = 'Jill';
-        Jills_Contract::constructor(owner.try_into().unwrap());
+        JillsContract::constructor(owner.try_into().unwrap());
 
-        let result: Span<felt252> = Jills_Contract::__external::whos_the_owner(ArrayTrait::new().span());
+        let result: Span<felt252> = JillsContract::__external::get_owner(ArrayTrait::new().span());
         let owner = *result.at(0);
         assert(owner == 'Jill', 'Owner should be Jill');
     }

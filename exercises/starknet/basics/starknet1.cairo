@@ -2,12 +2,13 @@
 // Starkling, Joe, is writing a really simple contract.
 // The contract shows that he is the owner of the contract.
 // However, his contract is not working. What's he missing?
+
 // I AM NOT DONE
 
 #[contract]
-mod Joes_Contract {
+mod JoesContract {
 
-    fn whos_the_owner() -> felt252 {
+    fn get_owner() -> felt252 {
         'Joe!'
     }
 
@@ -17,10 +18,10 @@ mod Joes_Contract {
 mod test {
     use array::ArrayTrait;
     use array::SpanTrait;
-    use super::Joes_Contract;
+    use super::JoesContract;
     #[test]
     #[available_gas(2000000000)]
-    fn test_starknet1() {
-        Joes_Contract::__external::whos_the_owner(ArrayTrait::new().span());
+    fn test_contract_view() {
+        JoesContract::__external::get_owner(ArrayTrait::new().span());
     }
 }
