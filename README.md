@@ -30,6 +30,15 @@ With rustup `curl https://sh.rustup.rs -sSf | sh -s`
 2. Run `cargo run --bin starklings`, this might take a while the first time.
 3. You should see this intro message, run `cargo run --bin starklings watch` when you are ready!
 
+## Start at a specific exercise
+
+To start watch at a specific exercise pass the name of the exercise to watch command.
+For example, to start at `starknet1`,
+
+```
+cargo run --bin starklings watch starknet1
+```
+
 ```
 starklings - An interactive tutorial to get started with Cairo and Starknet
 
@@ -54,12 +63,12 @@ Here's how starklings works,
 error message popping up as soon as you run starklings! This is part of the
 exercise that you're supposed to solve, so open the exercise file in an editor
 and start your detective work!
-3. If you're stuck on an exercise, there is a helpful hint you can view by
+1. If you're stuck on an exercise, there is a helpful hint you can view by
 typing `hint` (in watch mode), or running `cargo run --bin starklings hint
 exercise_name`.
-4. When you have solved the exercise successfully, Remove `// I AM NOT DONE`
+1. When you have solved the exercise successfully, Remove `// I AM NOT DONE`
 comment to move on to the next exercise.
-5. If an exercise doesn't make sense to you, please open an issue on GitHub!
+1. If an exercise doesn't make sense to you, please open an issue on GitHub!
 (https://github.com/shramee/starklings-cairo1/issues/new).
 
 Got all that? Great! To get started, run `starklings watch` in order to get the
