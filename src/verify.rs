@@ -40,7 +40,7 @@ fn compile_and_run_interactively(exercise: &Exercise) -> Result<bool, ()> {
     let progress_bar = ProgressBar::new_spinner();
     progress_bar.enable_steady_tick(100);
 
-    progress_bar.set_message(format!("Running {exercise}..."));
+    progress_bar.set_message(format!("Running {exercise} exercise..."));
 
     let run_state = compile_and_run_cairo(exercise, &progress_bar)?;
 
@@ -54,7 +54,7 @@ fn compile_and_test_interactively(exercise: &Exercise) -> Result<bool, ()> {
     let progress_bar = ProgressBar::new_spinner();
     progress_bar.enable_steady_tick(100);
 
-    progress_bar.set_message(format!("Testing {exercise}..."));
+    progress_bar.set_message(format!("Testing {exercise} exercise..."));
 
     let run_state = compile_and_test_cairo(exercise, &progress_bar)?;
 
