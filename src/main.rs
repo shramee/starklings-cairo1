@@ -4,6 +4,7 @@ use crate::run::{reset, run};
 use crate::verify::verify;
 use argh::FromArgs;
 use console::Emoji;
+use core::panic;
 use notify::DebouncedEvent;
 use notify::{RecommendedWatcher, RecursiveMode, Watcher};
 use std::ffi::OsStr;
@@ -64,7 +65,11 @@ struct VerifyArgs {}
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "watch")]
 /// Reruns `verify` when files were edited
-struct WatchArgs {}
+struct WatchArgs {
+    #[argh(positional)]
+    // Start from this exercise
+    start: Option<String>,
+}
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "compile_solutions")]
@@ -292,24 +297,36 @@ fn main() {
             }
         }
 
-        Subcommands::Watch(_subargs) => match watch(&exercises) {
-            Err(e) => {
-                println!("Error: Could not watch your progress. Error message was {e:?}.");
-                println!("Most likely you've run out of disk space or your 'inotify limit' has been reached.");
-                std::process::exit(1);
+        Subcommands::Watch(subargs) => {
+            let start = subargs.start;
+
+            let watching = match start {
+                Some(exercise) => match exercises.iter().position(|r| r.name == exercise) {
+                    Some(index) => watch(&exercises[index..]),
+                    None => panic!("Exercise {} not found.", exercise),
+                },
+                None => watch(&exercises),
+            };
+
+            match watching {
+                Err(e) => {
+                    println!("Error: Could not watch your progress. Error message was {e:?}.");
+                    println!("Most likely you've run out of disk space or your 'inotify limit' has been reached.");
+                    std::process::exit(1);
+                }
+                Ok(WatchStatus::Finished) => {
+                    println!(
+                        "{emoji} All exercises completed! {emoji}",
+                        emoji = Emoji("🎉", "★")
+                    );
+                    println!("\n{FINISH_LINE}\n");
+                }
+                Ok(WatchStatus::Unfinished) => {
+                    println!("We hope you're enjoying learning about Rust!");
+                    println!("If you want to continue working on the exercises at a later point, you can simply run `starklings watch` again");
+                }
             }
-            Ok(WatchStatus::Finished) => {
-                println!(
-                    "{emoji} All exercises completed! {emoji}",
-                    emoji = Emoji("🎉", "★")
-                );
-                println!("\n{FINISH_LINE}\n");
-            }
-            Ok(WatchStatus::Unfinished) => {
-                println!("We hope you're enjoying learning about Rust!");
-                println!("If you want to continue working on the exercises at a later point, you can simply run `starklings watch` again");
-            }
-        },
+        }
     }
 }
 
@@ -481,11 +498,11 @@ const FINISH_LINE: &str = r#"+--------------------------------------------------
                       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@(                     
                    &@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@(                  
                  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                
-               @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@              
-             &@@@@@@@@@@@@ @@@@@@@@@@@@@@@@&               @@@@@@@@             
-            @@@@@@@@@@@,     *@@@@@@@@@@                      @@@@@@&           
+               @@@@@@@@@@@*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@              
+             &@@@@@@@@@@@   @@@@@@@@@@@@@@@&               @@@@@@@@             
+            @@@@@@@@@@,       *@@@@@@@@@                      @@@@@@&           
            @@@@@@@@@@@@@@   @@@@@@@@@@                         *@@@@@&          
-          /@@@@@@@@@@@@@@@ @@@@@@@@@               .*********/@@@@@@@@          
+          /@@@@@@@@@@@@@@@-@@@@@@@@@               .*********/@@@@@@@@          
           @@@@@@@@@@@@@@@@@@@@@@@@               **********@@@@@@@@@@@@         
           @@@@@@@@@@@@@@@@@@@@@@                *********@@@@@@@@@@@@@@         
           @@@@@@@@@@@@@@@@@@@@                *********@@@@@@@@@@@@@@@@         
