@@ -521,8 +521,6 @@ hint = """"""
 name = "starknet3"
 path = "exercises/starknet/basics/starknet3.cairo"
 mode = "test"
-Similar to the previous exercise, but this time we want to `read` a value from storage.
-"""
 hint = """ """
 
 [[exercises]]
