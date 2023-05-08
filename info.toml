@@ -516,7 +516,7 @@ name = "modules2"
 path = "exercises/modules/modules2.cairo"
 mode = "test"
 hint = """
-While using functions/structs etc from outside the module,
+While using functions/structs and other items from outside the module,
 you can use full paths or `use` keyword to create shortcuts.
 """
 

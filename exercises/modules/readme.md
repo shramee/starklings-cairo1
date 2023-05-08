@@ -6,7 +6,7 @@ Here's some code to show modules at play,
 
 ## Declaring modules
 
-Modules can be declared in two way,
+Modules can be declared in two ways,
 
 | Code            | Description                  |
 | --------------- | ---------------------------- |
