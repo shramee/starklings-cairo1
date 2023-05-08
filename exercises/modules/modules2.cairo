@@ -3,13 +3,13 @@
 // Run `starklings hint modules2` or `hint` watch command for a hint.
 
 use debug::PrintTrait;
-const YEAR: felt252 = 2050;
+const YEAR: u16 = 2050;
 
 mod order {
     #[derive(Copy, Drop)]
     struct Order {
         name: felt252,
-        year: felt252,
+        year: u16,
         made_by_phone: bool,
         made_by_email: bool,
         item: felt252,

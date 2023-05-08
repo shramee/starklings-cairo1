@@ -1,6 +1,6 @@
 # Starknet Smart Contracts
 
-A Starknet contract is pretty much a Cairo module, or rather, it's represented by one.
+A Starknet contract can be created by annotating a Cairo module with the `#[contract]` attribute
 
 Starknet contract don't require a `main` function.
 Functions in the contract module may be annotated as a `#[view]` or an `#[external]` function. External/View functions can be called by the users of Starknet, and by other contracts. The functions without these annotations are internal and cannot be accessed by users nor by other contract.
@@ -85,3 +85,4 @@ fn play() {
 ## Further information
 
 -   For more details, check out [The Structure of a Cairo Smart Contract](https://book.starknet.io/chapter_2/structure.html) in [the Starknet book](https://book.starknet.io).
+-   [Cross-contract interactions](https://cairo-book.github.io/ch09-00-00-abis-and-cross-contract-interactions.html)

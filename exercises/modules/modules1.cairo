@@ -18,7 +18,7 @@ fn test_mod_fn() {
     assert(order_result == 'order_taken', 'Order not taken');
 }
 
-
+#[cfg(test)]
 mod tests {
     #[test]
     fn test_super_fn() {
