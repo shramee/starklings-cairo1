@@ -527,7 +527,7 @@ path = "exercises/modules/modules2.cairo"
 mode = "test"
 hint = """
 While using functions/structs and other items from outside the module,
-you can use full paths or `use` keyword to create shortcuts.
+you can refer to them with their full path or import them in the current context with the use keyword.
 """
 
 # STARKNET
