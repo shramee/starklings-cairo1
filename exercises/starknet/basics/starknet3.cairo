@@ -24,7 +24,7 @@ mod ProgressTracker {
     }
 
     #[external]
-    fn set_progress(user: ContractAddress, new_progress: felt252) {
+    fn set_progress(user: ContractAddress, new_progress: u16) {
         // TODO: assert owner is calling
         // TODO: set new_progress for user,
     }
