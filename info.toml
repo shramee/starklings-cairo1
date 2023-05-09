@@ -4,25 +4,33 @@
 name = "intro1"
 path = "exercises/intro/intro1.cairo"
 mode = "compile"
-hint = """"""
+hint = """
+No hints this time ;)
+"""
 
 [[exercises]]
 name = "intro2"
 path = "exercises/intro/intro2.cairo"
 mode = "compile"
-hint = """"""
+hint = """
+No hints this time ;)
+"""
 
 [[exercises]]
 name = "intro3"
 path = "exercises/intro/intro3.cairo"
 mode = "compile"
-hint = """"""
+hint = """
+No hints this time ;)
+"""
 
 [[exercises]]
 name = "intro4"
 path = "exercises/intro/intro4.cairo"
 mode = "compile"
-hint = """"""
+hint = """
+No hints this time ;)
+"""
 
 # VARIABLES
 
@@ -509,7 +517,9 @@ If you're having trouble updating the distance value in the `Fish` and `Dog` imp
 name = "modules1"
 path = "exercises/modules/modules1.cairo"
 mode = "test"
-hint = """"""
+hint = """
+You can bring a parent's modules items in the current module with super::item_name
+"""
 
 [[exercises]]
 name = "modules2"
@@ -526,13 +536,17 @@ you can refer to them with their full path or import them in the current context
 name = "starknet1"
 path = "exercises/starknet/basics/starknet1.cairo"
 mode = "test"
-hint = """"""
+hint = """
+No hints this time ;)
+"""
 
 [[exercises]]
 name = "starknet2"
 path = "exercises/starknet/basics/starknet2.cairo"
 mode = "test"
-hint = """"""
+hint = """
+No hints this time ;)
+"""
 
 [[exercises]]
 name = "starknet3"
