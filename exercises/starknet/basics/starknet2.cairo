@@ -7,6 +7,8 @@
 
 // I AM NOT DONE
 
+use starknet::ContractAddress;
+
 #[contract]
 mod JillsContract {
     // This is required to use ContractAddress type
@@ -14,6 +16,7 @@ mod JillsContract {
 
     struct Storage {
         // TODO: Add `contract_owner` storage, with ContractAddress type
+        contract_owner: ContractAddress
     }
 
     #[constructor]
@@ -25,8 +28,13 @@ mod JillsContract {
     #[view]
     fn get_owner() -> ContractAddress {
         // TODO: Read contract_owner storage
-        
+
     }
+}
+
+#[abi]
+trait IJillsContract {
+    fn get_owner() -> ContractAddress;
 }
 
 #[cfg(test)]
@@ -36,19 +44,28 @@ mod test {
     use array::SpanTrait;
     use debug::PrintTrait;
     use traits::TryInto;
+    use starknet::syscalls::deploy_syscall;
+    use option::OptionTrait;
+    use starknet::class_hash::Felt252TryIntoClassHash;
+    use core::result::ResultTrait;
+    use super::IJillsContractDispatcher;
+    use super::IJillsContractDispatcherTrait;
 
     use starknet::Felt252TryIntoContractAddress;
-    use option::OptionTrait;
     use super::JillsContract;
     #[test]
     #[available_gas(2000000000)]
     fn test_owner_setting() {
 
         let owner: felt252 = 'Jill';
-        JillsContract::constructor(owner.try_into().unwrap());
-
-        let result: Span<felt252> = JillsContract::__external::get_owner(ArrayTrait::new().span());
-        let owner = *result.at(0);
-        assert(owner == 'Jill', 'Owner should be Jill');
+        let mut calldata = ArrayTrait::new();
+        calldata.append('Jill');
+        let (address0, _) = deploy_syscall(
+            JillsContract::TEST_CLASS_HASH.try_into().unwrap(), 0, calldata.span(), false
+        ).unwrap();
+        let dispatcher = IJillsContractDispatcher { contract_address: address0 };
+        let owner = dispatcher.get_owner();
+        assert(owner == 'Jill'.try_into().unwrap(), 'Owner should be Jill');
     }
+
 }

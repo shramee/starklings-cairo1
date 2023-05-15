@@ -2,10 +2,10 @@
 // Liz, a friend of Jill, wants to manage inventory for her store on-chain.
 // This is a bit challenging for Joe and Jill, Liz prepared an outline
 // for how contract should work, can you help Jill and Joe write it?
-// I AM NOT DONE
 // Execute `starklings hint starknet4` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
+
 #[contract]
 mod LizInventory {
     use starknet::ContractAddress;
@@ -13,7 +13,8 @@ mod LizInventory {
 
     struct Storage {
         contract_owner: ContractAddress,
-        // TODO: add storage inventory, that maps product (felt252) to stock quantity
+        // TODO: add storage inventory, that maps product (felt252) to stock quantity (u32)
+
     }
 
     #[constructor]
@@ -27,6 +28,7 @@ mod LizInventory {
         // * takes product and new_stock
         // * adds new_stock to stock in inventory
         // * only owner can call this
+
     }
 
     #[external]
@@ -34,16 +36,19 @@ mod LizInventory {
         // TODO:
         // * takes product and quantity
         // * subtracts quantity from stock in inventory
-        // * asserting stock > quantity isn't necessary, but nice to explicitly
-        //   fail first and show that the case is covered
+        // * asserting stock > quantity isn't necessary, but nice to
+        //   explicitly fail first and show that the case is covered
         // * anybody can call this
+
     }
 
     #[view]
     fn get_stock() {
-        // TODO: return product stock in inventory
-    }
+        // TODO:
+        // * takes product
+        // * returns product stock in inventory
 
+    }
 }
 
 #[cfg(test)]
@@ -81,13 +86,13 @@ mod test {
         starknet::testing::set_caller_address( owner );
 
         // Add stock
-        LizInventory::__external::add_stock( util_span_2_items( 'Nano', 10 ) );
-        let joe_score = util_get_span_first( LizInventory::__external::get_stock( util_span_1_item( 'Nano' ) ) );
-        assert( joe_score == 10, 'stock should be 10' );
+        LizInventory::add_stock( 'Nano', 10_u32 );
+        let stock = LizInventory::get_stock( 'Nano' );
+        assert( stock == 10_u32, 'stock should be 10' );
 
-        LizInventory::__external::add_stock( util_span_2_items( 'Nano', 15 ) );
-        let joe_score = util_get_span_first( LizInventory::__external::get_stock( util_span_1_item( 'Nano' ) ) );
-        assert( joe_score == 25, 'stock should be 25' );
+        LizInventory::add_stock( 'Nano', 15_u32 );
+        let stock = LizInventory::get_stock( 'Nano' );
+        assert( stock == 15_u32, 'stock should be 25' );
     }
 
     #[test]
@@ -100,16 +105,16 @@ mod test {
         starknet::testing::set_caller_address( owner );
 
         // Add stock
-        LizInventory::__external::add_stock( util_span_2_items( 'Nano', 10 ) );
-        let joe_score = util_get_span_first( LizInventory::__external::get_stock( util_span_1_item( 'Nano' ) ) );
-        assert( joe_score == 10, 'stock should be 10' );
+        LizInventory::add_stock( 'Nano', 10_u32 );
+        let stock = LizInventory::get_stock( 'Nano' );
+        assert( stock == 10_u32, 'stock should be 10' );
 
         // Call contract as owner
         starknet::testing::set_caller_address( 0.try_into().unwrap() );
 
-        LizInventory::__external::purchase( util_span_2_items( 'Nano', 2 ) );
-        let joe_score = util_get_span_first( LizInventory::__external::get_stock( util_span_1_item( 'Nano' ) ) );
-        assert( joe_score == 8, 'stock should be 8' );
+        LizInventory::purchase( 'Nano', 2 );
+        let stock = LizInventory::get_stock( 'Nano' );
+        assert( stock == 8_u32, 'stock should be 8' );
     }
 
     #[test]
@@ -119,7 +124,7 @@ mod test {
         let owner = util_felt_addr( 'Elizabeth' );
         LizInventory::constructor(owner);
         // Try to add stock, should panic to pass test!
-        LizInventory::__external::add_stock( util_span_2_items( 'Nano', 20 ) );
+        LizInventory::add_stock( 'Nano', 20_u32 );
     }
 
     #[test]
@@ -129,24 +134,7 @@ mod test {
         let owner = util_felt_addr( 'Elizabeth' );
         LizInventory::constructor(owner);
         // Purchse out of stock
-        LizInventory::__external::purchase( util_span_2_items( 'Nano', 2 ) );
-    }
-
-    fn util_span_2_items(item1: felt252 , item2: felt252) -> Span<felt252> {
-        let mut arr = ArrayTrait::new();
-        arr.append( item1 );
-        arr.append( item2 );
-        arr.span()
-    }
-
-    fn util_span_1_item( item: felt252 ) -> Span<felt252> {
-        let mut arr = ArrayTrait::new();
-        arr.append( item );
-        arr.span()
-    }
-
-    fn util_get_span_first( result: Span<felt252> ) -> felt252 {
-        *result.at(0)
+        LizInventory::purchase( 'Nano', 2_u32 );
     }
 
     fn util_felt_addr(addr_felt: felt252) -> ContractAddress {

@@ -30,8 +30,8 @@ mod ProgressTracker {
     }
 
     #[view]
-    fn get_progress(user: ContractAddress) -> felt252 {
-        // Update user progress
+    fn get_progress(user: ContractAddress) -> u16 {
+        // Get user progress
     }
 
 }
@@ -71,11 +71,11 @@ mod test {
         starknet::testing::set_caller_address( owner );
 
         // Set progress
-        ProgressTracker::__external::set_progress( util_span_2_items( 'Joe', 20 ) );
-        ProgressTracker::__external::set_progress( util_span_2_items( 'Jill', 25 ) );
+        ProgressTracker::set_progress( 'Joe'.try_into().unwrap(), 20_u16 );
+        ProgressTracker::set_progress( 'Jill'.try_into().unwrap(), 25_u16 );
 
-        let joe_score = util_get_span_first( ProgressTracker::__external::get_progress( util_span_1_item( 'Joe' ) ) );
-        assert( joe_score == 20, 'Joe\'s progress should be 20' );
+        let joe_score = ProgressTracker::get_progress( 'Joe'.try_into().unwrap() );
+        assert( joe_score == 20_u16, 'Joe\'s progress should be 20' );
     }
 
     #[test]
@@ -90,24 +90,7 @@ mod test {
         starknet::testing::set_caller_address( jon_doe );
 
         // Try to set progress, should panic to pass test!
-        ProgressTracker::__external::set_progress( util_span_2_items( 'Joe', 20 ) );
-    }
-
-    fn util_span_2_items(item1: felt252 , item2: felt252) -> Span<felt252> {
-        let mut arr = ArrayTrait::new();
-        arr.append( item1 );
-        arr.append( item2 );
-        arr.span()
-    }
-
-    fn util_span_1_item( item: felt252 ) -> Span<felt252> {
-        let mut arr = ArrayTrait::new();
-        arr.append( item );
-        arr.span()
-    }
-
-    fn util_get_span_first( result: Span<felt252> ) -> felt252 {
-        *result.at(0)
+        ProgressTracker::set_progress( 'Joe'.try_into().unwrap(), 20_u16 );
     }
 
     fn util_felt_addr(addr_felt: felt252) -> ContractAddress {
