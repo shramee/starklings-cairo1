@@ -4,25 +4,33 @@
 name = "intro1"
 path = "exercises/intro/intro1.cairo"
 mode = "compile"
-hint = """"""
+hint = """
+No hints this time ;)
+"""
 
 [[exercises]]
 name = "intro2"
 path = "exercises/intro/intro2.cairo"
 mode = "compile"
-hint = """"""
+hint = """
+No hints this time ;)
+"""
 
 [[exercises]]
 name = "intro3"
 path = "exercises/intro/intro3.cairo"
 mode = "compile"
-hint = """"""
+hint = """
+No hints this time ;)
+"""
 
 [[exercises]]
 name = "intro4"
 path = "exercises/intro/intro4.cairo"
 mode = "compile"
-hint = """"""
+hint = """
+No hints this time ;)
+"""
 
 # VARIABLES
 
@@ -501,4 +509,64 @@ If you're having trouble updating the distance value in the `Fish` and `Dog` imp
 1. Destructure the object into mutable variables
 2. Update the distance variable
 3. Reconstruct `self` with the updated variables (`self = MyStruct { ... }`) 
+"""
+
+# MODULES
+
+[[exercises]]
+name = "modules1"
+path = "exercises/modules/modules1.cairo"
+mode = "test"
+hint = """
+You can bring a parent's modules items in the current module with super::item_name
+"""
+
+[[exercises]]
+name = "modules2"
+path = "exercises/modules/modules2.cairo"
+mode = "test"
+hint = """
+While using functions/structs and other items from outside the module,
+you can refer to them with their full path or import them in the current context with the use keyword.
+"""
+
+# STARKNET
+
+[[exercises]]
+name = "starknet1"
+path = "exercises/starknet/basics/starknet1.cairo"
+mode = "test"
+hint = """
+No hints this time ;)
+"""
+
+[[exercises]]
+name = "starknet2"
+path = "exercises/starknet/basics/starknet2.cairo"
+mode = "test"
+hint = """
+No hints this time ;)
+"""
+
+[[exercises]]
+name = "starknet3"
+path = "exercises/starknet/basics/starknet3.cairo"
+mode = "test"
+hint = """ """
+
+[[exercises]]
+name = "starknet4"
+path = "exercises/starknet/basics/starknet4.cairo"
+mode = "test"
+hint = """ 
+You can use LegacyMap<felt252, u32> for inventory.
+"""
+
+[[exercises]]
+name = "starknet5"
+path = "exercises/starknet/interoperability/starknet5.cairo"
+mode = "test"
+hint = """ 
+You can call other contracts from inside a contract. To do this, you will need to create a Dispatcher object
+of the type of the called contract. Dispatchers have associated methods available under the `DispatcherTrait`, corresponding to the external functions of the contract that you want to call.
 """

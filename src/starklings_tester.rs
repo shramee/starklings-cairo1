@@ -1,16 +1,17 @@
 //! Compiles and runs a Cairo program.
 
+use std::collections::HashMap;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
 
-use anyhow::{bail, Context};
+use anyhow::{bail, Context, Result};
 use cairo_felt::Felt252;
 use cairo_lang_compiler::db::RootDatabase;
 use cairo_lang_compiler::diagnostics::DiagnosticsReporter;
 use cairo_lang_compiler::project::setup_project;
 use cairo_lang_debug::DebugWithDb;
 use cairo_lang_defs::ids::{FreeFunctionId, FunctionWithBodyId, ModuleItemId};
-use cairo_lang_defs::plugin::PluginDiagnostic;
+use cairo_lang_defs::plugin::{MacroPlugin, PluginDiagnostic, PluginResult};
 use cairo_lang_diagnostics::ToOption;
 use cairo_lang_filesystem::cfg::{Cfg, CfgSet};
 use cairo_lang_filesystem::db::init_dev_corelib;
@@ -22,19 +23,21 @@ use cairo_lang_runner::short_string::as_cairo_short_string;
 use cairo_lang_runner::{RunResultValue, SierraCasmRunner};
 use cairo_lang_semantic::db::SemanticGroup;
 use cairo_lang_semantic::items::functions::GenericFunctionId;
-use cairo_lang_semantic::literals::LiteralLongId;
-use cairo_lang_semantic::plugin::SemanticPlugin;
+
+use cairo_lang_semantic::plugin::{AsDynMacroPlugin, SemanticPlugin};
 use cairo_lang_semantic::{ConcreteFunction, FunctionLongId};
 use cairo_lang_sierra::extensions::gas::CostTokenType;
 use cairo_lang_sierra::ids::FunctionId;
 use cairo_lang_sierra_generator::db::SierraGenGroup;
-use cairo_lang_sierra_generator::replace_ids::replace_sierra_ids_in_program;
+use cairo_lang_sierra_generator::replace_ids::{replace_sierra_ids_in_program, DebugReplacer, SierraIdReplacer};
 use cairo_lang_sierra_to_casm::metadata::MetadataComputationConfig;
 use cairo_lang_starknet::casm_contract_class::ENTRY_POINT_COST;
-use cairo_lang_starknet::contract::{find_contracts, get_module_functions};
+use cairo_lang_starknet::contract::{
+    find_contracts, get_contracts_info, get_module_functions, ContractInfo,
+};
 use cairo_lang_starknet::plugin::consts::{CONSTRUCTOR_MODULE, EXTERNAL_MODULE, L1_HANDLER_MODULE};
 use cairo_lang_starknet::plugin::StarkNetPlugin;
-use cairo_lang_syntax::attribute::structured::{Attribute, AttributeArg, AttributeArgVariant};
+use cairo_lang_syntax::attribute::structured::{Attribute, AttributeArg, AttributeArgVariant, AttributeListStructurize};
 
 use cairo_lang_syntax::node::db::SyntaxGroup;
 use cairo_lang_syntax::node::{ast, Terminal, Token};
@@ -44,7 +47,6 @@ use clap::Parser;
 use colored::Colorize;
 use itertools::{chain, Itertools};
 use rayon::prelude::{IntoParallelIterator, ParallelIterator};
-use unescaper::unescape;
 
 const CORELIB_DIR_NAME: &str = "corelib/src";
 
@@ -79,166 +81,210 @@ enum TestStatus {
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
-    let res = test_cairo_program(&args);
-    if let Err(e) = res {
+    let runner = TestRunner::new(
+        &args.path,
+        "",
+        false,
+        false,
+        true)?;
+    if let Err(e) = runner.run() {
         eprintln!("{e}");
         std::process::exit(1);
     }
     Ok(())
 }
 
-pub fn test_cairo_program(args: &Args) -> anyhow::Result<String> {
-    // TODO(orizi): Use `get_default_plugins` and just update the config plugin.
-    let mut plugins: Vec<Arc<dyn SemanticPlugin>> = get_default_plugins();
-    if args.starknet {
-        plugins.push(Arc::new(StarkNetPlugin::default()));
-    }
-    let db = &mut RootDatabase::builder()
-        .with_cfg(CfgSet::from_iter([Cfg::name("test")]))
-        .with_plugins(plugins)
-        .detect_corelib()
-        .build()?;
+pub struct TestRunner {
+    pub db: RootDatabase,
+    pub main_crate_ids: Vec<CrateId>,
+    pub filter: String,
+    pub include_ignored: bool,
+    pub ignored: bool,
+    pub starknet: bool,
+}
 
-    let mut corelib_dir = std::env::current_exe()
-        .unwrap_or_else(|e| panic!("Problem getting the executable path: {e:?}"));
-    corelib_dir.pop();
-    corelib_dir.pop();
-    corelib_dir.pop();
-    corelib_dir.push(CORELIB_DIR_NAME);
-    init_dev_corelib(db, corelib_dir);
+impl TestRunner {
+    /// Configure a new test runner
+    ///
+    /// # Arguments
+    ///
+    /// * `path` - The path to compile and run its tests
+    /// * `filter` - Run only tests containing the filter string
+    /// * `include_ignored` - Include ignored tests as well
+    /// * `ignored` - Run ignored tests only
+    /// * `starknet` - Add the starknet plugin to run the tests
+    pub fn new(
+        path: &str,
+        filter: &str,
+        include_ignored: bool,
+        ignored: bool,
+        starknet: bool,
+    ) -> Result<Self> {
+        let mut plugins = get_default_plugins();
+        plugins.push(Arc::new(TestPlugin::default()));
+        if starknet {
+            plugins.push(Arc::new(StarkNetPlugin::default()));
+        }
+        let db = &mut RootDatabase::builder()
+            .with_cfg(CfgSet::from_iter([Cfg::name("test")]))
+            .with_plugins(plugins)
+            .detect_corelib()
+            .build()?;
 
-    let main_crate_ids = setup_project(db, Path::new(&args.path))?;
+        let main_crate_ids = setup_project(db, Path::new(&path))?;
 
-    if DiagnosticsReporter::stderr().check(db) {
-        bail!("failed to compile: {}", args.path);
-    }
-    let all_entry_points = if args.starknet {
-        find_contracts(db, &main_crate_ids)
-            .iter()
-            .flat_map(|contract| {
-                chain!(
-                    get_module_functions(db, contract, EXTERNAL_MODULE).unwrap(),
-                    get_module_functions(db, contract, CONSTRUCTOR_MODULE).unwrap(),
-                    get_module_functions(db, contract, L1_HANDLER_MODULE).unwrap()
-                )
-            })
-            .flat_map(|func_id| ConcreteFunctionWithBodyId::from_no_generics_free(db, func_id))
-            .collect()
-    } else {
-        vec![]
-    };
-    let function_set_costs: OrderedHashMap<FunctionId, OrderedHashMap<CostTokenType, i32>> =
-        all_entry_points
-            .iter()
-            .map(|func_id| {
-                (
-                    db.function_with_body_sierra(*func_id).unwrap().id.clone(),
-                    [(CostTokenType::Const, ENTRY_POINT_COST)].into(),
-                )
-            })
-            .collect();
-    let all_tests = find_all_tests(db, main_crate_ids);
+        if DiagnosticsReporter::stderr().check(db) {
+            bail!("failed to compile: {}", path);
+        }
 
-    let sierra_program = db
-        .get_sierra_program_for_functions(
-            chain!(
-                all_entry_points.into_iter(),
-                all_tests.iter().flat_map(|(func_id, _cfg)| {
-                    ConcreteFunctionWithBodyId::from_no_generics_free(db, *func_id)
-                })
-            )
-            .collect(),
-        )
-        .to_option()
-        .with_context(|| "Compilation failed without any diagnostics.")?;
-    let sierra_program = replace_sierra_ids_in_program(db, &sierra_program);
-    let total_tests_count = all_tests.len();
-
-    let named_tests = all_tests
-        .into_iter()
-        .map(|(func_id, mut test)| {
-            // Un-ignoring all the tests in `include-ignored` mode.
-            if args.include_ignored {
-                test.ignored = false;
-            }
-            (
-                format!(
-                    "{:?}",
-                    FunctionLongId {
-                        function: ConcreteFunction {
-                            generic_function: GenericFunctionId::Free(func_id),
-                            generic_args: vec![]
-                        }
-                    }
-                    .debug(db)
-                ),
-                test,
-            )
+        Ok(Self {
+            db: db.snapshot(),
+            main_crate_ids,
+            filter: filter.into(),
+            include_ignored,
+            ignored,
+            starknet,
         })
-        .filter(|(name, _)| name.contains(&args.filter))
-        // Filtering unignored tests in `ignored` mode.
-        .filter(|(_, test)| !args.ignored || test.ignored)
-        .collect_vec();
-    let filtered_out = total_tests_count - named_tests.len();
-    let TestsSummary {
-        passed,
-        failed,
-        ignored,
-        failed_run_results,
-    } = run_tests(named_tests, sierra_program, function_set_costs)?;
-    let mut result_string = String::new();
-    if failed.is_empty() {
-        result_string.push_str(
-            format!(
+    }
+
+    /// Runs the tests and process the results for a summary.
+    pub fn run(&self) -> Result<String> {
+        let db = &self.db;
+
+        let all_entry_points = if self.starknet {
+            find_contracts(db, &self.main_crate_ids)
+                .iter()
+                .flat_map(|contract| {
+                    chain!(
+                        get_module_functions(db, contract, EXTERNAL_MODULE).unwrap(),
+                        get_module_functions(db, contract, CONSTRUCTOR_MODULE).unwrap(),
+                        get_module_functions(db, contract, L1_HANDLER_MODULE).unwrap()
+                    )
+                })
+                .flat_map(|func_id| ConcreteFunctionWithBodyId::from_no_generics_free(db, func_id))
+                .collect()
+        } else {
+            vec![]
+        };
+        let function_set_costs: OrderedHashMap<FunctionId, OrderedHashMap<CostTokenType, i32>> =
+            all_entry_points
+                .iter()
+                .map(|func_id| {
+                    (
+                        db.function_with_body_sierra(*func_id).unwrap().id.clone(),
+                        [(CostTokenType::Const, ENTRY_POINT_COST)].into(),
+                    )
+                })
+                .collect();
+        let all_tests = find_all_tests(db, self.main_crate_ids.clone());
+        let sierra_program = self
+            .db
+            .get_sierra_program_for_functions(
+                chain!(
+                    all_entry_points.into_iter(),
+                    all_tests.iter().flat_map(|(func_id, _cfg)| {
+                        ConcreteFunctionWithBodyId::from_no_generics_free(db, *func_id)
+                    })
+                )
+                .collect(),
+            )
+            .to_option()
+            .with_context(|| "Compilation failed without any diagnostics.")?;
+        let replacer = DebugReplacer { db };
+        let sierra_program = replacer.apply(&sierra_program);
+        let total_tests_count = all_tests.len();
+        let named_tests = all_tests
+            .into_iter()
+            .map(|(func_id, mut test)| {
+                // Un-ignoring all the tests in `include-ignored` mode.
+                if self.include_ignored {
+                    test.ignored = false;
+                }
+                (
+                    format!(
+                        "{:?}",
+                        FunctionLongId {
+                            function: ConcreteFunction {
+                                generic_function: GenericFunctionId::Free(func_id),
+                                generic_args: vec![]
+                            }
+                        }
+                        .debug(db)
+                    ),
+                    test,
+                )
+            })
+            .filter(|(name, _)| name.contains(&self.filter))
+            // Filtering unignored tests in `ignored` mode.
+            .filter(|(_, test)| !self.ignored || test.ignored)
+            .collect_vec();
+        let filtered_out = total_tests_count - named_tests.len();
+        let contracts_info = get_contracts_info(db, self.main_crate_ids.clone(), &replacer)?;
+        let TestsSummary {
+            passed,
+            failed,
+            ignored,
+            failed_run_results,
+        } = run_tests(
+            named_tests,
+            sierra_program,
+            function_set_costs,
+            contracts_info,
+        )?;
+        let mut result_string = String::new();
+        if failed.is_empty() {
+            result_string.push_str(
+                format!(
                 "test result: {}. {} passed; {} failed; {} ignored; {filtered_out} filtered out;",
                 "ok".bright_green(),
                 passed.len(),
                 failed.len(),
                 ignored.len()
             )
-            .as_str(),
-        );
-        Ok(result_string)
-    } else {
-        result_string.push_str("failures:".to_string().as_str());
-        for (failure, run_result) in failed.iter().zip_eq(failed_run_results) {
-            result_string.push_str(format!("   {failure} - ").as_str());
-            match run_result {
-                RunResultValue::Success(_) => {
-                    result_string.push_str(
-                        "expected panic but finished successfully."
-                            .to_string()
-                            .as_str(),
-                    );
-                }
-                RunResultValue::Panic(values) => {
-                    result_string.push_str("panicked with [".to_string().as_str());
-                    for value in &values {
-                        match as_cairo_short_string(value) {
-                            Some(as_string) => result_string
-                                .push_str(format!("{value} ('{as_string}'), ").as_str()),
-                            None => result_string.push_str(format!("{value}, ").as_str()),
-                        }
+                .as_str(),
+            );
+            Ok(result_string)
+        } else {
+            result_string.push_str("failures:".to_string().as_str());
+            for (failure, run_result) in failed.iter().zip_eq(failed_run_results) {
+                result_string.push_str(format!("   {failure} - ").as_str());
+                match run_result {
+                    RunResultValue::Success(_) => {
+                        result_string.push_str(
+                            "expected panic but finished successfully."
+                                .to_string()
+                                .as_str(),
+                        );
                     }
-                    result_string.push_str("].".to_string().as_str());
+                    RunResultValue::Panic(values) => {
+                        result_string.push_str("panicked with [".to_string().as_str());
+                        for value in &values {
+                            match as_cairo_short_string(value) {
+                                Some(as_string) => result_string
+                                    .push_str(format!("{value} ('{as_string}'), ").as_str()),
+                                None => result_string.push_str(format!("{value}, ").as_str()),
+                            }
+                        }
+                        result_string.push_str("].".to_string().as_str());
+                    }
                 }
             }
-        }
-        println!();
-        bail!(
-            "{}\n\
+            println!();
+            bail!(
+                "{}\n\
             test result: {}. {} passed; {} failed; {} ignored",
-            result_string,
-            "FAILED".bright_red(),
-            passed.len(),
-            failed.len(),
-            ignored.len()
-        )
+                result_string,
+                "FAILED".bright_red(),
+                passed.len(),
+                failed.len(),
+                ignored.len()
+            )
+        }
     }
 }
 
 /// Summary data of the ran tests.
-struct TestsSummary {
+pub struct TestsSummary {
     passed: Vec<String>,
     failed: Vec<String>,
     ignored: Vec<String>,
@@ -250,10 +296,12 @@ fn run_tests(
     named_tests: Vec<(String, TestConfig)>,
     sierra_program: cairo_lang_sierra::program::Program,
     function_set_costs: OrderedHashMap<FunctionId, OrderedHashMap<CostTokenType, i32>>,
+    contracts_info: HashMap<Felt252, ContractInfo>,
 ) -> anyhow::Result<TestsSummary> {
     let runner = SierraCasmRunner::new(
         sierra_program,
         Some(MetadataComputationConfig { function_set_costs }),
+        contracts_info,
     )
     .with_context(|| "Failed setting up runner.")?;
     println!("running {} tests", named_tests.len());
@@ -270,7 +318,12 @@ fn run_tests(
                 return Ok((name, TestStatus::Ignore));
             }
             let result = runner
-                .run_function(name.as_str(), &[], test.available_gas)
+                .run_function(
+                    runner.find_function(name.as_str())?,
+                    &[],
+                    test.available_gas,
+                    Default::default(),
+                )
                 .with_context(|| format!("Failed to run the function `{}`.", name.as_str()))?;
             Ok((
                 name,
@@ -497,3 +550,32 @@ fn extract_panic_values(db: &dyn SyntaxGroup, attr: &Attribute) -> Option<Vec<Fe
         })
         .collect::<Option<Vec<_>>>()
 }
+
+/// Plugin to create diagnostics for tests attributes.
+#[derive(Debug, Default)]
+#[non_exhaustive]
+pub struct TestPlugin;
+
+impl MacroPlugin for TestPlugin {
+    fn generate_code(&self, db: &dyn SyntaxGroup, item_ast: ast::Item) -> PluginResult {
+        PluginResult {
+            code: None,
+            diagnostics: if let ast::Item::FreeFunction(free_func_ast) = item_ast {
+                try_extract_test_config(db, free_func_ast.attributes(db).structurize(db)).err()
+            } else {
+                None
+            }
+                .unwrap_or_default(),
+            remove_original_item: false,
+        }
+    }
+}
+impl AsDynMacroPlugin for TestPlugin {
+    fn as_dyn_macro_plugin<'a>(self: Arc<Self>) -> Arc<dyn MacroPlugin + 'a>
+        where
+            Self: 'a,
+    {
+        self
+    }
+}
+impl SemanticPlugin for TestPlugin {}

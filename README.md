@@ -30,6 +30,17 @@ With rustup `curl https://sh.rustup.rs -sSf | sh -s`
 2. Run `cargo run --bin starklings`, this might take a while the first time.
 3. You should see this intro message, run `cargo run --bin starklings watch` when you are ready!
 
+## Start at a specific exercise `NEW`
+
+To start watch at a specific exercise pass the name of the exercise to watch command.
+For example, to start at `starknet1`,
+
+```
+cargo run --bin starklings watch starknet1
+```
+
+## Welcome message and instrucitons
+
 ```
 starklings - An interactive tutorial to get started with Cairo and Starknet
 
