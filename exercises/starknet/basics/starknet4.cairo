@@ -92,7 +92,7 @@ mod test {
 
         LizInventory::add_stock( 'Nano', 15_u32 );
         let stock = LizInventory::get_stock( 'Nano' );
-        assert( stock == 15_u32, 'stock should be 25' );
+        assert( stock == 25_u32, 'stock should be 25' );
     }
 
     #[test]
