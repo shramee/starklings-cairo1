@@ -16,7 +16,7 @@ mod JillsContract {
 
     struct Storage {
         // TODO: Add `contract_owner` storage, with ContractAddress type
-        contract_owner: ContractAddress
+
     }
 
     #[constructor]
