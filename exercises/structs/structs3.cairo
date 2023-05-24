@@ -43,7 +43,7 @@ impl PackageImpl of PackageTrait {
 fn fail_creating_weightless_package() {
     let sender_country = 'Spain';
     let recipient_country = 'Austria';
-    PackageTrait::new(sender_country, recipient_country, 0_usize);
+    PackageTrait::new(sender_country, recipient_country, 0);
 }
 
 #[test]
@@ -51,7 +51,7 @@ fn create_international_package() {
     let sender_country = 'Spain';
     let recipient_country = 'Russia';
 
-    let mut package = PackageTrait::new(sender_country, recipient_country, 1200_usize);
+    let mut package = PackageTrait::new(sender_country, recipient_country, 1200);
 
     assert(package.is_international() == true, 'Not international');
 }
@@ -61,7 +61,7 @@ fn create_local_package() {
     let sender_country = 'Canada';
     let recipient_country = sender_country;
 
-    let mut package = PackageTrait::new(sender_country, recipient_country, 1200_usize);
+    let mut package = PackageTrait::new(sender_country, recipient_country, 1200);
 
     assert(package.is_international() == false, 'International');
 }
@@ -71,10 +71,10 @@ fn calculate_transport_fees() {
     let sender_country = 'Spain';
     let recipient_country = 'Spain';
 
-    let cents_per_gram = 3_usize;
+    let cents_per_gram = 3;
 
-    let mut package = PackageTrait::new(sender_country, recipient_country, 1500_usize);
+    let mut package = PackageTrait::new(sender_country, recipient_country, 1500);
 
-    assert(package.get_fees(cents_per_gram) == 4500_usize, 'Wrong fees');
+    assert(package.get_fees(cents_per_gram) == 4500, 'Wrong fees');
 }
 

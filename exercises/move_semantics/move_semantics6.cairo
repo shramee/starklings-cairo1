@@ -11,7 +11,7 @@ struct Number {
 }
 
 fn main() {
-    let mut number = Number { value: 1111111_u32 };
+    let mut number = Number { value: 1111111 };
 
     get_value(number);
 
@@ -25,7 +25,7 @@ fn get_value(number: Number) -> u32 {
 
 // Should take ownership
 fn set_value(number: Number) {
-    let value = 2222222_u32;
+    let value = 2222222;
     number = Number { value };
     number.value.print();
 }

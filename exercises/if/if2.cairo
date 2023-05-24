@@ -20,6 +20,7 @@ fn foo_if_fizz(fizzish: felt252) -> felt252 {
 }
 
 // No test changes needed!
+#[cfg(test)]
 mod tests {
     use super::foo_if_fizz;
 

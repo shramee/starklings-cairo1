@@ -60,16 +60,16 @@ impl StateImpl of StateTrait {
 #[test]
 fn test_match_message_call() {
     let mut state = State {
-        quit: false, position: Point { x: 0_u8, y: 0_u8 }, color: (0_u8, 0_u8, 0_u8), 
+        quit: false, position: Point { x: 0, y: 0}, color: (0, 0, 0), 
     };
-    state.process(Message::ChangeColor((255_u8, 0_u8, 255_u8)));
+    state.process(Message::ChangeColor((255, 0, 255)));
     state.process(Message::Echo('hello world'));
-    state.process(Message::Move(Point { x: 10_u8, y: 15_u8 }));
+    state.process(Message::Move(Point { x: 10, y: 15}));
     state.process(Message::Quit(()));
 
-    assert(state.color == (255_u8, 0_u8, 255_u8), 'wrong color');
-    assert(state.position.x == 10_u8, 'wrong x position');
-    assert(state.position.y == 15_u8, 'wrong y position');
+    assert(state.color == (255, 0, 255), 'wrong color');
+    assert(state.position.x == 10, 'wrong x position');
+    assert(state.position.y == 15, 'wrong y position');
     assert(state.quit == true, 'quit should be true');
 }
 
