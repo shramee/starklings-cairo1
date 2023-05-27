@@ -85,4 +85,4 @@ fn play() {
 ## Further information
 
 -   For more details, check out [The Structure of a Cairo Smart Contract](https://book.starknet.io/chapter_2/structure.html) in [the Starknet book](https://book.starknet.io).
--   [Cross-contract interactions](https://cairo-book.github.io/ch09-00-00-abis-and-cross-contract-interactions.html)
+-   [Cross-contract interactions](https://cairo-book.github.io/ch99-02-00-abis-and-cross-contract-interactions.html)
