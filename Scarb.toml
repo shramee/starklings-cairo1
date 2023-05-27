@@ -1,0 +1,7 @@
+[package]
+name = "starklings_cairo1"
+version = "0.1.0"
+
+# See more keys and their definitions at https://docs.swmansion.com/scarb/docs/reference/manifest
+
+[dependencies]
