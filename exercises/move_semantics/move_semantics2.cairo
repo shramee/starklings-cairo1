@@ -10,13 +10,13 @@ use debug::PrintTrait;
 fn main() {
     let arr0 = ArrayTrait::new();
 
-    let mut arr1 = fill_array(arr0);
+    let mut arr1 = fill_arr(arr0);
 
     // Do not change the following line!
     arr0.print();
 }
 
-fn fill_array(arr: Array<felt252>) -> Array<felt252> {
+fn fill_arr(arr: Array<felt252>) -> Array<felt252> {
     let mut arr = arr;
 
     arr.append(22);
