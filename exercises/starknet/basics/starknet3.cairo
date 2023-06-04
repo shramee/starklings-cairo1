@@ -20,20 +20,17 @@ mod ProgressTracker {
 
     #[constructor]
     fn constructor(owner: ContractAddress) {
-        contract_owner::write( owner );
+        contract_owner::write(owner);
     }
 
     #[external]
-    fn set_progress(user: ContractAddress, new_progress: u16) {
-        // TODO: assert owner is calling
-        // TODO: set new_progress for user,
+    fn set_progress(user: ContractAddress, new_progress: u16) {// TODO: assert owner is calling
+    // TODO: set new_progress for user,
     }
 
     #[view]
-    fn get_progress(user: ContractAddress) -> u16 {
-        // Get user progress
+    fn get_progress(user: ContractAddress) -> u16 {// Get user progress
     }
-
 }
 
 #[cfg(test)]
@@ -51,7 +48,6 @@ mod test {
     #[test]
     #[available_gas(2000000000)]
     fn test_owner() {
-
         let owner: felt252 = 'Sensei';
         let owner: ContractAddress = owner.try_into().unwrap();
         ProgressTracker::constructor(owner);
@@ -64,33 +60,33 @@ mod test {
     #[test]
     #[available_gas(2000000000)]
     fn test_set_progress() {
-        let owner = util_felt_addr( 'Sensei' );
+        let owner = util_felt_addr('Sensei');
         ProgressTracker::constructor(owner);
 
         // Call contract as owner
-        starknet::testing::set_caller_address( owner );
+        starknet::testing::set_caller_address(owner);
 
         // Set progress
-        ProgressTracker::set_progress( 'Joe'.try_into().unwrap(), 20_u16 );
-        ProgressTracker::set_progress( 'Jill'.try_into().unwrap(), 25_u16 );
+        ProgressTracker::set_progress('Joe'.try_into().unwrap(), 20);
+        ProgressTracker::set_progress('Jill'.try_into().unwrap(), 25);
 
-        let joe_score = ProgressTracker::get_progress( 'Joe'.try_into().unwrap() );
-        assert( joe_score == 20_u16, 'Joe\'s progress should be 20' );
+        let joe_score = ProgressTracker::get_progress('Joe'.try_into().unwrap());
+        assert(joe_score == 20, 'Joe\'s progress should be 20');
     }
 
     #[test]
     #[should_panic]
     #[available_gas(2000000000)]
     fn test_set_progress_fail() {
-        let owner = util_felt_addr( 'Sensei' );
+        let owner = util_felt_addr('Sensei');
         ProgressTracker::constructor(owner);
 
-        let jon_doe = util_felt_addr( 'JonDoe' );
+        let jon_doe = util_felt_addr('JonDoe');
         // Caller not owner
-        starknet::testing::set_caller_address( jon_doe );
+        starknet::testing::set_caller_address(jon_doe);
 
         // Try to set progress, should panic to pass test!
-        ProgressTracker::set_progress( 'Joe'.try_into().unwrap(), 20_u16 );
+        ProgressTracker::set_progress('Joe'.try_into().unwrap(), 20);
     }
 
     fn util_felt_addr(addr_felt: felt252) -> ContractAddress {

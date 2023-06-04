@@ -37,7 +37,7 @@ trait DogTrait {
 
 impl AnimalFishImpl of AnimalTrait::<Fish> {
     fn new() -> Fish {
-        Fish { noise: 'blub', distance: 0_u32 }
+        Fish { noise: 'blub', distance: 0}
     }
     fn make_noise(self: Fish) -> felt252 {
         self.noise
@@ -49,7 +49,7 @@ impl AnimalFishImpl of AnimalTrait::<Fish> {
 
 impl AnimalDogImpl of AnimalTrait::<Dog> {
     fn new() -> Dog {
-        Dog { noise: 'woof', distance: 0_u32 }
+        Dog { noise: 'woof', distance: 0}
     }
     fn make_noise(self: Dog) -> felt252 {
         self.noise
@@ -69,10 +69,10 @@ fn test_traits3() {
     let mut salmon: Fish = AnimalTrait::new();
     salmon.swim();
     assert(salmon.make_noise() == 'blub', 'Wrong noise');
-    assert(salmon.get_distance() == 1_u32, 'Wrong distance');
+    assert(salmon.get_distance() == 1, 'Wrong distance');
 
     let mut dog: Dog = AnimalTrait::new();
     dog.walk();
     assert(dog.make_noise() == 'woof', 'Wrong noise');
-    assert(dog.get_distance() == 1_u32, 'Wrong distance');
+    assert(dog.get_distance() == 1, 'Wrong distance');
 }
