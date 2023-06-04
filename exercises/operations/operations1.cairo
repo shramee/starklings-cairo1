@@ -17,12 +17,13 @@ fn poly(x: usize, y: usize) -> usize {
 // Do not change the test function
 #[test]
 fn test_poly() {
-    let res = poly(5_usize, 3_usize);
-    assert(res == 126_usize, 'Error message');
-    assert(res < 300_usize, 'res < 300');
-    assert(res <= 300_usize, 'res <= 300');
-    assert(res > 20_usize, 'res > 20');
-    assert(res >= 2_usize, 'res >= 2');
-    assert(res != 27_usize, 'res != 27');
+    let res = poly(5, 3);
+    assert(res == 126, 'Error message');
+    assert(res < 300, 'res < 300');
+    assert(res <= 300, 'res <= 300');
+    assert(res > 20, 'res > 20');
+    assert(res >= 2, 'res >= 2');
+    assert(res != 27, 'res != 27');
+    assert(res % 2 == 0, 'res %2 != 0');
 }
 

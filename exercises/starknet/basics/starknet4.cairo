@@ -86,13 +86,13 @@ mod test {
         starknet::testing::set_caller_address( owner );
 
         // Add stock
-        LizInventory::add_stock( 'Nano', 10_u32 );
+        LizInventory::add_stock( 'Nano', 10);
         let stock = LizInventory::get_stock( 'Nano' );
-        assert( stock == 10_u32, 'stock should be 10' );
+        assert( stock == 10, 'stock should be 10' );
 
-        LizInventory::add_stock( 'Nano', 15_u32 );
+        LizInventory::add_stock( 'Nano', 15);
         let stock = LizInventory::get_stock( 'Nano' );
-        assert( stock == 25_u32, 'stock should be 25' );
+        assert( stock == 25, 'stock should be 25' );
     }
 
     #[test]
@@ -105,16 +105,16 @@ mod test {
         starknet::testing::set_caller_address( owner );
 
         // Add stock
-        LizInventory::add_stock( 'Nano', 10_u32 );
+        LizInventory::add_stock( 'Nano', 10);
         let stock = LizInventory::get_stock( 'Nano' );
-        assert( stock == 10_u32, 'stock should be 10' );
+        assert( stock == 10, 'stock should be 10' );
 
         // Call contract as owner
         starknet::testing::set_caller_address( 0.try_into().unwrap() );
 
         LizInventory::purchase( 'Nano', 2 );
         let stock = LizInventory::get_stock( 'Nano' );
-        assert( stock == 8_u32, 'stock should be 8' );
+        assert( stock == 8, 'stock should be 8' );
     }
 
     #[test]
@@ -124,7 +124,7 @@ mod test {
         let owner = util_felt_addr( 'Elizabeth' );
         LizInventory::constructor(owner);
         // Try to add stock, should panic to pass test!
-        LizInventory::add_stock( 'Nano', 20_u32 );
+        LizInventory::add_stock( 'Nano', 20);
     }
 
     #[test]
@@ -134,7 +134,7 @@ mod test {
         let owner = util_felt_addr( 'Elizabeth' );
         LizInventory::constructor(owner);
         // Purchse out of stock
-        LizInventory::purchase( 'Nano', 2_u32 );
+        LizInventory::purchase( 'Nano', 2);
     }
 
     fn util_felt_addr(addr_felt: felt252) -> ContractAddress {

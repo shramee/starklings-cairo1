@@ -28,7 +28,7 @@ fn convert_felt_to_u8(x: felt252) -> u8 {
 
 #[test]
 fn test_sum_u8s() {
-    assert(sum_u8s(1_u8, 2_u8) == 3_u8, 'Something went wrong');
+    assert(sum_u8s(1, 2_u8) == 3_u8, 'Something went wrong');
 }
 
 #[test]

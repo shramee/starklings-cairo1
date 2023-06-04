@@ -26,7 +26,7 @@ fn display_grades(student: @Student, index: usize) {
         },
     }
 
-    if index == 0_usize {
+    if index == 0{
         let mut msg = ArrayTrait::new();
         msg.append(*student.name);
         msg.append('\'s grades:');
@@ -42,7 +42,7 @@ fn display_grades(student: @Student, index: usize) {
     //       Otherwise, print "No grade".
     // 
     course.unwrap().print();
-    display_grades(student, index + 1_usize);
+    display_grades(student, index + 1);
 }
 
 
@@ -55,7 +55,7 @@ fn test_all_defined() {
     courses.append(Option::Some('C'));
     courses.append(Option::Some('A'));
     let mut student = Student { name: 'Alice', courses: courses };
-    display_grades(@student, 0_usize);
+    display_grades(@student, 0);
 }
 
 
@@ -69,5 +69,5 @@ fn test_some_empty() {
     courses.append(Option::Some('C'));
     courses.append(Option::None(()));
     let mut student = Student { name: 'Bob', courses: courses };
-    display_grades(@student, 0_usize);
+    display_grades(@student, 0);
 }

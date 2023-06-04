@@ -11,18 +11,18 @@
 use debug::PrintTrait;
 
 fn main() {
-    let original_price = 51_u32;
+    let original_price = 51;
     sale_price(original_price).print();
 }
 
 fn sale_price(price: u32) -> {
     if is_even(price) {
-        price - 10_u32
+        price - 10
     } else {
-        price - 3_u32
+        price - 3
     }
 }
 
 fn is_even(num: u32) -> bool {
-    num % 2_u32 == 0_u32
+    num % 2 == 0
 }
