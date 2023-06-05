@@ -9,9 +9,9 @@ use cairo_lang_compiler::diagnostics::DiagnosticsReporter;
 use cairo_lang_compiler::project::setup_project;
 use cairo_lang_diagnostics::ToOption;
 use cairo_lang_filesystem::db::init_dev_corelib;
-use cairo_lang_plugins::get_default_plugins;
+
 use cairo_lang_runner::{SierraCasmRunner, StarknetState};
-use cairo_lang_semantic::plugin::SemanticPlugin;
+
 use cairo_lang_sierra::extensions::gas::{
     BuiltinCostWithdrawGasLibfunc, RedepositGasLibfunc, WithdrawGasLibfunc,
 };
@@ -51,12 +51,13 @@ fn main() -> anyhow::Result<()> {
 }
 
 pub fn run_cairo_program(args: &Args) -> anyhow::Result<String> {
-    let mut plugins: Vec<Arc<dyn SemanticPlugin>> = get_default_plugins();
-    plugins.push(Arc::new(StarkNetPlugin::default()));
-    let db = &mut RootDatabase::builder()
-        .with_plugins(plugins)
-        .detect_corelib()
-        .build()?;
+    let db = &mut {
+        let mut b = RootDatabase::builder();
+        b.detect_corelib();
+        b.with_semantic_plugin(Arc::new(StarkNetPlugin::default()));
+
+        b.build()?
+    };
     let mut corelib_dir = std::env::current_exe()
         .unwrap_or_else(|e| panic!("Problem getting the executable path: {e:?}"));
     corelib_dir.pop();
@@ -80,13 +81,13 @@ pub fn run_cairo_program(args: &Args) -> anyhow::Result<String> {
     let replacer = DebugReplacer { db };
     if args.available_gas.is_none()
         && sierra_program.type_declarations.iter().any(|decl| {
-        matches!(
+            matches!(
                 decl.long_id.generic_id.0.as_str(),
                 WithdrawGasLibfunc::STR_ID
                     | BuiltinCostWithdrawGasLibfunc::STR_ID
                     | RedepositGasLibfunc::STR_ID
             )
-    })
+        })
     {
         anyhow::bail!("Program requires gas counter, please provide `--available_gas` argument.");
     }
@@ -95,7 +96,11 @@ pub fn run_cairo_program(args: &Args) -> anyhow::Result<String> {
 
     let runner = SierraCasmRunner::new(
         replacer.apply(&sierra_program),
-        if args.available_gas.is_some() { Some(Default::default()) } else { None },
+        if args.available_gas.is_some() {
+            Some(Default::default())
+        } else {
+            None
+        },
         contracts_info,
     )
     .with_context(|| "Failed setting up runner.")?;

@@ -1,9 +1,7 @@
 use serde::Serde;
-use traits::Into;
-use traits::TryInto;
+use traits::{Into, TryInto};
 use zeroable::Zeroable;
-use option::Option;
-use option::OptionTrait;
+use option::{Option, OptionTrait};
 
 // An Ethereum address (160 bits).
 #[derive(Copy, Drop)]
@@ -28,8 +26,8 @@ impl EthAddressIntoFelt252 of Into<EthAddress, felt252> {
     }
 }
 impl EthAddressSerde of Serde<EthAddress> {
-    fn serialize(ref output: Array<felt252>, input: EthAddress) {
-        Serde::<felt252>::serialize(ref output, input.address);
+    fn serialize(self: @EthAddress, ref output: Array<felt252>) {
+        self.address.serialize(ref output);
     }
     fn deserialize(ref serialized: Span<felt252>) -> Option<EthAddress> {
         Serde::<felt252>::deserialize(ref serialized)?.try_into()
@@ -39,12 +37,10 @@ impl EthAddressZeroable of Zeroable<EthAddress> {
     fn zero() -> EthAddress {
         0.try_into().unwrap()
     }
-
     #[inline(always)]
     fn is_zero(self: EthAddress) -> bool {
         self.address.is_zero()
     }
-
     #[inline(always)]
     fn is_non_zero(self: EthAddress) -> bool {
         !self.is_zero()
