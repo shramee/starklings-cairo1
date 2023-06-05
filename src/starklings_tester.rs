@@ -14,9 +14,8 @@ use cairo_lang_defs::ids::{FreeFunctionId, FunctionWithBodyId, ModuleItemId};
 use cairo_lang_defs::plugin::{MacroPlugin, PluginDiagnostic, PluginResult};
 use cairo_lang_diagnostics::ToOption;
 use cairo_lang_filesystem::cfg::{Cfg, CfgSet};
-use cairo_lang_filesystem::db::init_dev_corelib;
+
 use cairo_lang_filesystem::ids::CrateId;
-use cairo_lang_plugins::get_default_plugins;
 
 use cairo_lang_lowering::ids::ConcreteFunctionWithBodyId;
 use cairo_lang_runner::short_string::as_cairo_short_string;
@@ -29,7 +28,7 @@ use cairo_lang_semantic::{ConcreteFunction, FunctionLongId};
 use cairo_lang_sierra::extensions::gas::CostTokenType;
 use cairo_lang_sierra::ids::FunctionId;
 use cairo_lang_sierra_generator::db::SierraGenGroup;
-use cairo_lang_sierra_generator::replace_ids::{replace_sierra_ids_in_program, DebugReplacer, SierraIdReplacer};
+use cairo_lang_sierra_generator::replace_ids::{DebugReplacer, SierraIdReplacer};
 use cairo_lang_sierra_to_casm::metadata::MetadataComputationConfig;
 use cairo_lang_starknet::casm_contract_class::ENTRY_POINT_COST;
 use cairo_lang_starknet::contract::{
@@ -37,7 +36,9 @@ use cairo_lang_starknet::contract::{
 };
 use cairo_lang_starknet::plugin::consts::{CONSTRUCTOR_MODULE, EXTERNAL_MODULE, L1_HANDLER_MODULE};
 use cairo_lang_starknet::plugin::StarkNetPlugin;
-use cairo_lang_syntax::attribute::structured::{Attribute, AttributeArg, AttributeArgVariant, AttributeListStructurize};
+use cairo_lang_syntax::attribute::structured::{
+    Attribute, AttributeArg, AttributeArgVariant, AttributeListStructurize,
+};
 
 use cairo_lang_syntax::node::db::SyntaxGroup;
 use cairo_lang_syntax::node::{ast, Terminal, Token};
@@ -81,12 +82,7 @@ enum TestStatus {
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
-    let runner = TestRunner::new(
-        &args.path,
-        "",
-        false,
-        false,
-        true)?;
+    let runner = TestRunner::new(&args.path, "", false, false, true)?;
     if let Err(e) = runner.run() {
         eprintln!("{e}");
         std::process::exit(1);
@@ -120,16 +116,18 @@ impl TestRunner {
         ignored: bool,
         starknet: bool,
     ) -> Result<Self> {
-        let mut plugins = get_default_plugins();
-        plugins.push(Arc::new(TestPlugin::default()));
-        if starknet {
-            plugins.push(Arc::new(StarkNetPlugin::default()));
-        }
-        let db = &mut RootDatabase::builder()
-            .with_cfg(CfgSet::from_iter([Cfg::name("test")]))
-            .with_plugins(plugins)
-            .detect_corelib()
-            .build()?;
+        let db = &mut {
+            let mut b = RootDatabase::builder();
+            b.detect_corelib();
+            b.with_cfg(CfgSet::from_iter([Cfg::name("test")]));
+            b.with_semantic_plugin(Arc::new(TestPlugin::default()));
+
+            if starknet {
+                b.with_semantic_plugin(Arc::new(StarkNetPlugin::default()));
+            }
+
+            b.build()?
+        };
 
         let main_crate_ids = setup_project(db, Path::new(&path))?;
 
@@ -565,15 +563,15 @@ impl MacroPlugin for TestPlugin {
             } else {
                 None
             }
-                .unwrap_or_default(),
+            .unwrap_or_default(),
             remove_original_item: false,
         }
     }
 }
 impl AsDynMacroPlugin for TestPlugin {
     fn as_dyn_macro_plugin<'a>(self: Arc<Self>) -> Arc<dyn MacroPlugin + 'a>
-        where
-            Self: 'a,
+    where
+        Self: 'a,
     {
         self
     }
