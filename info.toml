@@ -456,8 +456,8 @@ So the end goal is to:
    - so then `arr0` doesn't exist, so we can't pass it to `fill_arr`
    - we don't want to pass anything to `fill_arr`, so its signature should
      reflect that it does not take any arguments
-   - since we're not creating a new vec in `main` anymore, we need to create
-     a new vec in `fill_arr`, similarly to the way we did in `main`"""
+   - since we're not creating a new array in `main` anymore, we need to create
+     a new array in `fill_arr`, similarly to the way we did in `main`"""
 
 [[exercises]]
 name = "move_semantics5"
