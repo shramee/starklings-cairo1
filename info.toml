@@ -16,22 +16,6 @@ hint = """
 No hints this time ;)
 """
 
-[[exercises]]
-name = "intro3"
-path = "exercises/intro/intro3.cairo"
-mode = "compile"
-hint = """
-No hints this time ;)
-"""
-
-[[exercises]]
-name = "intro4"
-path = "exercises/intro/intro4.cairo"
-mode = "compile"
-hint = """
-No hints this time ;)
-"""
-
 # VARIABLES
 
 [[exercises]]
