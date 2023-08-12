@@ -8,11 +8,12 @@
 // I AM NOT DONE
 
 use starknet::ContractAddress;
+
 #[starknet::interface]
-trait IProgressTracker<TContractState>{
-  fn set_progress(ref self:TContractState, user:ContractAddress, new_progress: u16);
-  fn get_progress(self:@TContractState ,user: ContractAddress) -> u16;
-  fn get_contract_owner(self:@TContractState) -> ContractAddress;
+trait IProgressTracker<TContractState> {
+    fn set_progress(ref self: TContractState, user: ContractAddress, new_progress: u16);
+    fn get_progress(self: @TContractState, user: ContractAddress) -> u16;
+    fn get_contract_owner(self: @TContractState) -> ContractAddress;
 }
 
 #[starknet::contract]
@@ -28,27 +29,26 @@ mod ProgressTracker {
     }
 
     #[constructor]
-    fn constructor(ref self:ContractState,owner: ContractAddress) {
-       self.contract_owner.write(owner);
+    fn constructor(ref self: ContractState, owner: ContractAddress) {
+        self.contract_owner.write(owner);
     }
 
-   
+
     #[external(v0)]
-      impl ProgressTrackerImpl of super::IProgressTracker<ContractState>{
-
-      fn set_progress(ref self: ContractState, user: ContractAddress, new_progress: u16) {
-      // TODO: assert owner is calling
-      // TODO: set new_progress for user,
-      }
-
-      fn get_progress(self:@ContractState ,user: ContractAddress) -> u16 {
-          // Get user progress
-      }
-
-        fn get_contract_owner(self:@ContractState) -> ContractAddress{
-          self.contract_owner.read()
+    impl ProgressTrackerImpl of super::IProgressTracker<ContractState> {
+        fn set_progress(
+            ref self: ContractState, user: ContractAddress, new_progress: u16
+        ) { // TODO: assert owner is calling
+        // TODO: set new_progress for user,
         }
-      }
+
+        fn get_progress(self: @ContractState, user: ContractAddress) -> u16 { // Get user progress
+        }
+
+        fn get_contract_owner(self: @ContractState) -> ContractAddress {
+            self.contract_owner.read()
+        }
+    }
 }
 
 #[cfg(test)]
@@ -70,9 +70,9 @@ mod test {
     #[test]
     #[available_gas(2000000000)]
     fn test_owner() {
-      let owner: ContractAddress = 'Sensei'.try_into().unwrap();
-      let dispatcher = deploy_contract();
-      assert(owner == dispatcher.get_contract_owner(), 'Mr. Sensei should be the owner');
+        let owner: ContractAddress = 'Sensei'.try_into().unwrap();
+        let dispatcher = deploy_contract();
+        assert(owner == dispatcher.get_contract_owner(), 'Mr. Sensei should be the owner');
     }
 
     #[test]
@@ -96,7 +96,7 @@ mod test {
     #[should_panic]
     #[available_gas(2000000000)]
     fn test_set_progress_fail() {
-       let dispatcher = deploy_contract();
+        let dispatcher = deploy_contract();
 
         let jon_doe = util_felt_addr('JonDoe');
         // Caller not owner
@@ -110,13 +110,14 @@ mod test {
         addr_felt.try_into().unwrap()
     }
 
-     fn deploy_contract() -> IProgressTrackerDispatcher {
+    fn deploy_contract() -> IProgressTrackerDispatcher {
         let owner: felt252 = 'Sensei';
         let mut calldata = ArrayTrait::new();
         calldata.append(owner);
         let (address0, _) = deploy_syscall(
             ProgressTracker::TEST_CLASS_HASH.try_into().unwrap(), 0, calldata.span(), false
-        ).unwrap();
+        )
+            .unwrap();
         let contract0 = IProgressTrackerDispatcher { contract_address: address0 };
         contract0
     }

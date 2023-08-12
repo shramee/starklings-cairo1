@@ -5,21 +5,21 @@ A Starknet contract can be created by annotating a Cairo module with the `#[star
 Starknet contract don't require a `main` function.
 Functions in the contract module may be annotated as `#[external(v0)]` function. External functions can be called by the users of Starknet, and by other contracts.
 
- The functions without these annotations are internal and cannot be accessed by users nor by other contract.
+The functions outside of these blocks are internal and cannot be accessed by users nor by other contract.
 
- Functions in starknet contract have to explicitly define when writing to storage or reading from storage, by specifying the `ref self` when writing to storage or `self` when reading from state.
+ Functions in starknet contract have to explicitly define when writing to storage or reading from storage, by specifying the `ref self:ContractState` when writing to storage or `self:@ContractState` when reading from state.
 
 e.g 
 
 `fn write(ref self: ContractState){}`
 
-`fn read (self: ContractState) -> type{}`
+`fn read (self: ContractState) -> T{}`
 
 where `self` stands for the contract state, seeing the `self` pass by reference as arguement tell us that it mutates state, as it gives access to the contract storage. 
 
 
 #  Contract Interface
-Contract Interfaces is annotated with the `#[starknet::interface]` attribute. The constructor is not a part of the interface nor are internal function part of the interface.
+The Contract interfaces is annotated with the `#[starknet::interface]` attribute. The constructor is not a part of the interface nor are internal function part of the interface.
 
 ## Contract annotations
 
@@ -30,7 +30,7 @@ Here are the attributes/decorators available to annotate smart contracts.
 | `#[starknet::contract]`    | `module`   | Marks a module as a contract                    |
 | `#[constructor]` | `function` | Contract constructor, runs (only) on deployment |         |
 | `#[external(v0)]`    | `function` | An endpoint that modifies state   
- 
+| `#[external(v0)]`    | `impl` | Methods that modify state  
 
 ## Storage
 
