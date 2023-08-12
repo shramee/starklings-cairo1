@@ -13,7 +13,7 @@ e.g
 
 `fn write(ref self: ContractState){}`
 
-`fn read (self: ContractState) -> T{}`
+`fn read (self: @ContractState) -> T{}`
 
 where `self` stands for the contract state, seeing the `self` pass by reference as arguement tell us that it mutates state, as it gives access to the contract storage. 
 
