@@ -5,18 +5,19 @@
 
 // I AM NOT DONE
 
-#[contract]
+#[starknet::contract]
 mod JoesContract {
-
-    fn get_owner() -> felt252 {
-        'Joe'
+    #[external(v0)]
+    impl IJoesContractImpl of super::IJoesContract<ContractState> {
+        fn get_owner(self: @ContractState) -> felt252 {
+            'Joe'
+        }
     }
-
 }
 
-#[abi]
-trait IJoesContract {
-    fn get_owner() -> felt252;
+#[starknet::interface]
+trait IJoesContract<TContractState> {
+    fn get_owner(self: @TContractState) -> felt252;
 }
 
 #[cfg(test)]
@@ -32,19 +33,23 @@ mod test {
     use super::IJoesContractDispatcher;
     use super::IJoesContractDispatcherTrait;
     use starknet::ContractAddress;
+    use debug::PrintTrait;
 
     #[test]
     #[available_gas(2000000000)]
     fn test_contract_view() {
         let dispatcher = deploy_contract();
-        assert( 'Joe' == dispatcher.get_owner(), 'Joe should be the owner.' );
+        let owner = dispatcher.get_owner();
+        owner.print();
+        assert('Joe' == dispatcher.get_owner(), 'Joe should be the owner.');
     }
 
     fn deploy_contract() -> IJoesContractDispatcher {
         let mut calldata = ArrayTrait::new();
         let (address0, _) = deploy_syscall(
             JoesContract::TEST_CLASS_HASH.try_into().unwrap(), 0, calldata.span(), false
-        ).unwrap();
+        )
+            .unwrap();
         let contract0 = IJoesContractDispatcher { contract_address: address0 };
         contract0
     }
