@@ -2,7 +2,7 @@ use regex::Regex;
 use serde::Deserialize;
 
 use crate::starklings_runner::{run_cairo_program, Args as RunnerArgs};
-use crate::starklings_tester::TestRunner;
+use cairo_lang_test_runner::TestRunner;
 use std::fmt::{self, Display, Formatter};
 use std::fs::{remove_file, File};
 use std::io::Read;
@@ -92,16 +92,27 @@ impl Drop for FileHandle {
 
 impl Exercise {
     pub fn run_cairo(&self) -> anyhow::Result<String> {
-        run_cairo_program(&RunnerArgs {
+        let res = run_cairo_program(RunnerArgs {
             path: self.path.to_str().unwrap().parse()?,
-            available_gas: Some(20000000000),
+            single_file: true,
+            available_gas: None,
             print_full_memory: false,
-        })
+        });
+
+        match res {
+            Ok(_) => Ok("Compiled successfully!".into()), // Logs already printed, Silence
+            Err(_) => anyhow::bail!("Error compiling the file."),
+        }
     }
 
     pub fn test_cairo(&self) -> anyhow::Result<String> {
-        let runner = TestRunner::new(self.path.to_str().unwrap(), "", false, false, true)?;
-        runner.run()
+        let runner = TestRunner::new(&self.path, "", false, false, true)?;
+        let run_result = runner.run();
+
+        match run_result {
+            Ok(_) => Ok("Tests passed!".into()),
+            Err(_) => anyhow::bail!("Error running tests"),
+        }
     }
 
     pub fn state(&self) -> State {
@@ -172,7 +183,6 @@ fn clean() {
 mod test {
     use super::*;
     // use std::path::Path;
-
     #[test]
     fn test_finished_exercise() {
         let exercise = Exercise {

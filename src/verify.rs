@@ -70,11 +70,8 @@ fn compile_and_run_cairo(exercise: &Exercise, progress_bar: &ProgressBar) -> Res
 
     if let Some(error) = compilation_result.as_ref().err() {
         progress_bar.finish_and_clear();
-        warn!(
-            "Compiling of {} failed! Please try again. Here's the output:",
-            exercise
-        );
-        println!("{error}");
+        println!("{error}"); // At this point error is probably already logged
+        warn!("Compiling of {} failed! Please try again.", exercise);
         Err(())
     } else {
         Ok(compilation_result.unwrap())
@@ -88,11 +85,8 @@ fn compile_and_test_cairo(exercise: &Exercise, progress_bar: &ProgressBar) -> Re
 
     if let Some(error) = compilation_result.as_ref().err() {
         progress_bar.finish_and_clear();
-        warn!(
-            "Testing of {} failed! Please try again. Here's the output:",
-            exercise
-        );
-        println!("{error}");
+        println!("{error}"); // At this point error is probably already logged
+        warn!("Testing of {} failed! Please try again.", exercise);
         Err(())
     } else {
         Ok(compilation_result.unwrap())
