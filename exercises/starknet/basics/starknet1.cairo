@@ -3,7 +3,7 @@
 // The contract shows that he is the owner of the contract.
 // However, his contract is not working. What's he missing?
 
-// I AM DONE
+// I AM NOT DONE
 
 #[starknet::interface]
 trait IJoesContract<TContractState> {
