@@ -26,7 +26,7 @@ fn display_grades(student: @Student, index: usize) {
         },
     }
 
-    if index == 0{
+    if index == 0 {
         let mut msg = ArrayTrait::new();
         msg.append(*student.name);
         msg.append('\'s grades:');

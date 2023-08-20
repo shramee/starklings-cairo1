@@ -28,7 +28,7 @@ trait MessageTrait<T> {
     fn call(self: T);
 }
 
-impl MessageImpl of MessageTrait::<Message> {
+impl MessageImpl of MessageTrait<Message> {
     fn call(self: Message) {
         self.print()
     }
@@ -52,7 +52,7 @@ fn print_messages_recursive(messages: Array<Message>, index: u32) {
 }
 
 
-impl MessagePrintImpl of PrintTrait::<Message> {
+impl MessagePrintImpl of PrintTrait<Message> {
     fn print(self: Message) {
         ('___MESSAGE BEGINS___').print();
         match self {
@@ -62,9 +62,7 @@ impl MessagePrintImpl of PrintTrait::<Message> {
                 a.print();
                 b.print();
             },
-            Message::ChangeColor((
-                red, green, blue
-            )) => {
+            Message::ChangeColor((red, green, blue)) => {
                 red.print();
                 green.print();
                 blue.print();

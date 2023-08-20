@@ -30,11 +30,13 @@ impl PackageImpl of PackageTrait {
     }
 
     fn is_international(ref self: Package) -> //???
-    {/// Something goes here...
+    {
+    /// Something goes here...
     }
 
     fn get_fees(ref self: Package, cents_per_gram: usize) -> //???
-    {/// Something goes here...
+    {
+    /// Something goes here...
     }
 }
 

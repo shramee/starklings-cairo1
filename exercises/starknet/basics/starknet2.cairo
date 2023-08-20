@@ -26,8 +26,7 @@ mod JillsContract {
 
     #[external(v0)]
     impl IJillsContractImpl of super::IJillsContract<ContractState> {
-        fn get_owner(self: @ContractState) -> ContractAddress {// TODO: Read contract_owner storage
-
+        fn get_owner(self: @ContractState) -> ContractAddress { // TODO: Read contract_owner storage
         }
     }
 }

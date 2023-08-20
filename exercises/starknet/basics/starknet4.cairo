@@ -35,14 +35,14 @@ mod LizInventory {
 
     #[external(v0)]
     impl LizInventoryImpl of super::ILizInventory<ContractState> {
-        fn add_stock(ref self: TContractState, product: felt252, stock: u32) {// TODO:
+        fn add_stock(ref self: TContractState, product: felt252, stock: u32) { // TODO:
         // * takes product and new_stock
         // * adds new_stock to stock in inventory
         // * only owner can call this
 
         }
 
-        fn purchase(ref self: TContractState, product: felt252, quantity: u32) {// TODO:
+        fn purchase(ref self: TContractState, product: felt252, quantity: u32) { // TODO:
         // * takes product and quantity
         // * subtracts quantity from stock in inventory
         // * asserting stock > quantity isn't necessary, but nice to

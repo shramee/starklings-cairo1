@@ -4,9 +4,8 @@
 
 // I AM NOT DONE
 #[derive(Copy, Drop)]
-struct ColorStruct {
-    // TODO: Something goes here
-    // TODO: Your struct needs to have red, green, blue felts
+struct ColorStruct { // TODO: Something goes here
+// TODO: Your struct needs to have red, green, blue felts
 }
 
 

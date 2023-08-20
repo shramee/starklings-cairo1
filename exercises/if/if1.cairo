@@ -3,11 +3,10 @@
 
 // I AM NOT DONE
 
-fn bigger(a: usize, b: usize) -> usize {
-    // Complete this function to return the bigger number!
-    // Do not use:
-    // - another function call
-    // - additional variables
+fn bigger(a: usize, b: usize) -> usize { // Complete this function to return the bigger number!
+// Do not use:
+// - another function call
+// - additional variables
 }
 
 // Don't mind this for now :)
