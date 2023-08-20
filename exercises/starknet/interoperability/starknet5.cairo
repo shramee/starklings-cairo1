@@ -42,7 +42,7 @@ mod ContractA {
     #[generate_trait]
     impl ContractAImpl of ContractATrait {
         fn set_value(
-            ref self: ContractState, _value: u128
+            ref self: ContractState, value: u128
         ) -> bool { //TODO: check if contract_b is enabled. If it is, set the value and return true. Otherwise, return false.
         }
 
