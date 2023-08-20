@@ -1,8 +1,4 @@
-use array::{ArrayTrait, SpanTrait};
-use byte_array::ByteArrayTrait;
-use bytes_31::Bytes31IntoFelt252;
-use option::OptionTrait;
-use traits::Into;
+use test::test_utils::{assert_eq, assert_ne};
 
 #[test]
 #[available_gas(1000000)]
@@ -363,6 +359,113 @@ fn test_index_view_out_of_bounds() {
     ba.append(@test_byte_array_17());
 
     let x = ba[79];
+}
+
+#[test]
+fn test_string_literals() {
+    let ba: ByteArray = "12345"; // len < 16
+    let ba: ByteArray = "1234567890123456"; // len == 16
+    let ba: ByteArray = "123456789012345678"; // 16 < len < 31
+    let ba: ByteArray = "1234567890123456789012345678901"; // len == 31
+    let ba: ByteArray = "123456789012345678901234567890123"; // 31 < len < 47
+    let ba: ByteArray = "12345678901234567890123456789012345678901234567"; // len == 47
+    let ba: ByteArray = "123456789012345678901234567890123456789012345678"; // len > 47
+}
+
+#[test]
+#[available_gas(100000000)]
+fn test_equality() {
+    let byte_array: ByteArray = "a";
+    assert(@byte_array == @"a", 'Same strings are not equal');
+    assert(@byte_array != @"b", 'Different strings are equal');
+
+    let mut ba1 = test_byte_array_2();
+    ba1.append(@test_byte_array_31());
+    let ba2 = test_byte_array_33();
+    let ba3 = test_byte_array_32();
+    let mut ba4 = test_byte_array_32();
+    ba4.append(@test_byte_array_1());
+
+    assert(@ba1 == @ba1, 'Same ByteArrays are not equal');
+    assert(@ba2 == @ba2, 'Same ByteArrays are not equal');
+    assert(@ba3 == @ba3, 'Same ByteArrays are not equal');
+    assert(@ba4 == @ba4, 'Same ByteArrays are not equal');
+
+    // Different data
+    assert(@ba1 != @ba2, 'Different ByteArrays are equal');
+
+    // Different pending word length
+    assert(@ba2 != @ba3, 'Different ByteArrays are equal');
+
+    // Different pending word
+    assert(@ba2 != @ba4, 'Different ByteArrays are equal');
+}
+
+#[test]
+#[available_gas(100000000)]
+fn test_reverse() {
+    // Arrays of length < 16
+    let ba: ByteArray = "abc";
+    let ba_rev: ByteArray = "cba";
+    let palindrome: ByteArray = "rotator";
+    assert_ne(@ba, @ba.rev(), 'ba == ba.rev()');
+    assert_ne(@ba_rev, @ba_rev.rev(), 'ba_rev == ba_rev.rev()');
+    assert_eq(@ba, @ba_rev.rev(), 'ba != ba_rev.rev()');
+    assert_eq(@palindrome, @palindrome.rev(), 'palindrome is not a palindrome');
+
+    // Arrays of length 16
+    let ba: ByteArray = "my length is 16.";
+    let ba_rev: ByteArray = ".61 si htgnel ym";
+    let palindrome: ByteArray = "nolemon  nomelon";
+    assert_ne(@ba, @ba.rev(), 'ba == ba.rev()');
+    assert_ne(@ba_rev, @ba_rev.rev(), 'ba_rev == ba_rev.rev()');
+    assert_eq(@ba, @ba_rev.rev(), 'ba != ba_rev.rev()');
+    assert_eq(@palindrome, @palindrome.rev(), 'palindrome is not a palindrome');
+
+    // Arrays of 16 < length < 31
+    let ba: ByteArray = "I am a medium byte array";
+    let ba_rev: ByteArray = "yarra etyb muidem a ma I";
+    let palindrome: ByteArray = "nolemon  nomelon";
+    assert_ne(@ba, @ba.rev(), 'ba == ba.rev()');
+    assert_ne(@ba_rev, @ba_rev.rev(), 'ba_rev == ba_rev.rev()');
+    assert_eq(@ba, @ba_rev.rev(), 'ba != ba_rev.rev()');
+    assert_eq(@palindrome, @palindrome.rev(), 'palindrome is not a palindrome');
+
+    // Arrays of length 31
+    let ba: ByteArray = "I didn't find a good palindrome";
+    let ba_rev: ByteArray = "emordnilap doog a dnif t'ndid I";
+    let palindrome: ByteArray = "kayak level rotator level kayak";
+    assert_ne(@ba, @ba.rev(), 'ba == ba.rev()');
+    assert_ne(@ba_rev, @ba_rev.rev(), 'ba_rev == ba_rev.rev()');
+    assert_eq(@ba, @ba_rev.rev(), 'ba != ba_rev.rev()');
+    assert_eq(@palindrome, @palindrome.rev(), 'palindrome is not a palindrome');
+
+    // Arrays of 31 < length < 47 (31+16)
+    let ba: ByteArray = "This time I did find a good palindrome!";
+    let ba_rev: ByteArray = "!emordnilap doog a dnif did I emit sihT";
+    let palindrome: ByteArray = "noitneverpropagatesifisetagaporprevention";
+    assert_ne(@ba, @ba.rev(), 'ba == ba.rev()');
+    assert_ne(@ba_rev, @ba_rev.rev(), 'ba_rev == ba_rev.rev()');
+    assert_eq(@ba, @ba_rev.rev(), 'ba != ba_rev.rev()');
+    assert_eq(@palindrome, @palindrome.rev(), 'palindrome is not a palindrome');
+
+    // Arrays of length 47 (31+16)
+    let ba: ByteArray = "I have found a palindrome, exactly 47 in length";
+    let ba_rev: ByteArray = "htgnel ni 74 yltcaxe ,emordnilap a dnuof evah I";
+    let palindrome: ByteArray = "onacloverifaliveeruptsavastpureevilafirevolcano";
+    assert_ne(@ba, @ba.rev(), 'ba == ba.rev()');
+    assert_ne(@ba_rev, @ba_rev.rev(), 'ba_rev == ba_rev.rev()');
+    assert_eq(@ba, @ba_rev.rev(), 'ba != ba_rev.rev()');
+    assert_eq(@palindrome, @palindrome.rev(), 'palindrome is not a palindrome');
+
+    // Arrays of length > 47 (31+16)
+    let ba: ByteArray = "This palindrome is not as good, but at least it's long enough";
+    let ba_rev: ByteArray = "hguone gnol s'ti tsael ta tub ,doog sa ton si emordnilap sihT";
+    let palindrome: ByteArray = "docnoteidissentafastneverpreventsafatnessidietoncod";
+    assert_ne(@ba, @ba.rev(), 'ba == ba.rev()');
+    assert_ne(@ba_rev, @ba_rev.rev(), 'ba_rev == ba_rev.rev()');
+    assert_eq(@ba, @ba_rev.rev(), 'ba != ba_rev.rev()');
+    assert_eq(@palindrome, @palindrome.rev(), 'palindrome is not a palindrome');
 }
 
 // ========= Test helper functions =========
