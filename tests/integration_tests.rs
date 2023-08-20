@@ -179,7 +179,7 @@ fn run_cairo_single_test_success() {
 fn run_cairo_single_test_failure() {
     Command::cargo_bin("starklings")
         .unwrap()
-        .args(["run", "testFail"])
+        .args(["run", "testFails"])
         .current_dir("tests/fixture/cairo/")
         .assert()
         .code(1);

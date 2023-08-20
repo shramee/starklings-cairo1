@@ -1,14 +1,17 @@
 //! Compiles and runs a Cairo program.
 
-use std::path::{Path, PathBuf};
+use std::path::Path;
+use std::sync::Arc;
 
 use anyhow::{Context, Ok};
 use cairo_lang_compiler::db::RootDatabase;
 use cairo_lang_compiler::diagnostics::DiagnosticsReporter;
-use cairo_lang_compiler::project::{check_compiler_path, setup_project};
+use cairo_lang_compiler::project::setup_project;
 use cairo_lang_diagnostics::ToOption;
-use cairo_lang_runner::short_string::as_cairo_short_string;
+use cairo_lang_filesystem::db::init_dev_corelib;
+
 use cairo_lang_runner::{SierraCasmRunner, StarknetState};
+
 use cairo_lang_sierra::extensions::gas::{
     BuiltinCostWithdrawGasLibfunc, RedepositGasLibfunc, WithdrawGasLibfunc,
 };
@@ -16,7 +19,10 @@ use cairo_lang_sierra::extensions::NamedLibfunc;
 use cairo_lang_sierra_generator::db::SierraGenGroup;
 use cairo_lang_sierra_generator::replace_ids::{DebugReplacer, SierraIdReplacer};
 use cairo_lang_starknet::contract::get_contracts_info;
+use cairo_lang_starknet::plugin::StarkNetPlugin;
 use clap::Parser;
+
+const CORELIB_DIR_NAME: &str = "corelib/src";
 
 /// Command line args parser.
 /// Exits with 0/1 if the input is formatted correctly/incorrectly.
@@ -24,10 +30,8 @@ use clap::Parser;
 #[clap(version, verbatim_doc_comment)]
 pub struct Args {
     /// The file to compile and run.
-    pub path: PathBuf,
-    /// Whether path is a single file.
     #[arg(short, long)]
-    pub single_file: bool,
+    pub path: String,
     /// In cases where gas is available, the amount of provided gas.
     #[arg(long)]
     pub available_gas: Option<usize>,
@@ -36,21 +40,39 @@ pub struct Args {
     pub print_full_memory: bool,
 }
 
-pub fn main() -> anyhow::Result<()> {
-    run_cairo_program(Args::parse())
+fn main() -> anyhow::Result<()> {
+    let args = Args::parse();
+    let res = run_cairo_program(&args);
+    if let Err(e) = res {
+        eprintln!("{e}");
+        std::process::exit(1);
+    }
+    Ok(())
 }
 
-pub fn run_cairo_program(args: Args) -> anyhow::Result<()> {
-    // Check if args.path is a file or a directory.
-    check_compiler_path(args.single_file, &args.path)?;
+pub fn run_cairo_program(args: &Args) -> anyhow::Result<String> {
+    let db = &mut {
+        let mut b = RootDatabase::builder();
+        b.detect_corelib();
+        b.with_semantic_plugin(Arc::new(StarkNetPlugin::default()));
 
-    let db = &mut RootDatabase::builder().detect_corelib().build()?;
+        b.build()?
+    };
+    let mut corelib_dir = std::env::current_exe()
+        .unwrap_or_else(|e| panic!("Problem getting the executable path: {e:?}"));
+    corelib_dir.pop();
+    corelib_dir.pop();
+    corelib_dir.pop();
+    corelib_dir.push(CORELIB_DIR_NAME);
+    init_dev_corelib(db, corelib_dir);
 
     let main_crate_ids = setup_project(db, Path::new(&args.path))?;
 
     if DiagnosticsReporter::stderr().check(db) {
-        anyhow::bail!("failed to compile: {}", args.path.display());
+        anyhow::bail!("failed to compile: {}", args.path);
     }
+
+    let mut ret_string = String::new();
 
     let sierra_program = db
         .get_sierra_program(main_crate_ids.clone())
@@ -83,7 +105,7 @@ pub fn run_cairo_program(args: Args) -> anyhow::Result<()> {
     )
     .with_context(|| "Failed setting up runner.")?;
     let result = runner
-        .run_function_with_starknet_context(
+        .run_function(
             runner.find_function("::main")?,
             &[],
             args.available_gas,
@@ -91,32 +113,12 @@ pub fn run_cairo_program(args: Args) -> anyhow::Result<()> {
         )
         .with_context(|| "Failed to run the function.")?;
     match result.value {
-        cairo_lang_runner::RunResultValue::Success(values) => {
-            println!("Run completed successfully, returning {values:?}")
-        }
+        cairo_lang_runner::RunResultValue::Success(values) => ret_string
+            .push_str(format!("Run completed successfully, returning {values:?}").as_str()),
         cairo_lang_runner::RunResultValue::Panic(values) => {
-            print!("Run panicked with [");
-            for value in &values {
-                match as_cairo_short_string(value) {
-                    Some(as_string) => print!("{value} ('{as_string}'), "),
-                    None => print!("{value}, "),
-                }
-            }
-            println!("].")
+            ret_string.push_str(format!("Run panicked with err values: {values:?}").as_str());
         }
     }
-    if let Some(gas) = result.gas_counter {
-        println!("Remaining gas: {gas}");
-    }
-    if args.print_full_memory {
-        print!("Full memory: [");
-        for cell in &result.memory {
-            match cell {
-                None => print!("_, "),
-                Some(value) => print!("{value}, "),
-            }
-        }
-        println!("]");
-    }
-    Ok(())
+    println!("{ret_string}");
+    Ok(ret_string)
 }
