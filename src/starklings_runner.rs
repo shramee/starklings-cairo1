@@ -1,7 +1,6 @@
 //! Compiles and runs a Cairo program.
 
 use std::path::Path;
-use std::sync::Arc;
 
 use anyhow::{Context, Ok};
 use cairo_lang_compiler::db::RootDatabase;
@@ -19,7 +18,7 @@ use cairo_lang_sierra::extensions::NamedLibfunc;
 use cairo_lang_sierra_generator::db::SierraGenGroup;
 use cairo_lang_sierra_generator::replace_ids::{DebugReplacer, SierraIdReplacer};
 use cairo_lang_starknet::contract::get_contracts_info;
-use cairo_lang_starknet::plugin::StarkNetPlugin;
+
 use clap::Parser;
 
 const CORELIB_DIR_NAME: &str = "corelib/src";
@@ -30,7 +29,6 @@ const CORELIB_DIR_NAME: &str = "corelib/src";
 #[clap(version, verbatim_doc_comment)]
 pub struct Args {
     /// The file to compile and run.
-    #[arg(short, long)]
     pub path: String,
     /// In cases where gas is available, the amount of provided gas.
     #[arg(long)]
@@ -40,7 +38,7 @@ pub struct Args {
     pub print_full_memory: bool,
 }
 
-fn main() -> anyhow::Result<()> {
+pub fn main() -> anyhow::Result<()> {
     let args = Args::parse();
     let res = run_cairo_program(&args);
     if let Err(e) = res {
@@ -51,13 +49,7 @@ fn main() -> anyhow::Result<()> {
 }
 
 pub fn run_cairo_program(args: &Args) -> anyhow::Result<String> {
-    let db = &mut {
-        let mut b = RootDatabase::builder();
-        b.detect_corelib();
-        b.with_semantic_plugin(Arc::new(StarkNetPlugin::default()));
-
-        b.build()?
-    };
+    let db = &mut RootDatabase::builder().detect_corelib().build()?;
     let mut corelib_dir = std::env::current_exe()
         .unwrap_or_else(|e| panic!("Problem getting the executable path: {e:?}"));
     corelib_dir.pop();
@@ -105,7 +97,7 @@ pub fn run_cairo_program(args: &Args) -> anyhow::Result<String> {
     )
     .with_context(|| "Failed setting up runner.")?;
     let result = runner
-        .run_function(
+        .run_function_with_starknet_context(
             runner.find_function("::main")?,
             &[],
             args.available_gas,

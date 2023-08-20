@@ -48,7 +48,6 @@ struct Args {
 enum Subcommands {
     Verify(VerifyArgs),
     Watch(WatchArgs),
-    CompileSolutions(CompileSolutionsArgs),
     Run(RunArgs),
     Reset(ResetArgs),
     Hint(HintArgs),
@@ -69,12 +68,9 @@ struct WatchArgs {
     #[argh(positional)]
     // Start from this exercise
     start: Option<String>,
+    #[argh(switch, short = 's', description = "use solutions directory")]
+    solutions: bool,
 }
-
-#[derive(FromArgs, PartialEq, Debug)]
-#[argh(subcommand, name = "compile_solutions")]
-/// Reruns `verify` when files were edited
-struct CompileSolutionsArgs {}
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "run")]
@@ -274,30 +270,10 @@ fn main() {
             }
         }
 
-        Subcommands::CompileSolutions(_subargs) => {
-            let exercises_base = PathBuf::from("exercises/");
-            let solutions_base = PathBuf::from("solutions/");
-            exercises.iter_mut().for_each(|ex| {
-                ex.path = solutions_base
-                    .clone()
-                    .join(ex.path.strip_prefix(&exercises_base).unwrap());
-            });
-            match watch(&exercises) {
-                Err(e) => {
-                    println!("Error: {e:?}");
-                    std::process::exit(1);
-                }
-                Ok(WatchStatus::Finished) => {
-                    let emoji = Emoji("🎉", "★");
-                    println!("{emoji} All solutions compile! {emoji}");
-                }
-                Ok(WatchStatus::Unfinished) => {
-                    println!("Solutions checking was stopped.");
-                }
-            }
-        }
-
         Subcommands::Watch(subargs) => {
+            if subargs.solutions {
+                exercises = exercises_solution(exercises);
+            }
             let start = subargs.start;
 
             let watching = match start {
@@ -328,6 +304,18 @@ fn main() {
             }
         }
     }
+}
+
+fn exercises_solution(mut exercises: Vec<Exercise>) -> Vec<Exercise> {
+    let exercises_base = PathBuf::from("exercises/");
+    let solutions_base = PathBuf::from("solutions/");
+    exercises.iter_mut().for_each(|ex| {
+        ex.path = solutions_base
+            .clone()
+            .join(ex.path.strip_prefix(&exercises_base).unwrap());
+    });
+
+    exercises
 }
 
 fn spawn_watch_shell(

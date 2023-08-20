@@ -1,9 +1,5 @@
 //! Compiles and runs a Cairo program.
 
-use std::collections::HashMap;
-use std::path::Path;
-use std::sync::{Arc, Mutex};
-
 use anyhow::{bail, Context, Result};
 use cairo_felt::Felt252;
 use cairo_lang_compiler::db::RootDatabase;
@@ -15,6 +11,9 @@ use cairo_lang_defs::plugin::{MacroPlugin, PluginDiagnostic, PluginResult};
 use cairo_lang_diagnostics::ToOption;
 use cairo_lang_filesystem::cfg::{Cfg, CfgSet};
 
+use std::path::Path;
+use std::sync::{Arc, Mutex};
+
 use cairo_lang_filesystem::ids::CrateId;
 
 use cairo_lang_lowering::ids::ConcreteFunctionWithBodyId;
@@ -23,7 +22,6 @@ use cairo_lang_runner::{RunResultValue, SierraCasmRunner};
 use cairo_lang_semantic::db::SemanticGroup;
 use cairo_lang_semantic::items::functions::GenericFunctionId;
 
-use cairo_lang_semantic::plugin::{AsDynMacroPlugin, SemanticPlugin};
 use cairo_lang_semantic::{ConcreteFunction, FunctionLongId};
 use cairo_lang_sierra::extensions::gas::CostTokenType;
 use cairo_lang_sierra::ids::FunctionId;
@@ -32,7 +30,7 @@ use cairo_lang_sierra_generator::replace_ids::{DebugReplacer, SierraIdReplacer};
 use cairo_lang_sierra_to_casm::metadata::MetadataComputationConfig;
 use cairo_lang_starknet::casm_contract_class::ENTRY_POINT_COST;
 use cairo_lang_starknet::contract::{
-    find_contracts, get_contracts_info, get_module_functions, ContractInfo,
+    find_contracts, get_contracts_info, get_module_abi_functions, ContractInfo,
 };
 use cairo_lang_starknet::plugin::consts::{CONSTRUCTOR_MODULE, EXTERNAL_MODULE, L1_HANDLER_MODULE};
 use cairo_lang_starknet::plugin::StarkNetPlugin;
@@ -41,15 +39,13 @@ use cairo_lang_syntax::attribute::structured::{
 };
 
 use cairo_lang_syntax::node::db::SyntaxGroup;
-use cairo_lang_syntax::node::{ast, Terminal, Token};
+use cairo_lang_syntax::node::{ast, Token};
 use cairo_lang_utils::ordered_hash_map::OrderedHashMap;
 use cairo_lang_utils::OptionHelper;
 use clap::Parser;
 use colored::Colorize;
 use itertools::{chain, Itertools};
 use rayon::prelude::{IntoParallelIterator, ParallelIterator};
-
-const CORELIB_DIR_NAME: &str = "corelib/src";
 
 /// Command line args parser.
 /// Exits with 0/1 if the input is formatted correctly/incorrectly.
@@ -80,7 +76,7 @@ enum TestStatus {
     Ignore,
 }
 
-fn main() -> anyhow::Result<()> {
+pub fn main() -> anyhow::Result<()> {
     let args = Args::parse();
     let runner = TestRunner::new(&args.path, "", false, false, true)?;
     if let Err(e) = runner.run() {
@@ -120,10 +116,10 @@ impl TestRunner {
             let mut b = RootDatabase::builder();
             b.detect_corelib();
             b.with_cfg(CfgSet::from_iter([Cfg::name("test")]));
-            b.with_semantic_plugin(Arc::new(TestPlugin::default()));
+            b.with_macro_plugin(Arc::new(TestPlugin::default()));
 
             if starknet {
-                b.with_semantic_plugin(Arc::new(StarkNetPlugin::default()));
+                b.with_macro_plugin(Arc::new(StarkNetPlugin::default()));
             }
 
             b.build()?
@@ -154,12 +150,12 @@ impl TestRunner {
                 .iter()
                 .flat_map(|contract| {
                     chain!(
-                        get_module_functions(db, contract, EXTERNAL_MODULE).unwrap(),
-                        get_module_functions(db, contract, CONSTRUCTOR_MODULE).unwrap(),
-                        get_module_functions(db, contract, L1_HANDLER_MODULE).unwrap()
+                        get_module_abi_functions(db, contract, EXTERNAL_MODULE).unwrap(),
+                        get_module_abi_functions(db, contract, CONSTRUCTOR_MODULE).unwrap(),
+                        get_module_abi_functions(db, contract, L1_HANDLER_MODULE).unwrap()
                     )
                 })
-                .flat_map(|func_id| ConcreteFunctionWithBodyId::from_no_generics_free(db, func_id))
+                .map(|func| ConcreteFunctionWithBodyId::from_semantic(db, func.value))
                 .collect()
         } else {
             vec![]
@@ -229,6 +225,7 @@ impl TestRunner {
             function_set_costs,
             contracts_info,
         )?;
+
         let mut result_string = String::new();
         if failed.is_empty() {
             result_string.push_str(
@@ -294,7 +291,7 @@ fn run_tests(
     named_tests: Vec<(String, TestConfig)>,
     sierra_program: cairo_lang_sierra::program::Program,
     function_set_costs: OrderedHashMap<FunctionId, OrderedHashMap<CostTokenType, i32>>,
-    contracts_info: HashMap<Felt252, ContractInfo>,
+    contracts_info: OrderedHashMap<Felt252, ContractInfo>,
 ) -> anyhow::Result<TestsSummary> {
     let runner = SierraCasmRunner::new(
         sierra_program,
@@ -316,7 +313,7 @@ fn run_tests(
                 return Ok((name, TestStatus::Ignore));
             }
             let result = runner
-                .run_function(
+                .run_function_with_starknet_context(
                     runner.find_function(name.as_str())?,
                     &[],
                     test.available_gas,
@@ -568,12 +565,3 @@ impl MacroPlugin for TestPlugin {
         }
     }
 }
-impl AsDynMacroPlugin for TestPlugin {
-    fn as_dyn_macro_plugin<'a>(self: Arc<Self>) -> Arc<dyn MacroPlugin + 'a>
-    where
-        Self: 'a,
-    {
-        self
-    }
-}
-impl SemanticPlugin for TestPlugin {}

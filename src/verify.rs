@@ -68,13 +68,14 @@ fn compile_and_test_interactively(exercise: &Exercise) -> Result<bool, ()> {
 fn compile_and_run_cairo(exercise: &Exercise, progress_bar: &ProgressBar) -> Result<String, ()> {
     let compilation_result = exercise.run_cairo();
 
-    if let Some(error) = compilation_result.as_ref().err() {
+    if let Err(error) = compilation_result {
         progress_bar.finish_and_clear();
         warn!(
             "Compiling of {} failed! Please try again. Here's the output:",
             exercise
         );
         println!("{error}");
+        eprintln!("{error}");
         Err(())
     } else {
         Ok(compilation_result.unwrap())

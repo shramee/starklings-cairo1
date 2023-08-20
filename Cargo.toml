@@ -21,6 +21,7 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.81"
 home = "0.5.3"
 glob = "0.3.0"
+cairo-felt = "0.8.2"
 
 # Cairo runner dependencies
 cairo-lang-runner = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}

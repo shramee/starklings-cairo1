@@ -2497,6 +2497,7 @@ dependencies = [
  "ark-ff",
  "ark-std 0.3.0",
  "assert_cmd",
+ "cairo-felt",
  "cairo-lang-casm",
  "cairo-lang-compiler",
  "cairo-lang-debug",
