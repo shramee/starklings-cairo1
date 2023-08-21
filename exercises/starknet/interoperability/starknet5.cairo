@@ -3,6 +3,7 @@
 // Execute `starklings hint starknet5` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
+
 use core::traits::Into;
 use core::result::ResultTrait;
 use starknet::syscalls::deploy_syscall;
@@ -26,6 +27,7 @@ mod ContractA {
     use super::IContractBDispatcher;
     use super::IContractBDispatcherTrait;
     use result::ResultTrait;
+    use debug::PrintTrait;
 
     #[storage]
     struct Storage {
@@ -39,11 +41,10 @@ mod ContractA {
     }
 
     #[external(v0)]
-    #[generate_trait]
-    impl ContractAImpl of ContractATrait {
-        fn set_value(
-            ref self: ContractState, value: u128
-        ) -> bool { //TODO: check if contract_b is enabled. If it is, set the value and return true. Otherwise, return false.
+    impl ContractAImpl of super::IContractA<ContractState> {
+        fn set_value(ref self: ContractState, value: u128) -> bool {
+            // TODO: check if contract_b is enabled.
+            // If it is, set the value and return true. Otherwise, return false.
         }
 
         fn get_value(self: @ContractState) -> u128 {
@@ -70,8 +71,7 @@ mod ContractB {
     fn constructor(ref self: ContractState) {}
 
     #[external(v0)]
-    #[generate_trait]
-    impl ContractBImpl of ContractBTrait {
+    impl ContractBImpl of super::IContractB<ContractState> {
         fn enable(ref self: ContractState) {
             self.enabled.write(true);
         }
@@ -128,6 +128,7 @@ mod test {
 
         //TODO interact with contract_b to make the test pass.
 
+        // Tests
         assert(contract_a.set_value(300) == true, 'Could not set value');
         assert(contract_a.get_value() == 300, 'Value was not set');
         assert(contract_b.is_enabled() == true, 'Contract b is not enabled');
