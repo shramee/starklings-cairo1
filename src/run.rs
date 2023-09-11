@@ -39,10 +39,6 @@ fn run_cairo(exercise: &Exercise) -> Result<(), ()> {
 
     if let Some(error) = output.as_ref().err() {
         progress_bar.finish_and_clear();
-        println!("Err");
-        println!("{error}");
-
-        println!("Normal");
         println!("{error}");
         Err(())
     } else {
@@ -64,10 +60,6 @@ fn test_cairo(exercise: &Exercise) -> Result<(), ()> {
 
     if let Some(error) = output.as_ref().err() {
         progress_bar.finish_and_clear();
-        println!("Err");
-        println!("{error}");
-
-        println!("Normal");
         println!("{error}");
         Err(())
     } else {

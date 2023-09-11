@@ -3,11 +3,15 @@ use traits::IndexView;
 use box::BoxTrait;
 use gas::withdraw_gas;
 use option::OptionTrait;
+use serde::Serde;
 
+#[derive(Drop)]
 extern type Array<T>;
+
 extern fn array_new<T>() -> Array<T> nopanic;
 extern fn array_append<T>(ref arr: Array<T>, value: T) nopanic;
 extern fn array_pop_front<T>(ref arr: Array<T>) -> Option<Box<T>> nopanic;
+extern fn array_pop_front_consume<T>(arr: Array<T>) -> Option<(Array<T>, Box<T>)> nopanic;
 extern fn array_snapshot_pop_front<T>(ref arr: @Array<T>) -> Option<Box<@T>> nopanic;
 extern fn array_snapshot_pop_back<T>(ref arr: @Array<T>) -> Option<Box<@T>> nopanic;
 #[panic_with('Index out of bounds', array_at)]
@@ -19,16 +23,7 @@ extern fn array_slice<T>(
 ) -> Option<@Array<T>> implicits(RangeCheck) nopanic;
 extern fn array_len<T>(arr: @Array<T>) -> usize nopanic;
 
-trait ArrayTrait<T> {
-    fn new() -> Array<T>;
-    fn append(ref self: Array<T>, value: T);
-    fn pop_front(ref self: Array<T>) -> Option<T> nopanic;
-    fn get(self: @Array<T>, index: usize) -> Option<Box<@T>>;
-    fn at(self: @Array<T>, index: usize) -> @T;
-    fn len(self: @Array<T>) -> usize;
-    fn is_empty(self: @Array<T>) -> bool;
-    fn span(self: @Array<T>) -> Span<T>;
-}
+#[generate_trait]
 impl ArrayImpl<T> of ArrayTrait<T> {
     #[inline(always)]
     fn new() -> Array<T> {
@@ -42,7 +37,14 @@ impl ArrayImpl<T> of ArrayTrait<T> {
     fn pop_front(ref self: Array<T>) -> Option<T> nopanic {
         match array_pop_front(ref self) {
             Option::Some(x) => Option::Some(x.unbox()),
-            Option::None(_) => Option::None(()),
+            Option::None => Option::None,
+        }
+    }
+    #[inline(always)]
+    fn pop_front_consume(self: Array<T>) -> Option<(Array<T>, T)> nopanic {
+        match array_pop_front_consume(self) {
+            Option::Some((arr, x)) => Option::Some((arr, x.unbox())),
+            Option::None => Option::None,
         }
     }
     #[inline(always)]
@@ -66,14 +68,52 @@ impl ArrayImpl<T> of ArrayTrait<T> {
     }
 }
 
+impl ArrayDefault<T> of Default<Array<T>> {
+    #[inline(always)]
+    fn default() -> Array<T> {
+        ArrayTrait::new()
+    }
+}
+
 impl ArrayIndex<T> of IndexView<Array<T>, usize, @T> {
     fn index(self: @Array<T>, index: usize) -> @T {
         array_at(self, index).unbox()
     }
 }
 
-// Impls for common generic types
-impl ArrayDrop<T, impl TDrop: Drop<T>> of Drop<Array<T>>;
+impl ArraySerde<T, impl TSerde: Serde<T>, impl TDrop: Drop<T>> of Serde<Array<T>> {
+    fn serialize(self: @Array<T>, ref output: Array<felt252>) {
+        self.len().serialize(ref output);
+        serialize_array_helper(self.span(), ref output);
+    }
+    fn deserialize(ref serialized: Span<felt252>) -> Option<Array<T>> {
+        let length = *serialized.pop_front()?;
+        let mut arr = array![];
+        deserialize_array_helper(ref serialized, arr, length)
+    }
+}
+
+fn serialize_array_helper<T, impl TSerde: Serde<T>, impl TDrop: Drop<T>>(
+    mut input: Span<T>, ref output: Array<felt252>
+) {
+    match input.pop_front() {
+        Option::Some(value) => {
+            value.serialize(ref output);
+            serialize_array_helper(input, ref output);
+        },
+        Option::None => {},
+    }
+}
+
+fn deserialize_array_helper<T, impl TSerde: Serde<T>, impl TDrop: Drop<T>>(
+    ref serialized: Span<felt252>, mut curr_output: Array<T>, remaining: felt252
+) -> Option<Array<T>> {
+    if remaining == 0 {
+        return Option::Some(curr_output);
+    }
+    curr_output.append(TSerde::deserialize(ref serialized)?);
+    deserialize_array_helper(ref serialized, curr_output, remaining - 1)
+}
 
 // Span.
 struct Span<T> {
@@ -83,15 +123,20 @@ struct Span<T> {
 impl SpanCopy<T> of Copy<Span<T>>;
 impl SpanDrop<T> of Drop<Span<T>>;
 
-trait SpanTrait<T> {
-    fn pop_front(ref self: Span<T>) -> Option<@T>;
-    fn pop_back(ref self: Span<T>) -> Option<@T>;
-    fn get(self: Span<T>, index: usize) -> Option<Box<@T>>;
-    fn at(self: Span<T>, index: usize) -> @T;
-    fn slice(self: Span<T>, start: usize, length: usize) -> Span<T>;
-    fn len(self: Span<T>) -> usize;
-    fn is_empty(self: Span<T>) -> bool;
+impl SpanSerde<T, impl TSerde: Serde<T>, impl TDrop: Drop<T>> of Serde<Span<T>> {
+    fn serialize(self: @Span<T>, ref output: Array<felt252>) {
+        (*self).len().serialize(ref output);
+        serialize_array_helper(*self, ref output)
+    }
+
+    fn deserialize(ref serialized: Span<felt252>) -> Option<Span<T>> {
+        let length = *serialized.pop_front()?;
+        let mut arr = array_new();
+        Option::Some(deserialize_array_helper(ref serialized, arr, length)?.span())
+    }
 }
+
+#[generate_trait]
 impl SpanImpl<T> of SpanTrait<T> {
     #[inline(always)]
     fn pop_front(ref self: Span<T>) -> Option<@T> {
@@ -100,7 +145,7 @@ impl SpanImpl<T> of SpanTrait<T> {
         self = Span { snapshot };
         match item {
             Option::Some(x) => Option::Some(x.unbox()),
-            Option::None(_) => Option::None(()),
+            Option::None => Option::None,
         }
     }
     #[inline(always)]
@@ -110,7 +155,7 @@ impl SpanImpl<T> of SpanTrait<T> {
         self = Span { snapshot };
         match item {
             Option::Some(x) => Option::Some(x.unbox()),
-            Option::None(_) => Option::None(()),
+            Option::None => Option::None,
         }
     }
     #[inline(always)]
@@ -152,11 +197,45 @@ impl ArrayTCloneImpl<T, impl TClone: Clone<T>, impl TDrop: Drop<T>> of Clone<Arr
                 Option::Some(v) => {
                     response.append(TClone::clone(v));
                 },
-                Option::None(_) => {
+                Option::None => {
                     break ();
                 },
             };
         };
         response
+    }
+}
+
+impl ArrayPartialEq<T, impl PartialEqImpl: PartialEq<T>> of PartialEq<Array<T>> {
+    fn eq(lhs: @Array<T>, rhs: @Array<T>) -> bool {
+        lhs.span() == rhs.span()
+    }
+    fn ne(lhs: @Array<T>, rhs: @Array<T>) -> bool {
+        !(lhs == rhs)
+    }
+}
+
+impl SpanPartialEq<T, impl PartialEqImpl: PartialEq<T>> of PartialEq<Span<T>> {
+    fn eq(lhs: @Span<T>, rhs: @Span<T>) -> bool {
+        if (*lhs).len() != (*rhs).len() {
+            return false;
+        }
+        let mut lhs_span = *lhs;
+        let mut rhs_span = *rhs;
+        loop {
+            match lhs_span.pop_front() {
+                Option::Some(lhs_v) => {
+                    if lhs_v != rhs_span.pop_front().unwrap() {
+                        break false;
+                    }
+                },
+                Option::None => {
+                    break true;
+                },
+            };
+        }
+    }
+    fn ne(lhs: @Span<T>, rhs: @Span<T>) -> bool {
+        !(lhs == rhs)
     }
 }

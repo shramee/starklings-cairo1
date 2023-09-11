@@ -21,33 +21,33 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.81"
 home = "0.5.3"
 glob = "0.3.0"
+cairo-felt = "0.8.2"
 
 # Cairo runner dependencies
-cairo-lang-runner = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-compiler = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-casm = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-debug = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-sierra = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-sierra-ap-change = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-sierra-gas = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-sierra-generator = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-sierra-to-casm = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-starknet = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-syntax = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-plugins = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
-cairo-lang-lowering = { git = "https://github.com/starkware-libs/cairo",rev = "1003d5d14c09191bbfb64ee318d1975584b3c819"}
+cairo-lang-runner = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-test-runner = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-compiler = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-casm = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-diagnostics = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-debug = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-defs = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-sierra = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-sierra-ap-change = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-sierra-gas = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-sierra-generator = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-semantic = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-sierra-to-casm = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-utils = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-filesystem = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-starknet = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-syntax = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-plugins = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
+cairo-lang-lowering = {git = "https://github.com/starkware-libs/cairo", version = "2.1.1"}
 
 
 anyhow = "1.0.66"
 ark-ff = "0.4.0-alpha.7"
 ark-std = "0.3.0"
-cairo-felt = "0.3.0-rc1"
-cairo-vm = "0.3.0-rc1"
 clap = { version = "4.0", features = ["derive"] }
 itertools = "0.10.3"
 num-bigint = "0.4"

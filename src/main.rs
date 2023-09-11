@@ -23,8 +23,8 @@ mod ui;
 mod exercise;
 mod project;
 mod run;
-mod starklings_runner;
-mod starklings_tester;
+pub mod starklings_runner;
+pub mod starklings_tester;
 mod verify;
 
 // In sync with crate version
@@ -48,7 +48,6 @@ struct Args {
 enum Subcommands {
     Verify(VerifyArgs),
     Watch(WatchArgs),
-    CompileSolutions(CompileSolutionsArgs),
     Run(RunArgs),
     Reset(ResetArgs),
     Hint(HintArgs),
@@ -69,12 +68,9 @@ struct WatchArgs {
     #[argh(positional)]
     // Start from this exercise
     start: Option<String>,
+    #[argh(switch, short = 's', description = "use solutions directory")]
+    solutions: bool,
 }
-
-#[derive(FromArgs, PartialEq, Debug)]
-#[argh(subcommand, name = "compile_solutions")]
-/// Reruns `verify` when files were edited
-struct CompileSolutionsArgs {}
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "run")]
@@ -274,30 +270,10 @@ fn main() {
             }
         }
 
-        Subcommands::CompileSolutions(_subargs) => {
-            let exercises_base = PathBuf::from("exercises/");
-            let solutions_base = PathBuf::from("solutions/");
-            exercises.iter_mut().for_each(|mut ex| {
-                ex.path = solutions_base
-                    .clone()
-                    .join(ex.path.strip_prefix(&exercises_base).unwrap());
-            });
-            match watch(&exercises) {
-                Err(e) => {
-                    println!("Error: {e:?}");
-                    std::process::exit(1);
-                }
-                Ok(WatchStatus::Finished) => {
-                    let emoji = Emoji("🎉", "★");
-                    println!("{emoji} All solutions compile! {emoji}");
-                }
-                Ok(WatchStatus::Unfinished) => {
-                    println!("Solutions checking was stopped.");
-                }
-            }
-        }
-
         Subcommands::Watch(subargs) => {
+            if subargs.solutions {
+                exercises = exercises_solution(exercises);
+            }
             let start = subargs.start;
 
             let watching = match start {
@@ -330,12 +306,24 @@ fn main() {
     }
 }
 
+fn exercises_solution(mut exercises: Vec<Exercise>) -> Vec<Exercise> {
+    let exercises_base = PathBuf::from("exercises/");
+    let solutions_base = PathBuf::from("solutions/");
+    exercises.iter_mut().for_each(|ex| {
+        ex.path = solutions_base
+            .clone()
+            .join(ex.path.strip_prefix(&exercises_base).unwrap());
+    });
+
+    exercises
+}
+
 fn spawn_watch_shell(
     failed_exercise_hint: &Arc<Mutex<Option<String>>>,
     should_quit: Arc<AtomicBool>,
 ) {
     let failed_exercise_hint = Arc::clone(failed_exercise_hint);
-    println!("Welcome to watch mode! You can type 'help' to get an overview of the commands you can use here.");
+    println!("\n\nWelcome to watch mode! You can type 'help' to get an overview of the commands you can use here.");
     thread::spawn(move || loop {
         let mut input = String::new();
         match io::stdin().read_line(&mut input) {

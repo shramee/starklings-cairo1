@@ -2,10 +2,11 @@ use box::BoxTrait;
 use traits::Default;
 use traits::Felt252DictValue;
 
+#[derive(Copy, Drop)]
 extern type Nullable<T>;
 
 enum FromNullableResult<T> {
-    Null: (),
+    Null,
     NotNull: Box<T>,
 }
 
@@ -15,20 +16,20 @@ extern fn match_nullable<T>(value: Nullable<T>) -> FromNullableResult<T> nopanic
 
 trait NullableTrait<T> {
     fn deref(self: Nullable<T>) -> T;
+    fn new(value: T) -> Nullable<T>;
 }
 
 impl NullableImpl<T> of NullableTrait<T> {
     fn deref(self: Nullable<T>) -> T {
         match match_nullable(self) {
-            FromNullableResult::Null(()) => panic_with_felt252('Attempted to deref null value'),
+            FromNullableResult::Null => panic_with_felt252('Attempted to deref null value'),
             FromNullableResult::NotNull(value) => value.unbox(),
         }
     }
+    fn new(value: T) -> Nullable<T> {
+        nullable_from_box(BoxTrait::new(value))
+    }
 }
-
-// Impls for generic types
-impl NullableCopy<T, impl TCopy: Copy<T>> of Copy<Nullable<T>>;
-impl NullableDrop<T, impl TDrop: Drop<T>> of Drop<Nullable<T>>;
 
 impl NullableDefault<T> of Default<Nullable<T>> {
     #[inline(always)]

@@ -9,7 +9,8 @@ fn test_loop() {
     let mut counter = 0;
 
     let result = loop {
-        if counter == 5 {//TODO return a value from the loop
+        if counter == 5 {
+    //TODO return a value from the loop
         }
         counter += 1;
     }

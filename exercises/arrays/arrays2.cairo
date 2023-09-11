@@ -15,8 +15,9 @@ fn create_array() -> Array<felt252> {
     a
 }
 
-fn remove_element_from_array(ref a: Array<felt252>){
-    //TODO something to do here...Is there an array method I can use?
+fn remove_element_from_array(
+    ref a: Array<felt252>
+) { //TODO something to do here...Is there an array method I can use?
 }
 
 #[test]

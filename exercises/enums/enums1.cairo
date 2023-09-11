@@ -15,7 +15,7 @@ fn main() {
     Message::ChangeColor(()).print();
 }
 
-impl MessagePrintImpl of PrintTrait::<Message> {
+impl MessagePrintImpl of PrintTrait<Message> {
     fn print(self: Message) {
         match self {
             Message::Quit(()) => ('Quit').print(),

@@ -17,12 +17,12 @@
 
 #[derive(Copy, Drop)]
 struct Cat {
-    noise: felt252,
+    noise: felt252, 
 }
 
 #[derive(Copy, Drop)]
 struct Cow {
-    noise: felt252,
+    noise: felt252, 
 }
 
 trait AnimalTrait<T> {
@@ -30,8 +30,7 @@ trait AnimalTrait<T> {
     fn make_noise(self: T) -> felt252;
 }
 
-impl CatImpl of AnimalTrait::<Cat> {
-    // TODO: implement the trait Animal for the type Cat
+impl CatImpl of AnimalTrait<Cat> { // TODO: implement the trait Animal for the type Cat
 }
 
 // TODO: implement the trait Animal for the type Cow

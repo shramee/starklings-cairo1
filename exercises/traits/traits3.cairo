@@ -35,9 +35,9 @@ trait DogTrait {
     fn walk(ref self: Dog) -> ();
 }
 
-impl AnimalFishImpl of AnimalTrait::<Fish> {
+impl AnimalFishImpl of AnimalTrait<Fish> {
     fn new() -> Fish {
-        Fish { noise: 'blub', distance: 0}
+        Fish { noise: 'blub', distance: 0 }
     }
     fn make_noise(self: Fish) -> felt252 {
         self.noise
@@ -47,9 +47,9 @@ impl AnimalFishImpl of AnimalTrait::<Fish> {
     }
 }
 
-impl AnimalDogImpl of AnimalTrait::<Dog> {
+impl AnimalDogImpl of AnimalTrait<Dog> {
     fn new() -> Dog {
-        Dog { noise: 'woof', distance: 0}
+        Dog { noise: 'woof', distance: 0 }
     }
     fn make_noise(self: Dog) -> felt252 {
         self.noise
