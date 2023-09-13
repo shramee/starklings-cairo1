@@ -52,7 +52,6 @@ impl StateImpl of StateTrait {
     fn process(
         ref self: State, message: Message
     ) { // TODO: create a match expression to process the different message variants
-    // Remember: When passing a tuple as a function argument, you'll need extra parentheses: fn function((t, u, p, l, e))
     }
 }
 
@@ -69,18 +68,4 @@ fn test_match_message_call() {
     assert(state.position.x == 10, 'wrong x position');
     assert(state.position.y == 15, 'wrong y position');
     assert(state.quit == true, 'quit should be true');
-}
-
-
-impl TripleTuplePartialEq of PartialEq<(u8, u8, u8)> {
-    #[inline(always)]
-    fn eq(lhs: (u8, u8, u8), rhs: (u8, u8, u8)) -> bool {
-        let (a0, a1, a2) = lhs;
-        let (b0, b1, b2) = rhs;
-        a0 == b0 & a1 == b1 & a2 == b2
-    }
-    #[inline(always)]
-    fn ne(lhs: (u8, u8, u8), rhs: (u8, u8, u8)) -> bool {
-        !(lhs == rhs)
-    }
 }
