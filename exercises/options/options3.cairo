@@ -49,11 +49,12 @@ fn display_grades(student: @Student, index: usize) {
 #[test]
 #[available_gas(20000000)]
 fn test_all_defined() {
-    let mut courses = ArrayTrait::<Option<felt252>>::new();
-    courses.append(Option::Some('A'));
-    courses.append(Option::Some('B'));
-    courses.append(Option::Some('C'));
-    courses.append(Option::Some('A'));
+    let courses = array![
+        Option::Some('A'),
+        Option::Some('B'),
+        Option::Some('C'),
+        Option::Some('A'),
+    ];
     let mut student = Student { name: 'Alice', courses: courses };
     display_grades(@student, 0);
 }
@@ -62,12 +63,13 @@ fn test_all_defined() {
 #[test]
 #[available_gas(20000000)]
 fn test_some_empty() {
-    let mut courses = ArrayTrait::<Option<felt252>>::new();
-    courses.append(Option::Some('A'));
-    courses.append(Option::None(()));
-    courses.append(Option::Some('B'));
-    courses.append(Option::Some('C'));
-    courses.append(Option::None(()));
+    let courses = array![
+        Option::Some('A'),
+        Option::None(()),
+        Option::Some('B'),
+        Option::Some('C'),
+        Option::None(()),
+    ];
     let mut student = Student { name: 'Bob', courses: courses };
     display_grades(@student, 0);
 }
