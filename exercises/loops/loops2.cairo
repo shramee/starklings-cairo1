@@ -13,7 +13,7 @@ fn test_loop() {
     //TODO return a value from the loop
         }
         counter += 1;
-    }
+    };
 
     assert(result == 5, 'result should be 5');
 }
