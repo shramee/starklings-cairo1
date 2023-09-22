@@ -236,7 +236,7 @@ You can return values from loops by adding the value you want returned after the
 name = "enums1"
 path = "exercises/enums/enums1.cairo"
 mode = "compile"
-hint = "https://cairo-book.github.io/ch05-01-enums.html"
+hint = "https://cairo-book.github.io/ch06-01-enums.html"
 
 [[exercises]]
 name = "enums2"
@@ -245,7 +245,7 @@ mode = "compile"
 hint = """
 You can create enumerations that have different variants with different types
 such as no data, structs, a single felt string, tuples, ...etc
-https://cairo-book.github.io/ch05-01-enums.html
+https://cairo-book.github.io/ch06-01-enums.html
 """
 
 [[exercises]]
@@ -257,7 +257,7 @@ As a first step, you can define enums to compile this code without errors.
 and then create a match expression in `process()`.
 Note that you need to deconstruct some message variants
 in the match expression to get value in the variant.
-https://cairo-book.github.io/ch05-01-enums.html
+https://cairo-book.github.io/ch06-01-enums.html
 """
 
 # OPTIONS
@@ -270,7 +270,7 @@ hint = """
 Options can have a Some value, with an inner value, or a None value, without an inner value.
 There's multiple ways to get at the inner value, you can use unwrap, or pattern match. Unwrapping
 is the easiest, but how do you do it safely so that it doesn't panic in your face later?
-https://cairo-book.github.io/ch05-01-enums.html#the-option-enum-and-its-advantages
+https://cairo-book.github.io/ch06-01-enums.html#the-option-enum-and-its-advantages
 """
 
 [[exercises]]
