@@ -11,7 +11,7 @@ fn modulus(x: u8, y: u8) -> u8 {
     res
 }
 
-fn floor_division(x: usize, y: usize) -> u32 {
+fn floor_division(x: usize, y: usize) -> usize {
     // calculate the floor_division of x and y
     // FILL ME
     res
