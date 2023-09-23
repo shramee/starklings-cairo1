@@ -101,14 +101,7 @@ cargo test
 
 ## Contributing
 
-Thanks for your interest in the project. You can fork the repo, create a branch with a descriptive name (maybe the issue number and a word or two to describe it) and submit a pull request to the `dev` branch of this repo.
-
-### Branches
-
-We have 2 active branches,
-
-1. `dev` This is where new development happens. All pull requests should be made to this branch.
-2. `main` This is for cloning and running starklings. `dev` is merged into `main` after a second set of testing.
+Thanks for your interest in the project. You can fork the repo, create a branch with a descriptive name (maybe the issue number and a word or two to describe it) and submit a pull request.
 
 ### Adding new exercises
 
@@ -122,18 +115,11 @@ We have 2 active branches,
     hint = """"""
     ```
 3. Check that the [tests](#testing) pass.
-4. Send your PR to `dev` branch of the repo!
+4. Send your PR!
 
 ### Updating Rust logic/Cairo version
 
 1. [Test](#testing) your changes.
 2. Make sure you have solutions to all the exercises in `./solutions` directory.
 3. Run `cargo run -r --bin starklings compile_solutions` to confirm all exercise solutions still compile.
-4. Make a pull requests to `dev` branch of the repo!
-
-### Merging `dev` into `main` (maintainers)
-
-1. Create a PR from `dev` branch to `master` branch.
-2. Run all tests, and check solutions with `cargo run -r --bin starklings compile_solutions`.
-3. Check to make sure no new changes were merged into `dev` since the PR was created.
-4. If everything makes sense, merge away!
+4. Make your pull request.
