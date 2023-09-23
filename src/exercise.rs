@@ -2,7 +2,7 @@ use regex::Regex;
 use serde::Deserialize;
 
 use crate::starklings_runner::{run_cairo_program, Args as RunnerArgs};
-use crate::starklings_tester::TestRunner;
+use crate::starklings_tester::run_exercise_tests;
 use std::fmt::{self, Display, Formatter};
 use std::fs::{remove_file, File};
 use std::io::Read;
@@ -100,8 +100,7 @@ impl Exercise {
     }
 
     pub fn test_cairo(&self) -> anyhow::Result<String> {
-        let runner = TestRunner::new(self.path.to_str().unwrap(), "", false, false, true)?;
-        runner.run()
+        run_exercise_tests(self.path.to_str().unwrap())
     }
 
     pub fn state(&self) -> State {

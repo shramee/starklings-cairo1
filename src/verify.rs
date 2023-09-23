@@ -16,7 +16,7 @@ pub fn verify<'a>(
     let bar = ProgressBar::new(total as u64);
     bar.set_style(
         ProgressStyle::default_bar()
-            .template("Progress: [{bar:60.green/red}] {pos}/{len} {msg}")
+            .template("Progress: [{bar:60.green/red}] {pos}/{len} {msg}\n")
             .progress_chars("#>-"),
     );
     bar.set_position(num_done as u64);
@@ -38,6 +38,7 @@ pub fn verify<'a>(
 // Compile the given Exercise and run the resulting binary in an interactive mode
 fn compile_and_run_interactively(exercise: &Exercise) -> Result<bool, ()> {
     let progress_bar = ProgressBar::new_spinner();
+
     progress_bar.enable_steady_tick(100);
 
     progress_bar.set_message(format!("Running {exercise} exercise..."));
@@ -70,12 +71,10 @@ fn compile_and_run_cairo(exercise: &Exercise, progress_bar: &ProgressBar) -> Res
 
     if let Err(error) = compilation_result {
         progress_bar.finish_and_clear();
-        warn!(
-            "Compiling of {} failed! Please try again. Here's the output:",
-            exercise
-        );
-        println!("{error}");
+
         eprintln!("{error}");
+
+        warn!("Compiling of {} failed! Please try again.", exercise);
         Err(())
     } else {
         Ok(compilation_result.unwrap())

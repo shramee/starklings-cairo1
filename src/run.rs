@@ -54,7 +54,7 @@ fn run_cairo(exercise: &Exercise) -> Result<(), ()> {
 // This is strictly for non-test binaries, so output is displayed
 fn test_cairo(exercise: &Exercise) -> Result<(), ()> {
     let progress_bar = ProgressBar::new_spinner();
-    progress_bar.set_message(format!("Running {exercise}..."));
+    progress_bar.set_message(format!("Testing {exercise}..."));
     progress_bar.enable_steady_tick(100);
     let output = exercise.test_cairo();
 
