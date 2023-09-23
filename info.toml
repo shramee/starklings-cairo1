@@ -394,7 +394,7 @@ where the error is.
 
 Also: Try accessing `arr0` after having called `fill_arr()`. See what happens!
 
-Read more about move semantics and ownership here: https://cairo-book.github.io/ch03-01-what-is-ownership.html
+Read more about move semantics and ownership here: https://cairo-book.github.io/ch04-01-what-is-ownership.html
 """
 
 [[exercises]]
