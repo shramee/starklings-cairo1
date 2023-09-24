@@ -27,8 +27,8 @@ With rustup `curl https://sh.rustup.rs -sSf | sh -s`
 
 1. Clone the repo and go in the directory,  
    `git clone https://github.com/shramee/starklings-cairo1.git && cd starklings-cairo1`.
-2. Run `cargo run --bin starklings`, this might take a while the first time.
-3. You should see this intro message, run `cargo run --bin starklings watch` when you are ready!
+2. Run `cargo run -r --bin starklings`, this might take a while the first time.
+3. You should see this intro message, run `cargo run -r --bin starklings watch` when you are ready!
 
 ## Start at a specific exercise `NEW`
 
@@ -36,7 +36,7 @@ To start watch at a specific exercise pass the name of the exercise to watch com
 For example, to start at `starknet1`,
 
 ```
-cargo run --bin starklings watch starknet1
+cargo run -r --bin starklings watch starknet1
 ```
 
 ## Welcome message and instrucitons
@@ -60,13 +60,13 @@ going to teach you a bunch of stuff about StarkNet and Cairo.
 
 Here's how starklings works,
 
-1. To start starklings run `cargo run --bin starklings watch`
+1. To start starklings run `cargo run -r --bin starklings watch`
 2. It'll automatically start with the first exercise. Don't get confused by
 error message popping up as soon as you run starklings! This is part of the
 exercise that you're supposed to solve, so open the exercise file in an editor
 and start your detective work!
 3. If you're stuck on an exercise, there is a helpful hint you can view by
-typing `hint` (in watch mode), or running `cargo run --bin starklings hint
+typing `hint` (in watch mode), or running `cargo run -r --bin starklings hint
 exercise_name`.
 4. When you have solved the exercise successfully, Remove `// I AM NOT DONE`
 comment to move on to the next exercise.
@@ -128,12 +128,12 @@ We have 2 active branches,
 
 1. [Test](#testing) your changes.
 2. Make sure you have solutions to all the exercises in `./solutions` directory.
-3. Run `cargo run --bin starklings compile_solutions` to confirm all exercise solutions still compile.
+3. Run `cargo run -r --bin starklings compile_solutions` to confirm all exercise solutions still compile.
 4. Make a pull requests to `dev` branch of the repo!
 
 ### Merging `dev` into `main` (maintainers)
 
 1. Create a PR from `dev` branch to `master` branch.
-2. Run all tests, and check solutions with `cargo run --bin starklings compile_solutions`.
+2. Run all tests, and check solutions with `cargo run -r --bin starklings compile_solutions`.
 3. Check to make sure no new changes were merged into `dev` since the PR was created.
 4. If everything makes sense, merge away!

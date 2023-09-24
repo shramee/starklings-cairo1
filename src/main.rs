@@ -460,13 +460,13 @@ going to teach you a bunch of stuff about StarkNet and Cairo.
 
 Here's how starklings works,
 
-1. To start starklings run `cargo run --bin starklings watch`
+1. To start starklings run `cargo run -r --bin starklings watch`
 2. It'll automatically start with the first exercise. Don't get confused by
 error message popping up as soon as you run starklings! This is part of the
 exercise that you're supposed to solve, so open the exercise file in an editor
 and start your detective work!
 3. If you're stuck on an exercise, there is a helpful hint you can view by
-typing `hint` (in watch mode), or running `cargo run --bin starklings hint
+typing `hint` (in watch mode), or running `cargo run -r --bin starklings hint
 exercise_name`.
 4. When you have solved the exercise successfully, Remove `// I AM NOT DONE`
 comment to move on to the next exercise.
