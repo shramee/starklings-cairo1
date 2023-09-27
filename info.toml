@@ -349,7 +349,7 @@ You'd use the struct like so,
 let john = Person { name: 'John', age: 29 };
 
 
-Read more about structs in the Structs section of this article: https://cairo-book.github.io/ch04-01-defining-and-instantiating-structs.html """
+Read more about structs in the Structs section of this article: https://cairo-book.github.io/ch05-01-defining-and-instantiating-structs.html """
 
 
 [[exercises]]
@@ -365,7 +365,7 @@ There are some shortcuts that can be taken when destructuring structs,
 let Foo {x, y} = foo; // Creates variables x and y with values foo.x and foo.y
 let Foo {x: a, y: b} = foo; // Creates variables a and b with values foo.x and foo.y
 ```
-Read more about structs in the Structs section of this article: https://cairo-book.github.io/ch04-01-defining-and-instantiating-structs.html """
+Read more about structs in the Structs section of this article: https://cairo-book.github.io/ch05-01-defining-and-instantiating-structs.html """
 
 [[exercises]]
 name = "structs3"
@@ -377,7 +377,7 @@ For is_international: What makes a package international? Seems related to the p
 For get_fees: This method takes an additional argument, is there a field in the Package struct that this relates to?
 
 Looking at the test functions will also help you understand more about the syntax.
-This section will help you understanding more about methods https://cairo-book.github.io/ch04-03-method-syntax.html
+This section will help you understanding more about methods https://cairo-book.github.io/ch05-03-method-syntax.html
 """
 
 
@@ -484,7 +484,7 @@ In the test, you need to instantiate two objects of type `Animal`.
 You can call the method of a trait by using the MyTrait::foo() syntax.
 How would you instantiate the two objects with AnimalTrait?
 Maybe you need to specify the type of the object?
-https://cairo-book.github.io/ch07-02-traits-in-cairo.html
+https://cairo-book.github.io/ch08-02-traits-in-cairo.html
 """
 
 [[exercises]]
