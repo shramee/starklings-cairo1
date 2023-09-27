@@ -7,9 +7,11 @@ use cairo_lang_compiler::diagnostics::DiagnosticsReporter;
 use cairo_lang_compiler::project::setup_project;
 use cairo_lang_debug::DebugWithDb;
 use cairo_lang_defs::ids::{FreeFunctionId, FunctionWithBodyId, ModuleItemId};
-use cairo_lang_defs::plugin::{MacroPlugin, PluginDiagnostic, PluginResult};
+use cairo_lang_defs::plugin::PluginDiagnostic;
 use cairo_lang_diagnostics::ToOption;
 use cairo_lang_filesystem::cfg::{Cfg, CfgSet};
+use cairo_lang_starknet::inline_macros::selector::SelectorMacro;
+use cairo_lang_test_plugin::TestPlugin;
 
 use std::path::Path;
 use std::sync::{Arc, Mutex};
@@ -30,13 +32,11 @@ use cairo_lang_sierra_generator::replace_ids::{DebugReplacer, SierraIdReplacer};
 use cairo_lang_sierra_to_casm::metadata::MetadataComputationConfig;
 use cairo_lang_starknet::casm_contract_class::ENTRY_POINT_COST;
 use cairo_lang_starknet::contract::{
-    find_contracts, get_contracts_info, get_module_abi_functions, ContractInfo,
+    find_contracts, get_contract_abi_functions, get_contracts_info, ContractInfo,
 };
 use cairo_lang_starknet::plugin::consts::{CONSTRUCTOR_MODULE, EXTERNAL_MODULE, L1_HANDLER_MODULE};
 use cairo_lang_starknet::plugin::StarkNetPlugin;
-use cairo_lang_syntax::attribute::structured::{
-    Attribute, AttributeArg, AttributeArgVariant, AttributeListStructurize,
-};
+use cairo_lang_syntax::attribute::structured::{Attribute, AttributeArg, AttributeArgVariant};
 
 use cairo_lang_syntax::node::db::SyntaxGroup;
 use cairo_lang_syntax::node::{ast, Token};
@@ -119,7 +119,8 @@ impl TestRunner {
             b.with_macro_plugin(Arc::new(TestPlugin::default()));
 
             if starknet {
-                b.with_macro_plugin(Arc::new(StarkNetPlugin::default()));
+                b.with_macro_plugin(Arc::new(StarkNetPlugin::default()))
+                    .with_inline_macro_plugin(SelectorMacro::NAME, Arc::new(SelectorMacro));
             }
 
             b.build()?
@@ -150,9 +151,9 @@ impl TestRunner {
                 .iter()
                 .flat_map(|contract| {
                     chain!(
-                        get_module_abi_functions(db, contract, EXTERNAL_MODULE).unwrap(),
-                        get_module_abi_functions(db, contract, CONSTRUCTOR_MODULE).unwrap(),
-                        get_module_abi_functions(db, contract, L1_HANDLER_MODULE).unwrap()
+                        get_contract_abi_functions(db, contract, EXTERNAL_MODULE).unwrap(),
+                        get_contract_abi_functions(db, contract, CONSTRUCTOR_MODULE).unwrap(),
+                        get_contract_abi_functions(db, contract, L1_HANDLER_MODULE).unwrap()
                     )
                 })
                 .map(|func| ConcreteFunctionWithBodyId::from_semantic(db, func.value))
@@ -264,7 +265,7 @@ impl TestRunner {
                     }
                 }
             }
-            println!();
+
             bail!(
                 "{}\n\
             test result: {}. {} passed; {} failed; {} ignored",
@@ -401,13 +402,20 @@ fn find_all_tests(
             let Ok(module_items) = db.module_items(*module_id) else {
                 continue;
             };
-            tests.extend(
-                module_items.iter().filter_map(|item| {
-                    let ModuleItemId::FreeFunction(func_id) = item else { return None };
-                    let Ok(attrs) = db.function_with_body_attributes(FunctionWithBodyId::Free(*func_id)) else { return None };
-                    Some((*func_id, try_extract_test_config(db.upcast(), attrs).unwrap()?))
-                }),
-            );
+            tests.extend(module_items.iter().filter_map(|item| {
+                let ModuleItemId::FreeFunction(func_id) = item else {
+                    return None;
+                };
+                let Ok(attrs) =
+                    db.function_with_body_attributes(FunctionWithBodyId::Free(*func_id))
+                else {
+                    return None;
+                };
+                Some((
+                    *func_id,
+                    try_extract_test_config(db.upcast(), attrs).unwrap()?,
+                ))
+            }));
         }
     }
     tests
@@ -518,18 +526,24 @@ pub fn try_extract_test_config(
 }
 /// Tries to extract the relevant expected panic values.
 fn extract_panic_values(db: &dyn SyntaxGroup, attr: &Attribute) -> Option<Vec<Felt252>> {
-    let [
-    AttributeArg {
-        variant: AttributeArgVariant::Named { name, value: panics, .. },
+    let [AttributeArg {
+        variant:
+            AttributeArgVariant::Named {
+                name,
+                value: panics,
+                ..
+            },
         ..
-    }
-    ] = &attr.args[..] else {
+    }] = &attr.args[..]
+    else {
         return None;
     };
     if name != "expected" {
         return None;
     }
-    let ast::Expr::Tuple(panics) = panics else { return None };
+    let ast::Expr::Tuple(panics) = panics else {
+        return None;
+    };
     panics
         .expressions(db)
         .elements(db)
@@ -546,22 +560,7 @@ fn extract_panic_values(db: &dyn SyntaxGroup, attr: &Attribute) -> Option<Vec<Fe
         .collect::<Option<Vec<_>>>()
 }
 
-/// Plugin to create diagnostics for tests attributes.
-#[derive(Debug, Default)]
-#[non_exhaustive]
-pub struct TestPlugin;
-
-impl MacroPlugin for TestPlugin {
-    fn generate_code(&self, db: &dyn SyntaxGroup, item_ast: ast::Item) -> PluginResult {
-        PluginResult {
-            code: None,
-            diagnostics: if let ast::Item::FreeFunction(free_func_ast) = item_ast {
-                try_extract_test_config(db, free_func_ast.attributes(db).structurize(db)).err()
-            } else {
-                None
-            }
-            .unwrap_or_default(),
-            remove_original_item: false,
-        }
-    }
+pub fn run_exercise_tests(path: &str) -> anyhow::Result<String> {
+    let runner = TestRunner::new(path, "", false, false, true)?;
+    runner.run()
 }
