@@ -11,7 +11,7 @@ use cairo_lang_defs::plugin::PluginDiagnostic;
 use cairo_lang_diagnostics::ToOption;
 use cairo_lang_filesystem::cfg::{Cfg, CfgSet};
 use cairo_lang_starknet::inline_macros::selector::SelectorMacro;
-use cairo_lang_test_plugin::TestPlugin;
+use cairo_lang_test_runner::plugin::TestPlugin;
 
 use std::path::Path;
 use std::sync::{Arc, Mutex};
