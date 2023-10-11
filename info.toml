@@ -547,7 +547,9 @@ No hints this time ;)
 name = "starknet3"
 path = "exercises/starknet/basics/starknet3.cairo"
 mode = "test"
-hint = """ """
+hint = """
+No hints this time ;)
+"""
 
 [[exercises]]
 name = "starknet4"
