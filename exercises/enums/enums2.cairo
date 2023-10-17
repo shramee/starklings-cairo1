@@ -14,7 +14,7 @@ enum Message { // TODO: define the different variants used below
 
 fn main() {
     let mut messages: Array<Message> = ArrayTrait::new();
-    messages.append(Message::Quit(()));
+    messages.append(Message::Quit);
     messages.append(Message::Echo('hello world'));
     messages.append(Message::Move((10, 30)));
     messages.append(Message::ChangeColor((0, 255, 255)));
@@ -37,7 +37,7 @@ impl MessageImpl of MessageTrait<Message> {
 fn print_messages_recursive(messages: Array<Message>, index: u32) {
     match gas::withdraw_gas() {
         Option::Some(_) => {},
-        Option::None(_) => {
+        Option::None => {
             let mut data = ArrayTrait::<felt252>::new();
             data.append('OOG');
             panic(data);
@@ -56,7 +56,7 @@ impl MessagePrintImpl of PrintTrait<Message> {
     fn print(self: Message) {
         ('___MESSAGE BEGINS___').print();
         match self {
-            Message::Quit(()) => ('Quit').print(),
+            Message::Quit => ('Quit').print(),
             Message::Echo(msg) => msg.print(),
             Message::Move((a, b)) => {
                 a.print();

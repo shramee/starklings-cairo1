@@ -19,7 +19,7 @@ fn display_grades(student: @Student, index: usize) {
     // running recursive functions.
     match gas::withdraw_gas() {
         Option::Some(_) => {},
-        Option::None(_) => {
+        Option::None => {
             let mut data = ArrayTrait::new();
             data.append('Out of gas');
             panic(data);
@@ -65,10 +65,10 @@ fn test_all_defined() {
 fn test_some_empty() {
     let courses = array![
         Option::Some('A'),
-        Option::None(()),
+        Option::None,
         Option::Some('B'),
         Option::Some('C'),
-        Option::None(()),
+        Option::None,
     ];
     let mut student = Student { name: 'Bob', courses: courses };
     display_grades(@student, 0);
