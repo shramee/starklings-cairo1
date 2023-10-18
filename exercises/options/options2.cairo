@@ -10,7 +10,7 @@ use debug::PrintTrait;
 fn test_options() {
     let target = 'starklings';
     let optional_some = Option::Some(target);
-    let optional_none: Option<felt252> = Option::None(());
+    let optional_none: Option<felt252> = Option::None;
     simple_option(optional_some);
     simple_option(optional_none);
 }

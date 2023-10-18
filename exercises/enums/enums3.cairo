@@ -62,7 +62,7 @@ fn test_match_message_call() {
     state.process(Message::ChangeColor((255, 0, 255)));
     state.process(Message::Echo('hello world'));
     state.process(Message::Move(Point { x: 10, y: 15 }));
-    state.process(Message::Quit(()));
+    state.process(Message::Quit);
 
     assert(state.color == (255, 0, 255), 'wrong color');
     assert(state.position.x == 10, 'wrong x position');
