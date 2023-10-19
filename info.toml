@@ -387,7 +387,7 @@ name = "dict1"
 path = "exercises/dict/dict1.cairo"
 mode = "test"
 hint = """
-Build-in methods for Felt252Dict can be found in the corresponding chapter :
+More info about the Felt252Dict type can be found in the following chapter :
 https://cairo-book.github.io/ch03-02-dictionaries.html
 """
 
@@ -397,7 +397,7 @@ name = "dict2"
 path = "exercises/dict/dict2.cairo"
 mode = "test"
 hint = """
-Build-in methods for Felt252Dict can be found in the corresponding chapter :
+More info about the Felt252Dict type can be found in the following chapter :
 https://cairo-book.github.io/ch03-02-dictionaries.html
 """
 
@@ -407,7 +407,7 @@ name = "dict3"
 path = "exercises/dict/dict3.cairo"
 mode = "test"
 hint = """
-Example of custom data structures using dict can be found on the chapter :
+Example of custom data structures using dicts can be found in this chapter :
 https://cairo-book.github.io/ch03-03-custom-data-structures.html
 """
 
