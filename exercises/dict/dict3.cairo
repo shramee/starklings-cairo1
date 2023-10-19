@@ -35,7 +35,7 @@ impl TeamImpl of TeamTrait {
         //TODO
     }
 
-    fn number_of_player(self: @Team) -> usize {
+    fn players_count(self: @Team) -> usize {
         //TODO
     }
 }
@@ -43,18 +43,20 @@ impl TeamImpl of TeamTrait {
 
 
 #[test]
+#[available_gas(200000)]
 fn test_add_player() {
 
     let mut team = TeamTrait::new();
     team.add_player('bob', 10);
     team.add_player('alice', 20);
 
-    assert(team.number_of_player == 2, 'Wrong number of player');
+    assert(team.players_count == 2, 'Wrong number of player');
     assert(team.get_level('bob') == 10, 'Wrong level');
     assert(team.get_level('alice') == 20, 'Wrong level');
 }
 
 #[test]
+#[available_gas(200000)]
 fn test_level_up() {
 
     let mut team = TeamTrait::new();
