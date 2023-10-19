@@ -380,7 +380,6 @@ Looking at the test functions will also help you understand more about the synta
 This section will help you understanding more about methods https://cairo-book.github.io/ch05-03-method-syntax.html
 """
 
-
 # MOVE SEMANTICS
 
 [[exercises]]
@@ -504,6 +503,37 @@ If you're having trouble updating the distance value in the `Fish` and `Dog` imp
 1. Destructure the object into mutable variables
 2. Update the distance variable
 3. Reconstruct `self` with the updated variables (`self = MyStruct { ... }`) 
+"""
+
+# DICT
+
+[[exercises]]
+name = "dict1"
+path = "exercises/dict/dict1.cairo"
+mode = "test"
+hint = """
+More info about the Felt252Dict type can be found in the following chapter :
+https://cairo-book.github.io/ch03-02-dictionaries.html
+"""
+
+
+[[exercises]]
+name = "dict2"
+path = "exercises/dict/dict2.cairo"
+mode = "test"
+hint = """
+More info about the Felt252Dict type can be found in the following chapter :
+https://cairo-book.github.io/ch03-02-dictionaries.html
+"""
+
+
+[[exercises]]
+name = "dict3"
+path = "exercises/dict/dict3.cairo"
+mode = "test"
+hint = """
+Example of custom data structures using dicts can be found in this chapter :
+https://cairo-book.github.io/ch03-03-custom-data-structures.html
 """
 
 # MODULES
