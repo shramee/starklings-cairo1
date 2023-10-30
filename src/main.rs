@@ -382,13 +382,13 @@ enum WatchStatus {
     Unfinished,
 }
 
+pub fn clear_screen() {
+    println!("\x1Bc");
+}
+
 fn watch(exercises: &[Exercise]) -> notify::Result<WatchStatus> {
     /* Clears the terminal with an ANSI escape code.
     Works in UNIX and newer Windows terminals. */
-    fn clear_screen() {
-        println!("\x1Bc");
-    }
-
     let (tx, rx) = channel();
     let should_quit = Arc::new(AtomicBool::new(false));
 
@@ -419,7 +419,6 @@ fn watch(exercises: &[Exercise]) -> notify::Result<WatchStatus> {
                                     .filter(|e| !e.looks_done() && !filepath.ends_with(&e.path)),
                             );
                         let num_done = exercises.iter().filter(|e| e.looks_done()).count();
-                        clear_screen();
                         match verify(pending_exercises, (num_done, exercises.len())) {
                             Ok(_) => return Ok(WatchStatus::Finished),
                             Err(exercise) => {
