@@ -1,13 +1,13 @@
 [[exercises]]
 name = "cairoPass"
 path = "compilePass.cairo"
-mode = "compile"
+mode = "build"
 hint = ""
 
 [[exercises]]
 name = "cairoFail"
 path = "compileFail.cairo"
-mode = "compile"
+mode = "build"
 hint = ""
 
 [[exercises]]

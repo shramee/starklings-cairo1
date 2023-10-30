@@ -23,8 +23,7 @@ mod ui;
 mod exercise;
 mod project;
 mod run;
-pub mod starklings_runner;
-pub mod starklings_tester;
+mod scarb;
 mod verify;
 
 // In sync with crate version

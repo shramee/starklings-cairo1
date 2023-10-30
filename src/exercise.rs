@@ -1,13 +1,13 @@
 use regex::Regex;
 use serde::Deserialize;
 
-use crate::starklings_runner::{run_cairo_program, Args as RunnerArgs};
-use crate::starklings_tester::run_exercise_tests;
 use std::fmt::{self, Display, Formatter};
 use std::fs::{remove_file, File};
 use std::io::Read;
 use std::path::PathBuf;
 use std::process::{self};
+
+use crate::scarb::{scarb_build, scarb_test};
 
 const I_AM_DONE_REGEX: &str = r"(?m)^\s*///?\s*I\s+AM\s+NOT\s+DONE";
 const CONTEXT: usize = 2;
@@ -28,7 +28,7 @@ fn temp_file() -> String {
 #[serde(rename_all = "lowercase")]
 pub enum Mode {
     // Indicates that the exercise should be compiled as a binary
-    Compile,
+    Build,
     // Indicates that the exercise should be tested
     Test,
 }
@@ -46,7 +46,7 @@ pub struct Exercise {
     pub name: String,
     // The path to the file containing the exercise's source code
     pub path: PathBuf,
-    // The mode of the exercise (Test, Compile, or Clippy)
+    // The mode of the exercise (Test/Build)
     pub mode: Mode,
     // The hint text associated with the exercise
     pub hint: String,
@@ -91,16 +91,12 @@ impl Drop for FileHandle {
 }
 
 impl Exercise {
-    pub fn run_cairo(&self) -> anyhow::Result<String> {
-        run_cairo_program(&RunnerArgs {
-            path: self.path.to_str().unwrap().parse()?,
-            available_gas: Some(20000000000),
-            print_full_memory: false,
-        })
+    pub fn build(&self) -> anyhow::Result<String> {
+        scarb_build(&self.path)
     }
 
-    pub fn test_cairo(&self) -> anyhow::Result<String> {
-        run_exercise_tests(self.path.to_str().unwrap())
+    pub fn test(&self) -> anyhow::Result<String> {
+        scarb_test(&self.path)
     }
 
     pub fn state(&self) -> State {
@@ -177,7 +173,7 @@ mod test {
         let exercise = Exercise {
             name: "finished_exercise".into(),
             path: PathBuf::from("tests/fixture/cairo/compilePass.cairo"),
-            mode: Mode::Compile,
+            mode: Mode::Build,
             hint: String::new(),
         };
 
@@ -189,7 +185,7 @@ mod test {
         let exercise = Exercise {
             name: "testPass".into(),
             path: PathBuf::from("tests/fixture/cairo/testPass.cairo"),
-            mode: Mode::Compile,
+            mode: Mode::Build,
             hint: String::new(),
         };
 
