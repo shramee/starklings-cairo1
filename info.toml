@@ -445,7 +445,7 @@ So the end goal is to:
 [[exercises]]
 name = "move_semantics5"
 path = "exercises/move_semantics/move_semantics5.cairo"
-mode = "build"
+mode = "test"
 hint = """
 Carefully reason about how each function takes ownership of the variable passed.
 It depends on the keyword used to pass the variable.
