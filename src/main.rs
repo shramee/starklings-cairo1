@@ -382,13 +382,13 @@ enum WatchStatus {
     Unfinished,
 }
 
+// Clears the terminal with an ANSI escape code.
+// Works in UNIX and newer Windows terminals.
 pub fn clear_screen() {
     println!("\x1Bc");
 }
 
 fn watch(exercises: &[Exercise]) -> notify::Result<WatchStatus> {
-    /* Clears the terminal with an ANSI escape code.
-    Works in UNIX and newer Windows terminals. */
     let (tx, rx) = channel();
     let should_quit = Arc::new(AtomicBool::new(false));
 
