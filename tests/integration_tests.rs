@@ -1,5 +1,6 @@
 use assert_cmd::prelude::*;
 use glob::glob;
+use serial_test::serial;
 
 use std::fs::File;
 use std::io::Read;
@@ -156,6 +157,7 @@ fn exercise_paths_should_be_in_exercise_dir() {
 // }
 
 #[test]
+#[serial]
 fn run_cairo_single_compile_success() {
     Command::cargo_bin("starklings")
         .unwrap()
@@ -166,6 +168,7 @@ fn run_cairo_single_compile_success() {
 }
 
 #[test]
+#[serial]
 fn run_cairo_single_test_success() {
     Command::cargo_bin("starklings")
         .unwrap()
@@ -176,6 +179,7 @@ fn run_cairo_single_test_success() {
 }
 
 #[test]
+#[serial]
 fn run_cairo_single_test_failure() {
     Command::cargo_bin("starklings")
         .unwrap()
