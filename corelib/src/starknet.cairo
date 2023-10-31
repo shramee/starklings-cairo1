@@ -41,6 +41,10 @@ use eth_address::{
     EthAddress, EthAddressIntoFelt252, EthAddressSerde, EthAddressZeroable, Felt252TryIntoEthAddress
 };
 
+// EthSignature
+mod eth_signature;
+use eth_signature::verify_eth_signature;
+
 // ClassHash
 mod class_hash;
 use class_hash::{
@@ -59,6 +63,8 @@ use event::Event;
 
 mod account;
 use account::AccountContract;
+
+mod storage;
 
 extern type System;
 

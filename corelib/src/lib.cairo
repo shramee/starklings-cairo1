@@ -172,8 +172,8 @@ impl Felt252PartialEq of PartialEq<felt252> {
     #[inline(always)]
     fn eq(lhs: @felt252, rhs: @felt252) -> bool {
         match *lhs - *rhs {
-            0 => bool::True(()),
-            _ => bool::False(()),
+            0 => true,
+            _ => false,
         }
     }
     #[inline(always)]
@@ -329,7 +329,14 @@ use bytes_31::{
 
 // BytesArray.
 mod byte_array;
-use byte_array::{ByteArray, ByteArrayIndexView, ByteArrayTrait};
+use byte_array::{ByteArray, ByteArrayIndexView, ByteArrayStringLiteral, ByteArrayTrait};
+
+// String.
+mod string;
+use string::StringLiteral;
+
+// to_byte_array.
+mod to_byte_array;
 
 #[cfg(test)]
 mod test;

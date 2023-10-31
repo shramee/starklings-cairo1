@@ -142,15 +142,11 @@ impl EcPointAdd of Add<EcPoint> {
     fn add(lhs: EcPoint, rhs: EcPoint) -> EcPoint {
         let lhs_nz = match lhs.try_into() {
             Option::Some(pt) => pt,
-            Option::None => {
-                return rhs;
-            },
+            Option::None => { return rhs; },
         };
         let rhs_nz = match rhs.try_into() {
             Option::Some(pt) => pt,
-            Option::None => {
-                return lhs;
-            },
+            Option::None => { return lhs; },
         };
         let mut state = ec_state_init();
         state.add(lhs_nz);
@@ -169,7 +165,8 @@ impl EcPointAddEq of AddEq<EcPoint> {
 impl EcPointSub of Sub<EcPoint> {
     /// Computes the difference between two points on the curve.
     fn sub(lhs: EcPoint, rhs: EcPoint) -> EcPoint {
-        match rhs.try_into() {
+        let nz_point: Option<NonZero<EcPoint>> = rhs.try_into();
+        match nz_point {
             Option::Some(_) => {},
             Option::None => {
                 // lhs - 0 = lhs.

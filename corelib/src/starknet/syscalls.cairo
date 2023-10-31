@@ -17,6 +17,8 @@ extern fn call_contract_syscall(
 //     computation of the contract's address.
 // `calldata` - Call arguments for the constructor.
 // `deploy_from_zero` - Deploy the contract from the zero address.
+//
+// Returns the address of the deployed contract and the serialized return value of the constructor.
 extern fn deploy_syscall(
     class_hash: ClassHash,
     contract_address_salt: felt252,
@@ -37,9 +39,14 @@ extern fn get_block_hash_syscall(
 ) -> SyscallResult<felt252> implicits(GasBuiltin, System) nopanic;
 
 // Gets information about the current execution.
-extern fn get_execution_info_syscall() -> SyscallResult<Box<starknet::info::ExecutionInfo>> implicits(
-    GasBuiltin, System
-) nopanic;
+extern fn get_execution_info_syscall() -> SyscallResult<
+    Box<starknet::info::ExecutionInfo>
+> implicits(GasBuiltin, System) nopanic;
+
+// Gets information about the current execution, version 2.
+extern fn get_execution_info_v2_syscall() -> SyscallResult<
+    Box<starknet::info::v2::ExecutionInfo>
+> implicits(GasBuiltin, System) nopanic;
 
 // Calls the requested function in any previously declared class.
 // `class_hash` - The hash of the class you want to use.
