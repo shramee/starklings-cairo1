@@ -1,4 +1,4 @@
-use std::{env, fs, path::PathBuf};
+use std::{env::current_dir, fs, path::PathBuf};
 
 use anyhow::Context;
 use cairo_lang_test_plugin::TestCompilation;
@@ -10,19 +10,25 @@ use scarb::{
     ops::{self, collect_metadata, CompileOpts, MetadataOptions},
 };
 
-pub fn prepare_crate_for_exercise(file_path: &PathBuf, crate_path: PathBuf) {
-    let lib_path = crate_path.join("src/lib.cairo");
-    match fs::copy(file_path, lib_path) {
+pub fn prepare_crate_for_exercise(file_path: &PathBuf) -> PathBuf {
+    let crate_path = current_dir().unwrap().join(PathBuf::from("runner-crate"));
+    let src_dir = crate_path.join("src");
+    if !src_dir.exists() {
+        let _ = fs::create_dir(&src_dir);
+    }
+    let lib_path = src_dir.join("lib.cairo");
+    let file_path = current_dir().unwrap().join(file_path);
+
+    match fs::copy(&file_path, &lib_path) {
         Ok(_) => {}
-        Err(err) => panic!("Error occurred while preparing the exercise:\n {err:?}"),
+        Err(err) => panic!("Error occurred while preparing the exercise,\nExercise: {file_path:?}\nLib path: {lib_path:?}\n{err:?}"),
     };
+    crate_path
 }
 
 pub fn scarb_build(file_path: &PathBuf) -> anyhow::Result<String> {
-    let path = env::current_dir().unwrap();
-    let (config, crate_path) = scarb_config(path.join(PathBuf::from("runner-crate")));
-
-    prepare_crate_for_exercise(file_path, crate_path);
+    let crate_path = prepare_crate_for_exercise(file_path);
+    let config = scarb_config(crate_path);
 
     match compile(&config, false) {
         Ok(_) => Ok("".into()),
@@ -31,10 +37,8 @@ pub fn scarb_build(file_path: &PathBuf) -> anyhow::Result<String> {
 }
 
 pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
-    let path = env::current_dir().unwrap();
-    let (config, crate_path) = scarb_config(path.join(PathBuf::from("runner-crate")));
-
-    prepare_crate_for_exercise(file_path, crate_path);
+    let crate_path = prepare_crate_for_exercise(file_path);
+    let config = scarb_config(crate_path);
 
     let ws = ops::read_workspace(config.manifest_path(), &config)?;
 
@@ -49,7 +53,7 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
     )
     .unwrap();
 
-    let profile = env::var("SCARB_PROFILE").unwrap_or("dev".into());
+    let profile = "dev";
     let default_target_dir = metadata.runtime_manifest.join("target");
 
     let target_dir = metadata
@@ -88,12 +92,12 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
     anyhow::Ok("".into())
 }
 
-pub fn scarb_config(crate_path: PathBuf) -> (Config, PathBuf) {
+pub fn scarb_config(crate_path: PathBuf) -> Config {
     let path = Utf8PathBuf::from_path_buf(crate_path.join(PathBuf::from("Scarb.toml"))).unwrap();
 
     let config = Config::builder(path).build().unwrap();
 
-    (config, crate_path)
+    config
 }
 
 pub fn compile(config: &Config, test_targets: bool) -> anyhow::Result<()> {
