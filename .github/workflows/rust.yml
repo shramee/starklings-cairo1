@@ -1,4 +1,4 @@
-name: starklings Tests
+name: starklings StarkSharks
 
 on:
   push:
@@ -18,3 +18,18 @@ jobs:
         run: cargo build --verbose
       - name: Run tests
         run: cargo test --verbose
+steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        override: true
+
+    - name: Build and Run Starklings
+      run: |
+        git clone https://github.com/StarkSharks/starklings-cairo1.git
+        cd starklings-cairo1
+        cargo run -r --bin starklings
