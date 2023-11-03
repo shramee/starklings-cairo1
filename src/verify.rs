@@ -1,4 +1,7 @@
-use crate::exercise::{Exercise, Mode, State};
+use crate::{
+    clear_screen,
+    exercise::{Exercise, Mode, State},
+};
 use console::style;
 use indicatif::{ProgressBar, ProgressStyle};
 use std::env;
@@ -12,15 +15,16 @@ pub fn verify<'a>(
     exercises: impl IntoIterator<Item = &'a Exercise>,
     progress: (usize, usize),
 ) -> Result<(), &'a Exercise> {
-    let (num_done, total) = progress;
-    let bar = ProgressBar::new(total as u64);
-    bar.set_style(
-        ProgressStyle::default_bar()
-            .template("Progress: [{bar:60.green/red}] {pos}/{len} {msg}\n")
-            .progress_chars("#>-"),
-    );
-    bar.set_position(num_done as u64);
+    let (mut num_done, total) = progress;
     for exercise in exercises {
+        clear_screen();
+        let bar = ProgressBar::new(total as u64);
+        bar.set_style(
+            ProgressStyle::default_bar()
+                .template("Progress: [{bar:60.green/red}] {pos}/{len} {msg}\n")
+                .progress_chars("#>-"),
+        );
+        bar.set_position(num_done as u64);
         let compile_result = match exercise.mode {
             Mode::Compile => compile_and_run_interactively(exercise),
             Mode::Test => compile_and_test_interactively(exercise),
@@ -30,7 +34,7 @@ pub fn verify<'a>(
         }
         let percentage = num_done as f32 / total as f32 * 100.0;
         bar.set_message(format!("({percentage:.1} %)"));
-        bar.inc(1);
+        num_done += 1;
     }
     Ok(())
 }
