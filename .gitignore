@@ -12,3 +12,4 @@ rust-project.json
 *.iml
 *.o
 solutions/
+**/runner-crate/src/lib.cairo

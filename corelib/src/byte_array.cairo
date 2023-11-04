@@ -29,6 +29,8 @@ struct ByteArray {
     pending_word_len: usize,
 }
 
+impl ByteArrayStringLiteral of string::StringLiteral<ByteArray>;
+
 impl ByteArrayDefault of Default<ByteArray> {
     fn default() -> ByteArray {
         ByteArray { data: Default::default(), pending_word: 0, pending_word_len: 0 }
@@ -90,12 +92,8 @@ impl ByteArrayImpl of ByteArrayTrait {
         if self.pending_word_len == 0 {
             loop {
                 match other_data.pop_front() {
-                    Option::Some(current_word) => {
-                        self.data.append(*current_word);
-                    },
-                    Option::None => {
-                        break;
-                    }
+                    Option::Some(current_word) => { self.data.append(*current_word); },
+                    Option::None => { break; }
                 };
             };
             self.pending_word = *other.pending_word;
@@ -111,9 +109,7 @@ impl ByteArrayImpl of ByteArrayTrait {
                     Option::Some(current_word) => {
                         self.append_split_index_16((*current_word).into());
                     },
-                    Option::None => {
-                        break;
-                    }
+                    Option::None => { break; }
                 };
             };
         } else if self.pending_word_len < BYTES_IN_U128 {
@@ -125,9 +121,7 @@ impl ByteArrayImpl of ByteArrayTrait {
                                 (*current_word).into(), self.pending_word_len
                             );
                     },
-                    Option::None => {
-                        break;
-                    }
+                    Option::None => { break; }
                 };
             };
         } else {
@@ -140,9 +134,7 @@ impl ByteArrayImpl of ByteArrayTrait {
                                 (*current_word).into(), self.pending_word_len
                             );
                     },
-                    Option::None => {
-                        break;
-                    }
+                    Option::None => { break; }
                 };
             };
         }
@@ -223,9 +215,7 @@ impl ByteArrayImpl of ByteArrayTrait {
                 Option::Some(current_word) => {
                     result.append_word_rev((*current_word).into(), BYTES_IN_BYTES31);
                 },
-                Option::None => {
-                    break;
-                }
+                Option::None => { break; }
             };
         };
         result
@@ -356,7 +346,7 @@ impl ByteArrayImpl of ByteArrayTrait {
     }
 }
 
-impl U128Add of Add<ByteArray> {
+impl ByteArrayAdd of Add<ByteArray> {
     #[inline]
     fn add(lhs: ByteArray, rhs: ByteArray) -> ByteArray {
         ByteArrayTrait::concat(@lhs, @rhs)

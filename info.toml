@@ -3,7 +3,7 @@
 [[exercises]]
 name = "intro1"
 path = "exercises/intro/intro1.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 No hints this time ;)
 """
@@ -11,7 +11,7 @@ No hints this time ;)
 [[exercises]]
 name = "intro2"
 path = "exercises/intro/intro2.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 No hints this time ;)
 """
@@ -21,7 +21,7 @@ No hints this time ;)
 [[exercises]]
 name = "variables1"
 path = "exercises/variables/variables1.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 The declaration on line 8 is missing a keyword that is needed in Cairo
 to create a new variable binding."""
@@ -29,7 +29,7 @@ to create a new variable binding."""
 [[exercises]]
 name = "variables2"
 path = "exercises/variables/variables2.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 What happens if you annotate line 7 with a type annotation?
 What if you give x a value?
@@ -40,7 +40,7 @@ What if x is the same type as 10? What if it's a different type? (e.g. a u8)"""
 [[exercises]]
 name = "variables3"
 path = "exercises/variables/variables3.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 Oops! In this exercise, we have a variable binding that we've created on
 line 7, and we're trying to use it on line 8, but we haven't given it a
@@ -51,7 +51,7 @@ programming language -- thankfully the Cairo compiler has caught this for us!"""
 [[exercises]]
 name = "variables4"
 path = "exercises/variables/variables4.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 In Cairo, variable bindings are immutable by default. But here we're trying
 to reassign a different value to x! There's a keyword we can use to make
@@ -60,7 +60,7 @@ a variable binding mutable instead."""
 [[exercises]]
 name = "variables5"
 path = "exercises/variables/variables5.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 In variables4 we already learned how to make an immutable variable mutable
 using a special keyword. Unfortunately this doesn't help us much in this exercise
@@ -75,7 +75,7 @@ Try to solve this exercise afterwards using this technique."""
 [[exercises]]
 name = "variables6"
 path = "exercises/variables/variables6.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 We know about variables and mutability, but there is another important type of
 variable available: constants.
@@ -90,19 +90,19 @@ You can read about the constants here: https://cairo-book.github.io/ch02-01-vari
 [[exercises]]
 name = "primitive_types1"
 path = "exercises/primitive_types/primitive_types1.cairo"
-mode = "compile"
+mode = "build"
 hint = "No hints this time ;)"
 
 [[exercises]]
 name = "primitive_types2"
 path = "exercises/primitive_types/primitive_types2.cairo"
-mode = "compile"
+mode = "build"
 hint = "No hints this time ;)"
 
 [[exercises]]
 name = "primitive_types3"
 path = "exercises/primitive_types/primitive_types3.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 You'll need to make a pattern to bind `name` and `age` to the appropriate parts
 of the tuple.
@@ -168,7 +168,7 @@ conditions checking different input values."""
 [[exercises]]
 name = "functions1"
 path = "exercises/functions/functions1.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 This main function is calling a function that it expects to exist, but the
 function doesn't exist. It expects this function to have the name `call_me`.
@@ -178,7 +178,7 @@ Sounds a lot like `main`, doesn't it?"""
 [[exercises]]
 name = "functions2"
 path = "exercises/functions/functions2.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 Cairo requires that all parts of a function's signature have type annotations,
 but `call_me` is missing the type annotation of `num`. What is the basic type in Cairo?"""
@@ -186,7 +186,7 @@ but `call_me` is missing the type annotation of `num`. What is the basic type in
 [[exercises]]
 name = "functions3"
 path = "exercises/functions/functions3.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 This time, the function *declaration* is okay, but there's something wrong
 with the place where we're calling the function.
@@ -197,7 +197,7 @@ Watch mode will only jump to the next exercise if you remove the I AM NOT DONE c
 [[exercises]]
 name = "functions4"
 path = "exercises/functions/functions4.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 The error message points to line 18 and says it expects a type after the
 `->`. This is where the function's return type should be -- take a look at
@@ -235,13 +235,13 @@ You can return values from loops by adding the value you want returned after the
 [[exercises]]
 name = "enums1"
 path = "exercises/enums/enums1.cairo"
-mode = "compile"
+mode = "build"
 hint = "https://cairo-book.github.io/ch06-01-enums.html"
 
 [[exercises]]
 name = "enums2"
 path = "exercises/enums/enums2.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 You can create enumerations that have different variants with different types
 such as no data, structs, a single felt string, tuples, ...etc
@@ -385,7 +385,7 @@ This section will help you understanding more about methods https://cairo-book.g
 [[exercises]]
 name = "move_semantics1"
 path = "exercises/move_semantics/move_semantics1.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 So you've got the "ref argument must be a mutable variable." error on line 17,
 right? The fix for this is going to be adding one keyword, and the addition is NOT on line 17
@@ -399,7 +399,7 @@ Read more about move semantics and ownership here: https://cairo-book.github.io/
 [[exercises]]
 name = "move_semantics2"
 path = "exercises/move_semantics/move_semantics2.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 So, `arr0` is passed into the `fill_arr` function as an argument. In Cairo,
 when an argument is passed to a function and it's not explicitly returned,
@@ -420,7 +420,7 @@ There's a few ways to fix this, try them all if you want:
 [[exercises]]
 name = "move_semantics3"
 path = "exercises/move_semantics/move_semantics3.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 The difference between this one and the previous ones is that the first line
 of `fn fill_arr` that had `let mut arr = arr;` is no longer there. You can,
@@ -430,7 +430,7 @@ an existing binding to be a mutable binding instead of an immutable one :)"""
 [[exercises]]
 name = "move_semantics4"
 path = "exercises/move_semantics/move_semantics4.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 Stop reading whenever you feel like you have enough direction :) Or try
 doing one step and then fixing the compiler errors that result!
@@ -445,7 +445,7 @@ So the end goal is to:
 [[exercises]]
 name = "move_semantics5"
 path = "exercises/move_semantics/move_semantics5.cairo"
-mode = "compile"
+mode = "test"
 hint = """
 Carefully reason about how each function takes ownership of the variable passed.
 It depends on the keyword used to pass the variable.
@@ -456,7 +456,7 @@ Can we still use it later on?
 [[exercises]]
 name = "move_semantics6"
 path = "exercises/move_semantics/move_semantics6.cairo"
-mode = "compile"
+mode = "build"
 hint = """
 The first problem is that `get_value` is taking ownership of the Number struct.
 So `Number` is moved and can't be used for `set_value`

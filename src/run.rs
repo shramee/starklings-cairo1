@@ -1,7 +1,6 @@
 use std::process::Command;
 
 use crate::exercise::{Exercise, Mode};
-use indicatif::ProgressBar;
 
 // Invoke the rust compiler on the path of the given exercise,
 // and run the ensuing binary.
@@ -9,7 +8,7 @@ use indicatif::ProgressBar;
 // the output from the test harnesses (if the mode of the exercise is test)
 pub fn run(exercise: &Exercise) -> Result<(), ()> {
     match exercise.mode {
-        Mode::Compile => run_cairo(exercise)?,
+        Mode::Build => run_cairo(exercise)?,
         Mode::Test => test_cairo(exercise)?,
     }
     Ok(())
@@ -32,19 +31,16 @@ pub fn reset(exercise: &Exercise) -> Result<(), ()> {
 // and run the ensuing binary.
 // This is strictly for non-test binaries, so output is displayed
 fn run_cairo(exercise: &Exercise) -> Result<(), ()> {
-    let progress_bar = ProgressBar::new_spinner();
-    progress_bar.set_message(format!("Running {exercise}..."));
-    progress_bar.enable_steady_tick(100);
-    let output = exercise.run_cairo();
+    println!("\nRunning {exercise}...\n");
+    let output = exercise.build();
 
     if let Some(error) = output.as_ref().err() {
-        progress_bar.finish_and_clear();
         println!("{error}");
         Err(())
     } else {
         let message = output.unwrap();
         println!("{message}");
-        success!("Successfully ran {}", exercise);
+        success!("Successfully built {}", exercise);
         Ok(())
     }
 }
@@ -53,19 +49,16 @@ fn run_cairo(exercise: &Exercise) -> Result<(), ()> {
 // and run the ensuing binary.
 // This is strictly for non-test binaries, so output is displayed
 fn test_cairo(exercise: &Exercise) -> Result<(), ()> {
-    let progress_bar = ProgressBar::new_spinner();
-    progress_bar.set_message(format!("Testing {exercise}..."));
-    progress_bar.enable_steady_tick(100);
-    let output = exercise.test_cairo();
+    println!("\nTesting {exercise}...\n");
+    let output = exercise.test();
 
     if let Some(error) = output.as_ref().err() {
-        progress_bar.finish_and_clear();
         println!("{error}");
         Err(())
     } else {
         let message = output.unwrap();
         println!("{message}");
-        success!("Successfully ran {}", exercise);
+        success!("Successfully built {}", exercise);
         Ok(())
     }
 }

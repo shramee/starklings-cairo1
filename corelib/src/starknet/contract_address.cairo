@@ -1,5 +1,6 @@
 use zeroable::Zeroable;
 use serde::Serde;
+use hash::{Hash, HashStateTrait};
 
 #[derive(Copy, Drop)]
 extern type ContractAddress;
@@ -60,3 +61,6 @@ impl ContractAddressPartialEq of PartialEq<ContractAddress> {
         !(lhs == rhs)
     }
 }
+
+impl HashContractAddress<S, +HashStateTrait<S>, +Drop<S>> =
+    core::hash::into_felt252_based::HashImpl<ContractAddress, S>;

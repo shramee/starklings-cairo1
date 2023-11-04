@@ -1,5 +1,6 @@
 use zeroable::Zeroable;
 use serde::Serde;
+use hash::{Hash, HashStateTrait};
 
 #[derive(Copy, Drop)]
 extern type ClassHash;
@@ -58,3 +59,6 @@ impl ClassHashPartialEq of PartialEq<ClassHash> {
         !(lhs == rhs)
     }
 }
+
+impl HashClassHash<S, +HashStateTrait<S>, +Drop<S>> =
+    core::hash::into_felt252_based::HashImpl<ClassHash, S>;
