@@ -10,6 +10,8 @@ use scarb::{
     ops::{self, collect_metadata, CompileOpts, MetadataOptions},
 };
 
+// Prepares testing crate
+// Copies the exercise file into testing crate
 pub fn prepare_crate_for_exercise(file_path: &PathBuf) -> PathBuf {
     let crate_path = current_dir().unwrap().join(PathBuf::from("runner-crate"));
     let src_dir = crate_path.join("src");
@@ -26,6 +28,7 @@ pub fn prepare_crate_for_exercise(file_path: &PathBuf) -> PathBuf {
     crate_path
 }
 
+// Builds the testing crate with scarb
 pub fn scarb_build(file_path: &PathBuf) -> anyhow::Result<String> {
     let crate_path = prepare_crate_for_exercise(file_path);
     let config = scarb_config(crate_path);
@@ -36,12 +39,14 @@ pub fn scarb_build(file_path: &PathBuf) -> anyhow::Result<String> {
     }
 }
 
+// Runs tests on the testing crate with scarb
 pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
     let crate_path = prepare_crate_for_exercise(file_path);
     let config = scarb_config(crate_path);
 
     let ws = ops::read_workspace(config.manifest_path(), &config)?;
 
+    // Compile before running tests, with test targets true
     compile(&config, true)?;
 
     let metadata = collect_metadata(
@@ -62,16 +67,19 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
         .unwrap_or(default_target_dir)
         .join(profile);
 
+    // Loop through packages, but only process 'runner_crate'
+    // Largely same as this
+    // https://github.com/software-mansion/scarb/blob/ff98a787cfc0d94adcc7394fa83348bc01f437d5/extensions/scarb-cairo-test/src/main.rs#L54
     for package in metadata.packages.iter() {
         if package.name != "runner_crate" {
             continue;
         }
+        // Loop through targets and run compiled file tests
         for target in package.targets.iter() {
-            if target.kind == "test" {
+            if target.kind != "test" {
                 continue;
             }
-            // let file_path = target_dir.join(format!("{}.test.json", target.name.clone()));
-            let file_path = target_dir.join(format!("{}_unittest.test.json", target.name.clone()));
+            let file_path = target_dir.join(format!("{}.test.json", target.name.clone()));
             let test_compilation = serde_json::from_str::<TestCompilation>(
                 &fs::read_to_string(file_path.clone())
                     .with_context(|| format!("failed to read file: {file_path}"))?,
@@ -92,16 +100,16 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
     anyhow::Ok("".into())
 }
 
+// Prepares scarb config for exercise runner crate
 pub fn scarb_config(crate_path: PathBuf) -> Config {
     let path = Utf8PathBuf::from_path_buf(crate_path.join(PathBuf::from("Scarb.toml"))).unwrap();
 
-    let config = Config::builder(path).build().unwrap();
-
-    config
+    Config::builder(path).build().unwrap()
 }
 
+// Compiles runner crate for build/test exercises
 pub fn compile(config: &Config, test_targets: bool) -> anyhow::Result<()> {
-    let ws = ops::read_workspace(config.manifest_path(), &config)?;
+    let ws = ops::read_workspace(config.manifest_path(), config)?;
     let opts: CompileOpts = match test_targets {
         false => CompileOpts {
             include_targets: vec![],
