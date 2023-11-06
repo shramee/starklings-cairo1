@@ -326,6 +326,16 @@ By using array.pop_front(), we remove the first element from the array, so the i
 Without changing the index accessed, how can we make the test pass? Is there a method that returns an option that could help us?
 """
 
+[[exercises]]
+name = "arrays4"
+path = "exercises/arrays/arrays4.cairo"
+mode = "test"
+hint = """
+The test fails because you are trying to access an element that is out of bounds!
+By using `array.pop_front()`, we remove the first element from the array, so the index of the last element is no longer 2.
+Without changing the index accessed, how can we make the test pass? Is there a method that returns an option that could help us?
+"""
+
 
 # STRUCTS
 
