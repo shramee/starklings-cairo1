@@ -8,6 +8,6 @@ Writing smart contracts in Cairo involves using traits, impls and mods annotated
 
 [A deep dive into Starknet Contract](https://book.cairo-lang.org/ch99-01-03-00-a-deeper-dive-into-contracts.html)
 
-[Cross-contract interactions](https://cairo-book.github.io/ch99-02-00-abis-and-cross-contract-interactions.html)
+[Cross-contract interactions](https://book.cairo-lang.org/ch99-02-00-abis-and-cross-contract-interactions.html)
 
 [Development Proposal](https://community.starknet.io/t/cairo-1-contract-syntax-is-evolving/94794)

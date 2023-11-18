@@ -4,4 +4,4 @@
 
 ## Further information
 
-- [If expressions](https://cairo-book.github.io/ch02-05-control-flow.html#if-expressions)
+- [If expressions](https://book.cairo-lang.org/ch02-05-control-flow.html#if-expressions)

@@ -1,6 +1,6 @@
 # Modules
 
-Modules allow creating individual scopes and organise your code better. Read about [modules in cairo book](https://cairo-book.github.io/ch07-02-defining-modules-to-control-scope.html).
+Modules allow creating individual scopes and organise your code better. Read about [modules in cairo book](https://book.cairo-lang.org/ch07-02-defining-modules-to-control-scope.html).
 
 Here's some code to show modules at play,
 
