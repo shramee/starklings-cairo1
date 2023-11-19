@@ -8,4 +8,4 @@ In this way, traits are somewhat similar to Java interfaces and C++ abstract cla
 
 Because traits indicate shared behavior between data types, they are useful when writing generics.
 
-- [Traits & Impls](https://cairo-book.github.io/ch08-02-traits-in-cairo.html)
+- [Traits & Impls](https://book.cairo-lang.org/ch08-02-traits-in-cairo.html)

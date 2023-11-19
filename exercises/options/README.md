@@ -11,4 +11,4 @@ Option types are very common in Cairo code, as they have a number of uses:
 
 ## Further Information
 
-- [Option Implementation](https://cairo-book.github.io/ch06-01-enums.html#the-option-enum-and-its-advantages)
+- [Option Implementation](https://book.cairo-lang.org/ch06-01-enums.html#the-option-enum-and-its-advantages)

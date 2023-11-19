@@ -68,8 +68,8 @@ because we want to assign a different typed value to an existing variable. Somet
 you may also like to reuse existing variable names because you are just converting
 values to different types like in this exercise.
 Fortunately Cairo has a powerful solution to this problem: 'Shadowing'!
-You can see an example of variables and 'shadowing' here: https://cairo-book.github.io/ch02-01-variables-and-mutability.html?highlight=shadow#shadowing
-You can read about the different integer types here: https://cairo-book.github.io/ch02-02-data-types.html#integer-types
+You can see an example of variables and 'shadowing' here: https://book.cairo-lang.org/ch02-01-variables-and-mutability.html?highlight=shadow#shadowing
+You can read about the different integer types here: https://book.cairo-lang.org/ch02-02-data-types.html#integer-types
 Try to solve this exercise afterwards using this technique."""
 
 [[exercises]]
@@ -82,7 +82,7 @@ variable available: constants.
 Constants are always immutable and they are declared with keyword 'const' rather
 than keyword 'let'.
 Constants types must also always be annotated.
-You can read about the constants here: https://cairo-book.github.io/ch02-01-variables-and-mutability.html?highlight=const#constants
+You can read about the constants here: https://book.cairo-lang.org/ch02-01-variables-and-mutability.html?highlight=const#constants
 """
 
 # PRIMITIVE TYPES
@@ -108,7 +108,7 @@ You'll need to make a pattern to bind `name` and `age` to the appropriate parts
 of the tuple.
 If you're familiar with Rust, you should know that Cairo has a similar syntax to 
 destructure tuples into multiple variables.
-https://cairo-book.github.io/ch02-02-data-types.html?highlight=destructu#the-tuple-type
+https://book.cairo-lang.org/ch02-02-data-types.html?highlight=destructu#the-tuple-type
 You can do it!!
 """
 
@@ -118,7 +118,7 @@ path = "exercises/primitive_types/primitive_types4.cairo"
 mode = "test"
 hint = """
 There are multiple integer types in Cairo. You can read about them here:
-https://cairo-book.github.io/ch02-02-data-types.html#integer-types
+https://book.cairo-lang.org/ch02-02-data-types.html#integer-types
 If you try to sum two integers and the result is bigger than the biggest integer of this type, you'll get a compilation error.
 You can convert integers to felts using the `.into()` method. Make sure that you imported the `Into` trait.
 You can convert felts to integers using the `.try_into()` method. Make sure that you imported the `TryInto` trait.
@@ -133,7 +133,7 @@ name = "operations1"
 path = "exercises/operations/operations1.cairo"
 mode = "test"
 hint = """You can check the list of available operators here:
-https://cairo-book.github.io/appendix-02-operators-and-symbols.html
+https://book.cairo-lang.org/appendix-02-operators-and-symbols.html
 """
 
 [[exercises]]
@@ -236,7 +236,7 @@ You can return values from loops by adding the value you want returned after the
 name = "enums1"
 path = "exercises/enums/enums1.cairo"
 mode = "build"
-hint = "https://cairo-book.github.io/ch06-01-enums.html"
+hint = "https://book.cairo-lang.org/ch06-01-enums.html"
 
 [[exercises]]
 name = "enums2"
@@ -245,7 +245,7 @@ mode = "build"
 hint = """
 You can create enumerations that have different variants with different types
 such as no data, structs, a single felt string, tuples, ...etc
-https://cairo-book.github.io/ch06-01-enums.html
+https://book.cairo-lang.org/ch06-01-enums.html
 """
 
 [[exercises]]
@@ -257,7 +257,7 @@ As a first step, you can define enums to compile this code without errors.
 and then create a match expression in `process()`.
 Note that you need to deconstruct some message variants
 in the match expression to get value in the variant.
-https://cairo-book.github.io/ch06-01-enums.html
+https://book.cairo-lang.org/ch06-01-enums.html
 """
 
 # OPTIONS
@@ -270,7 +270,7 @@ hint = """
 Options can have a Some value, with an inner value, or a None value, without an inner value.
 There's multiple ways to get at the inner value, you can use unwrap, or pattern match. Unwrapping
 is the easiest, but how do you do it safely so that it doesn't panic in your face later?
-https://cairo-book.github.io/ch06-01-enums.html#the-option-enum-and-its-advantages
+https://book.cairo-lang.org/ch06-01-enums.html#the-option-enum-and-its-advantages
 """
 
 [[exercises]]
@@ -349,7 +349,7 @@ You'd use the struct like so,
 let john = Person { name: 'John', age: 29 };
 
 
-Read more about structs in the Structs section of this article: https://cairo-book.github.io/ch05-01-defining-and-instantiating-structs.html """
+Read more about structs in the Structs section of this article: https://book.cairo-lang.org/ch05-01-defining-and-instantiating-structs.html """
 
 
 [[exercises]]
@@ -365,7 +365,7 @@ There are some shortcuts that can be taken when destructuring structs,
 let Foo {x, y} = foo; // Creates variables x and y with values foo.x and foo.y
 let Foo {x: a, y: b} = foo; // Creates variables a and b with values foo.x and foo.y
 ```
-Read more about structs in the Structs section of this article: https://cairo-book.github.io/ch05-01-defining-and-instantiating-structs.html """
+Read more about structs in the Structs section of this article: https://book.cairo-lang.org/ch05-01-defining-and-instantiating-structs.html """
 
 [[exercises]]
 name = "structs3"
@@ -377,7 +377,7 @@ For is_international: What makes a package international? Seems related to the p
 For get_fees: This method takes an additional argument, is there a field in the Package struct that this relates to?
 
 Looking at the test functions will also help you understand more about the syntax.
-This section will help you understanding more about methods https://cairo-book.github.io/ch05-03-method-syntax.html
+This section will help you understanding more about methods https://book.cairo-lang.org/ch05-03-method-syntax.html
 """
 
 # MOVE SEMANTICS
@@ -393,7 +393,7 @@ where the error is.
 
 Also: Try accessing `arr0` after having called `fill_arr()`. See what happens!
 
-Read more about move semantics and ownership here: https://cairo-book.github.io/ch04-01-what-is-ownership.html
+Read more about move semantics and ownership here: https://book.cairo-lang.org/ch04-01-what-is-ownership.html
 """
 
 [[exercises]]
@@ -483,7 +483,7 @@ In the test, you need to instantiate two objects of type `Animal`.
 You can call the method of a trait by using the MyTrait::foo() syntax.
 How would you instantiate the two objects with AnimalTrait?
 Maybe you need to specify the type of the object?
-https://cairo-book.github.io/ch08-02-traits-in-cairo.html
+https://book.cairo-lang.org/ch08-02-traits-in-cairo.html
 """
 
 [[exercises]]
@@ -513,7 +513,7 @@ path = "exercises/dict/dict1.cairo"
 mode = "test"
 hint = """
 More info about the Felt252Dict type can be found in the following chapter :
-https://cairo-book.github.io/ch03-02-dictionaries.html
+https://book.cairo-lang.org/ch03-02-dictionaries.html
 """
 
 
@@ -523,7 +523,7 @@ path = "exercises/dict/dict2.cairo"
 mode = "test"
 hint = """
 More info about the Felt252Dict type can be found in the following chapter :
-https://cairo-book.github.io/ch03-02-dictionaries.html
+https://book.cairo-lang.org/ch03-02-dictionaries.html
 """
 
 
@@ -533,7 +533,7 @@ path = "exercises/dict/dict3.cairo"
 mode = "test"
 hint = """
 Example of custom data structures using dicts can be found in this chapter :
-https://cairo-book.github.io/ch03-03-custom-data-structures.html
+https://book.cairo-lang.org/ch03-03-custom-data-structures.html
 """
 
 # MODULES
