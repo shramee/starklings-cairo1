@@ -120,11 +120,13 @@ fn prompt_for_completion(exercise: &Exercise, prompt_output: Option<String>) -> 
     println!();
 
     if let Some(output) = prompt_output {
-        println!("Output:");
-        println!("{}", separator());
-        println!("{output}");
-        println!("{}", separator());
-        println!();
+        if output.len() > 0 {
+            println!("Output:");
+            println!("{}", separator());
+            println!("{output}");
+            println!("{}", separator());
+            println!();
+        }
     }
 
     println!("You can keep working on this exercise,");
