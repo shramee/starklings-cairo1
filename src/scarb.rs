@@ -67,11 +67,11 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
         .unwrap_or(default_target_dir)
         .join(profile);
 
-    // Loop through packages, but only process 'runner_crate'
+    // Loop through packages, but only process 'exercise_crate'
     // Largely same as this
     // https://github.com/software-mansion/scarb/blob/ff98a787cfc0d94adcc7394fa83348bc01f437d5/extensions/scarb-cairo-test/src/main.rs#L54
     for package in metadata.packages.iter() {
-        if package.name != "runner_crate" {
+        if package.name != "exercise_crate" {
             continue;
         }
         // Loop through targets and run compiled file tests

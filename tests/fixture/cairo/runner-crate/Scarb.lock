@@ -2,5 +2,5 @@
 version = 1
 
 [[package]]
-name = "runner_crate"
+name = "exercise_crate"
 version = "0.1.0"
