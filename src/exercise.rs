@@ -7,7 +7,7 @@ use std::io::Read;
 use std::path::PathBuf;
 use std::process::{self};
 
-use crate::scarb::{scarb_build, scarb_test};
+use crate::scarb::{scarb_build, scarb_run, scarb_test};
 
 const I_AM_DONE_REGEX: &str = r"(?m)^\s*///?\s*I\s+AM\s+NOT\s+DONE";
 const CONTEXT: usize = 2;
@@ -29,6 +29,8 @@ fn temp_file() -> String {
 pub enum Mode {
     // Indicates that the exercise should be compiled as a binary
     Build,
+    // Indicates that the exercise should run
+    Run,
     // Indicates that the exercise should be tested
     Test,
 }
@@ -93,6 +95,10 @@ impl Drop for FileHandle {
 impl Exercise {
     pub fn build(&self) -> anyhow::Result<String> {
         scarb_build(&self.path)
+    }
+
+    pub fn run(&self) -> anyhow::Result<String> {
+        scarb_run(&self.path)
     }
 
     pub fn test(&self) -> anyhow::Result<String> {
