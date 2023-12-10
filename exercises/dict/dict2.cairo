@@ -4,12 +4,24 @@
 // Make me compile and pass the test!
 // Execute `starklings hint dict2` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+
 
 
 
 fn multiply_element_by_10(ref dict: Felt252Dict<u32>, n: usize) {
     //TODO : make a function that multiplies the elements stored at the indexes 0 to n of a dictionary by 10
+    let mut index = 0_usize;
+    loop {
+          if index >= n {
+            break;
+          }
+          dict.insert(index.into(), dict.get(index.into()) * 10 );
+          index += 1;
+    }
+      
+    
+   
+        
 
 
 }

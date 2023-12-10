@@ -8,12 +8,16 @@
 // Make me compile and pass the test!
 // Execute `starklings hint dict1` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+
 
 
 fn create_dictionary() -> Felt252Dict<u32> {
     let mut dict: Felt252Dict<u32> = Default::default();
+    dict.insert('A', 1);
+    dict.insert('B', 2);
+    dict.insert('bob', 3);
     //TODO
+    dict
 
 }
 
