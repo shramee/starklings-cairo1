@@ -1,3 +1,5 @@
+use console::style;
+
 use crate::exercise::{Exercise, Mode};
 // use crate::ui::progress;
 
@@ -54,16 +56,9 @@ pub fn test_exercise(exercise: &Exercise) -> Result<String, ()> {
     }
 }
 
-fn separator() {
-    println!("====================");
-}
-
 pub fn print_exercise_output(exercise_output: String) {
     if exercise_output.len() > 0 {
-        println!("Output:");
-        separator();
-        println!("{exercise_output}");
-        separator();
+        println!("    {} {exercise_output}", style("Output").green().bold());
     }
 }
 
