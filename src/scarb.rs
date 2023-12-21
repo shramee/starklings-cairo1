@@ -13,6 +13,8 @@ use scarb::{
     ops::{self, collect_metadata, CompileOpts, MetadataOptions},
 };
 
+const AVAILABLE_GAS: usize = 999999999;
+
 // Prepares testing crate
 // Copies the exercise file into testing crate
 pub fn prepare_crate_for_exercise(file_path: &PathBuf) -> PathBuf {
@@ -98,13 +100,17 @@ pub fn scarb_run(file_path: &PathBuf) -> anyhow::Result<String> {
             .into_v1()
             .with_context(|| format!("failed to load Sierra program: {file_path}"))?;
 
-            let runner = SierraCasmRunner::new(sierra_program.program, None, Default::default())?;
+            let runner = SierraCasmRunner::new(
+                sierra_program.program,
+                Some(Default::default()),
+                Default::default(),
+            )?;
 
             let result = runner
                 .run_function_with_starknet_context(
                     runner.find_function("::main")?,
                     &[],
-                    None,
+                    Some(AVAILABLE_GAS),
                     StarknetState::default(),
                 )
                 .context("failed to run the function")?;
