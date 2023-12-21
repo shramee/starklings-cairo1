@@ -3,6 +3,7 @@ macro_rules! warn {
         use console::{style, Emoji};
         use std::env;
         let formatstr = format!($fmt, $ex);
+        println!();
         if env::var("NO_EMOJI").is_ok() {
             println!("{} {}", style("!").red(), style(formatstr).red());
         } else {
@@ -12,6 +13,7 @@ macro_rules! warn {
                 style(formatstr).red()
             );
         }
+        println!();
     }};
 }
 
@@ -20,6 +22,7 @@ macro_rules! success {
         use console::{style, Emoji};
         use std::env;
         let formatstr = format!($fmt, $ex);
+        println!();
         if env::var("NO_EMOJI").is_ok() {
             println!("{} {}", style("✓").green(), style(formatstr).green());
         } else {
@@ -29,5 +32,25 @@ macro_rules! success {
                 style(formatstr).green()
             );
         }
+        println!();
+    }};
+}
+
+macro_rules! progress {
+    ($fmt:literal, $ex:expr) => {{
+        use console::{style, Emoji};
+        use std::env;
+        let formatstr = format!($fmt, $ex);
+        println!();
+        if env::var("NO_EMOJI").is_ok() {
+            println!("{} {}", style("○").yellow(), style(formatstr).yellow());
+        } else {
+            println!(
+                "{} {}",
+                style(Emoji("🟡", "○")).yellow(),
+                style(formatstr).yellow()
+            );
+        }
+        println!();
     }};
 }

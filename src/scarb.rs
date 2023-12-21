@@ -1,11 +1,11 @@
-use std::{env::current_dir, fs, path::PathBuf};
-
 use anyhow::Context;
 use cairo_lang_runner::{RunResultValue, SierraCasmRunner, StarknetState};
 use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_test_plugin::TestCompilation;
 use cairo_lang_test_runner::{CompiledTestRunner, TestRunConfig};
 use camino::Utf8PathBuf;
+use console::style;
+use std::{env::current_dir, fs, path::PathBuf};
 
 use itertools::Itertools;
 use scarb::{
@@ -53,6 +53,12 @@ pub fn scarb_run(file_path: &PathBuf) -> anyhow::Result<String> {
 
     // Compile before running tests, with test targets true
     compile(&config, false)?;
+
+    println!(
+        "   {} {}\n",
+        style("Running").green().bold(),
+        file_path.to_str().unwrap()
+    );
 
     let metadata = collect_metadata(
         &MetadataOptions {

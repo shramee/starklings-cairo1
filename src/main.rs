@@ -24,6 +24,7 @@ mod exercise;
 mod project;
 mod run;
 mod scarb;
+mod utils;
 mod verify;
 
 // In sync with crate version
