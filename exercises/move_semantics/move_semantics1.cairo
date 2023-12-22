@@ -20,7 +20,7 @@ fn main() {
     //TODO fix the error here without modifying this line.
     arr1.append(88);
 
-    arr1.clone().print();
+    arr1.print();
 }
 
 fn fill_arr(arr: Array<felt252>) -> Array<felt252> {
