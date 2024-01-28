@@ -39,7 +39,7 @@ For example, to start at `starknet1`,
 cargo run -r --bin starklings watch starknet1
 ```
 
-## Welcome message and instrucitons
+## Welcome message and instructions
 
 ```
 starklings - An interactive tutorial to get started with Cairo and Starknet
