@@ -1,49 +1,26 @@
-// primitive_types4.cairo
-// Modify the integer types to make the tests pass.
-// Learn how to convert between integer types, and felts.
-// Execute `starklings hint primitive_types4` or use the `hint` watch subcommand for a hint.
+// Integer types implement basic comparison and arithmetic operators.
+// Felt252 operations should be avoided where possible, as they could have unwanted behavior.
 
-// I AM NOT DONE
+// TODO
+// Return the solution of x^3 + y - 2
 
-use traits::Into;
-use traits::TryInto;
-use option::OptionTrait;
+use debug::PrintTrait;
 
-fn sum_u8s(x: u8, y: u8) -> u8 {
-    x + y
+fn poly(x: usize, y: usize) -> usize {
+    let res = x * x * x + y - 2;
+    res // Do not change
 }
 
-//TODO modify the types of this function to prevent an overflow when summing big values
-fn sum_big_numbers(x: u8, y: u8) -> u8 {
-    x + y
-}
 
-fn convert_to_felt(x: u8) -> felt252 { //TODO return x as a felt252.
-}
-
-fn convert_felt_to_u8(x: felt252) -> u8 { //TODO return x as a u8.
-}
-
+// Do not change the test function
 #[test]
-fn test_sum_u8s() {
-    assert(sum_u8s(1, 2_u8) == 3_u8, 'Something went wrong');
-}
-
-#[test]
-fn test_sum_big_numbers() {
-    //TODO modify this test to use the correct integer types.
-    // Don't modify the values, just the types.
-    // See how using the _u8 suffix on the numbers lets us specify the type?
-    // Try to do the same thing with other integer types.
-    assert(sum_big_numbers(255_u8, 255_u8) == 510_u8, 'Something went wrong');
-}
-
-#[test]
-fn test_convert_to_felt() {
-    assert(convert_to_felt(1_u8) == 1, 'Type conversion went wrong');
-}
-
-#[test]
-fn test_convert_to_u8() {
-    assert(convert_felt_to_u8(1) == 1_u8, 'Type conversion went wrong');
+fn test_poly() {
+    let res = poly(5, 3);
+    assert(res == 126, 'Error message');
+    assert(res < 300, 'res < 300');
+    assert(res <= 300, 'res <= 300');
+    assert(res > 20, 'res > 20');
+    assert(res >= 2, 'res >= 2');
+    assert(res != 27, 'res != 27');
+    assert(res % 2 == 0, 'res %2 != 0');
 }

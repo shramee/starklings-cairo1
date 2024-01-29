@@ -3,8 +3,6 @@
 // Make me compile and pass the test!
 // Execute `starklings hint arrays2` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
-
 use array::ArrayTrait;
 use option::OptionTrait;
 
@@ -18,6 +16,7 @@ fn create_array() -> Array<felt252> {
 fn remove_element_from_array(
     ref a: Array<felt252>
 ) { //TODO something to do here...Is there an array method I can use?
+    a.pop_front().unwrap();
 }
 
 #[test]

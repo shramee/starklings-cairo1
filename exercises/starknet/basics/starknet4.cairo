@@ -4,8 +4,6 @@
 // for how contract should work, can you help Jill and Joe write it?
 // Execute `starklings hint starknet4` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
-
 use starknet::ContractAddress;
 
 #[starknet::interface]
@@ -25,6 +23,8 @@ mod LizInventory {
     struct Storage {
         contract_owner: ContractAddress,
         // TODO: add storage inventory, that maps product (felt252) to stock quantity (u32)
+
+        inventory: LegacyMap<felt252, u32>,
     }
 
     #[constructor]
@@ -35,24 +35,25 @@ mod LizInventory {
 
     #[external(v0)]
     impl LizInventoryImpl of super::ILizInventory<ContractState> {
-        fn add_stock(ref self: ContractState, ) {
-            // TODO:
+        fn add_stock(ref self: ContractState, product: felt252, new_stock: u32) { // TODO:
             // * takes product and new_stock
             // * adds new_stock to stock in inventory
             // * only owner can call this
+            assert(self.contract_owner.read() == get_caller_address(), 'Only owner can call this');
+            self.inventory.write(product, self.inventory.read(product) + new_stock);
         }
 
-        fn purchase(ref self: ContractState, ) {
-            // TODO:
+        fn purchase(ref self: ContractState, product: felt252, quantity: u32) { // TODO:
             // * takes product and quantity
             // * subtracts quantity from stock in inventory
             // * anybody can call this
+            self.inventory.write(product, self.inventory.read(product) - quantity);
         }
 
-        fn get_stock(self: @ContractState, ) -> u32 {
-            // TODO:
+        fn get_stock(self: @ContractState, product: felt252) -> u32 { // TODO:
             // * takes product
             // * returns product stock in inventory
+            self.inventory.read(product)
         }
 
         fn get_owner(self: @ContractState) -> ContractAddress {
