@@ -1,14 +1,21 @@
-use array::ArrayTrait;
-use serde::Serde;
-use array::SpanTrait;
-
-#[derive(Copy, Drop, Serde, PartialEq)]
-enum Option<T> {
+#[must_use]
+#[derive(Copy, Drop, Debug, Serde, PartialEq)]
+pub enum Option<T> {
     Some: T,
     None,
 }
 
-trait OptionTrait<T> {
+pub impl DestructOption<T, +Destruct<T>, -Drop<Option<T>>> of Destruct<Option<T>> {
+    #[inline(always)]
+    fn destruct(self: Option<T>) nopanic {
+        match self {
+            Option::Some(x) => x.destruct(),
+            Option::None => (),
+        };
+    }
+}
+
+pub trait OptionTrait<T> {
     /// If `val` is `Option::Some(x)`, returns `x`. Otherwise, panics with `err`.
     fn expect(self: Option<T>, err: felt252) -> T;
     /// If `val` is `Option::Some(x)`, returns `x`. Otherwise, panics.
@@ -17,16 +24,23 @@ trait OptionTrait<T> {
     /// `Result::Ok(v)` and `Option::None` to `Result::Err(err)`.
     fn ok_or<E, +Drop<E>>(self: Option<T>, err: E) -> Result<T, E>;
     /// Returns `true` if the `Option` is `Option::Some`.
+    #[must_use]
     fn is_some(self: @Option<T>) -> bool;
     /// Returns `true` if the `Option` is `Option::None`.
+    #[must_use]
     fn is_none(self: @Option<T>) -> bool;
+    /// If `self` is `Option::Some(x)`, returns `x`. Otherwise, returns the provided default.
+    fn unwrap_or<+Drop<T>>(self: Option<T>, default: T) -> T;
+    /// If `self` is `Option::Some(x)`, returns `x`. Otherwise, returns `Default::<T>::default()`.
+    fn unwrap_or_default<+Default<T>>(self: Option<T>) -> T;
 }
-impl OptionTraitImpl<T> of OptionTrait<T> {
+
+pub impl OptionTraitImpl<T> of OptionTrait<T> {
     #[inline(always)]
     fn expect(self: Option<T>, err: felt252) -> T {
         match self {
             Option::Some(x) => x,
-            Option::None => panic_with_felt252(err),
+            Option::None => core::panic_with_felt252(err),
         }
     }
 
@@ -56,6 +70,22 @@ impl OptionTraitImpl<T> of OptionTrait<T> {
         match self {
             Option::Some(_) => false,
             Option::None => true,
+        }
+    }
+
+    #[inline]
+    fn unwrap_or<+Drop<T>>(self: Option<T>, default: T) -> T {
+        match self {
+            Option::Some(x) => x,
+            Option::None => default,
+        }
+    }
+
+    #[inline]
+    fn unwrap_or_default<+Default<T>>(self: Option<T>) -> T {
+        match self {
+            Option::Some(x) => x,
+            Option::None => Default::default(),
         }
     }
 }

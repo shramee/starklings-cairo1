@@ -1,7 +1,8 @@
-use ec::EcPointTrait;
-use option::OptionTrait;
-use traits::{Into, TryInto};
-use zeroable::IsZeroResult;
+use core::{ec, ec::{EcPoint, EcPointTrait}};
+use core::option::OptionTrait;
+use core::math;
+use core::traits::{Into, TryInto};
+use core::zeroable::IsZeroResult;
 
 // Checks if (`signature_r`, `signature_s`) is a valid ECDSA signature for the given `public_key`
 // on the given `message`.
@@ -21,7 +22,7 @@ use zeroable::IsZeroResult;
 // Returns:
 //   `true` if the signature is valid and `false` otherwise.
 // TODO(lior): Make this function nopanic once possible.
-fn check_ecdsa_signature(
+pub fn check_ecdsa_signature(
     message_hash: felt252, public_key: felt252, signature_r: felt252, signature_s: felt252
 ) -> bool {
     // TODO(orizi): Change to || once it does not prevent `a == 0` comparison optimization.
@@ -37,7 +38,7 @@ fn check_ecdsa_signature(
     }
 
     // Check that the public key is the x coordinate of a point on the curve and get such a point.
-    let public_key_point = match ec::EcPointTrait::new_from_x(public_key) {
+    let public_key_point = match EcPointTrait::new_from_x(public_key) {
         Option::Some(point) => point,
         Option::None => { return false; },
     };
@@ -98,7 +99,7 @@ fn check_ecdsa_signature(
 
 /// Receives a signature and the signed message hash.
 /// Returns the public key associated with the signer.
-fn recover_public_key(
+pub fn recover_public_key(
     message_hash: felt252, signature_r: felt252, signature_s: felt252, y_parity: bool
 ) -> Option<felt252> {
     let mut signature_r_point = EcPointTrait::new_from_x(signature_r)?;
@@ -128,7 +129,7 @@ fn recover_public_key(
     let r_nz = r_nz.try_into()?;
     let ord_nz: u256 = ec::stark_curve::ORDER.into();
     let ord_nz = ord_nz.try_into()?;
-    let r_inv = math::inv_mod(r_nz, ord_nz)?;
+    let r_inv = math::u256_inv_mod(r_nz, ord_nz)?.into();
     let s_div_r: felt252 = math::u256_mul_mod_n(signature_s.into(), r_inv, ord_nz).try_into()?;
     let z_div_r: felt252 = math::u256_mul_mod_n(message_hash.into(), r_inv, ord_nz).try_into()?;
     let s_div_rR: EcPoint = signature_r_point.mul(s_div_r);

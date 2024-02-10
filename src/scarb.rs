@@ -79,7 +79,7 @@ pub fn scarb_run(file_path: &PathBuf) -> anyhow::Result<String> {
 
     // Process 'exercise_crate' targets
     // Largely same as this
-    // https://github.com/software-mansion/scarb/blob/50e5d942f72a7b756c36fdc57b7899ad8b6ff7c7/extensions/scarb-cairo-run/src/main.rs#L61
+    // https://github.com/software-mansion/scarb/blob/v2.5.3/extensions/scarb-cairo-run/src/main.rs#L61
     for package in metadata.packages.iter() {
         if package.name != "exercise_crate" {
             continue;
@@ -110,6 +110,7 @@ pub fn scarb_run(file_path: &PathBuf) -> anyhow::Result<String> {
                 sierra_program.program,
                 Some(Default::default()),
                 Default::default(),
+                false,
             )?;
 
             let result = runner
@@ -165,7 +166,7 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
 
     // Loop through packages, but only process 'exercise_crate'
     // Largely same as this
-    // https://github.com/software-mansion/scarb/blob/ff98a787cfc0d94adcc7394fa83348bc01f437d5/extensions/scarb-cairo-test/src/main.rs#L54
+    // https://github.com/software-mansion/scarb/blob/v2.5.3/extensions/scarb-cairo-test/src/main.rs#L54
     for package in metadata.packages.iter() {
         if package.name != "exercise_crate" {
             continue;
@@ -186,6 +187,7 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
                 filter: "".into(),
                 include_ignored: false,
                 ignored: false,
+                run_profiler: false,
             };
             let runner = CompiledTestRunner::new(test_compilation, config);
             runner.run()?;

@@ -1,15 +1,15 @@
 //! This module contains functions and constructs related to elliptic curve operations on the
 //! secp256r1 curve.
 
-use option::OptionTrait;
+use core::option::OptionTrait;
 use starknet::{
     EthAddress, secp256_trait::{Secp256Trait, Secp256PointTrait}, SyscallResult, SyscallResultTrait
 };
 
 #[derive(Copy, Drop)]
-extern type Secp256r1Point;
+pub extern type Secp256r1Point;
 
-impl Secp256r1Impl of Secp256Trait<Secp256r1Point> {
+pub(crate) impl Secp256r1Impl of Secp256Trait<Secp256r1Point> {
     // TODO(yuval): change to constant once u256 constants are supported.
     fn get_curve_size() -> u256 {
         0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551
@@ -34,7 +34,7 @@ impl Secp256r1Impl of Secp256Trait<Secp256r1Point> {
     }
 }
 
-impl Secp256r1PointImpl of Secp256PointTrait<Secp256r1Point> {
+pub(crate) impl Secp256r1PointImpl of Secp256PointTrait<Secp256r1Point> {
     fn get_coordinates(self: Secp256r1Point) -> SyscallResult<(u256, u256)> {
         secp256r1_get_xy_syscall(self)
     }
