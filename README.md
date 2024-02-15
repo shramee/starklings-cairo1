@@ -6,8 +6,8 @@
 <img src="https://img.shields.io/badge/Discord-6666ff?logo=discord&logoColor=fff" />
 </a>
 
-<a href="https://twitter.com/intent/follow?screen_name=onlydust_xyz">
-<img src="https://img.shields.io/twitter/follow/onlydust_xyz?label=Follow&style=social" />
+<a href="https://twitter.com/intent/follow?screen_name=onlydust_com">
+<img src="https://img.shields.io/twitter/follow/onlydust_com?label=Follow&style=social" />
 </a>
 
 <a href="https://t.me/+wu8frxmrbeliZWI1">
