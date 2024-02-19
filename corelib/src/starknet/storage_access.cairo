@@ -1,33 +1,35 @@
 use core::array::ArrayTrait;
-use traits::{Into, TryInto};
-use option::OptionTrait;
+use core::traits::{Into, TryInto};
+use core::option::OptionTrait;
+use core::byte_array::ByteArrayTrait;
+use core::bytes_31::BYTES_IN_BYTES31;
 use starknet::{
     SyscallResult, syscalls::{storage_read_syscall, storage_write_syscall},
     contract_address::{ContractAddress, Felt252TryIntoContractAddress, ContractAddressIntoFelt252},
     class_hash::{ClassHash, Felt252TryIntoClassHash, ClassHashIntoFelt252}
 };
-use serde::Serde;
+use core::serde::Serde;
 
 #[derive(Copy, Drop)]
-extern type StorageAddress;
+pub extern type StorageAddress;
 
 #[derive(Copy, Drop)]
-extern type StorageBaseAddress;
+pub extern type StorageBaseAddress;
 
 // Storage.
-extern fn storage_base_address_const<const address: felt252>() -> StorageBaseAddress nopanic;
-extern fn storage_base_address_from_felt252(
+pub extern fn storage_base_address_const<const address: felt252>() -> StorageBaseAddress nopanic;
+pub extern fn storage_base_address_from_felt252(
     addr: felt252
 ) -> StorageBaseAddress implicits(RangeCheck) nopanic;
 
-extern fn storage_address_to_felt252(address: StorageAddress) -> felt252 nopanic;
-extern fn storage_address_from_base_and_offset(
+pub(crate) extern fn storage_address_to_felt252(address: StorageAddress) -> felt252 nopanic;
+pub extern fn storage_address_from_base_and_offset(
     base: StorageBaseAddress, offset: u8
 ) -> StorageAddress nopanic;
 
-extern fn storage_address_from_base(base: StorageBaseAddress) -> StorageAddress nopanic;
+pub extern fn storage_address_from_base(base: StorageBaseAddress) -> StorageAddress nopanic;
 
-extern fn storage_address_try_from_felt252(
+pub(crate) extern fn storage_address_try_from_felt252(
     address: felt252
 ) -> Option<StorageAddress> implicits(RangeCheck) nopanic;
 
@@ -42,31 +44,49 @@ impl StorageAddressIntoFelt252 of Into<StorageAddress, felt252> {
     }
 }
 
-impl StorageAddressSerde of serde::Serde<StorageAddress> {
+impl StorageAddressSerde of Serde<StorageAddress> {
     fn serialize(self: @StorageAddress, ref output: Array<felt252>) {
         storage_address_to_felt252(*self).serialize(ref output);
     }
     fn deserialize(ref serialized: Span<felt252>) -> Option<StorageAddress> {
         Option::Some(
-            storage_address_try_from_felt252(serde::Serde::<felt252>::deserialize(ref serialized)?)?
+            storage_address_try_from_felt252(Serde::<felt252>::deserialize(ref serialized)?)?
         )
     }
 }
 
-trait Store<T> {
+impl DebugStorageAddress = core::fmt::into_felt252_based::DebugImpl<StorageAddress>;
+impl DebugStorageBaseAddress of core::fmt::Debug<StorageBaseAddress> {
+    fn fmt(self: @StorageBaseAddress, ref f: core::fmt::Formatter) -> Result<(), core::fmt::Error> {
+        DebugStorageAddress::fmt(@storage_address_from_base(*self), ref f)
+    }
+}
+
+/// Trait for types that can be used as a value in Starknet storage variables.
+pub trait Store<T> {
+    /// Reads a value from storage from domain `address_domain` and base address `base`.
     fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<T>;
+    /// Writes a value to storage to domain `address_domain` and base address `base`.
     fn write(address_domain: u32, base: StorageBaseAddress, value: T) -> SyscallResult<()>;
+    /// Reads a value from storage from domain `address_domain` and base address `base` at offset
+    /// `offset`.
     fn read_at_offset(
         address_domain: u32, base: StorageBaseAddress, offset: u8
     ) -> SyscallResult<T>;
+    /// Writes a value to storage to domain `address_domain` and base address `base` at offset
+    /// `offset`.
     fn write_at_offset(
         address_domain: u32, base: StorageBaseAddress, offset: u8, value: T
     ) -> SyscallResult<()>;
     fn size() -> u8;
 }
 
-trait StorePacking<T, PackedT> {
+/// Trait for easier implementation of `Store` used for packing and unpacking values into values
+/// that already implement `Store`, and having `Store` implemented using this conversion.
+pub trait StorePacking<T, PackedT> {
+    /// Packs a value of type `T` into a value of type `PackedT`.
     fn pack(value: T) -> PackedT;
+    /// Unpacks a value of type `PackedT` into a value of type `T`.
     fn unpack(value: PackedT) -> T;
 }
 
@@ -128,295 +148,163 @@ impl StoreFelt252 of Store<felt252> {
     }
 }
 
-impl StoreBool of Store<bool> {
-    fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<bool> {
-        Result::Ok(Store::<felt252>::read(address_domain, base)? != 0)
+impl StorePackingBool of StorePacking<bool, felt252> {
+    fn pack(value: bool) -> felt252 {
+        value.into()
     }
-    #[inline(always)]
-    fn write(address_domain: u32, base: StorageBaseAddress, value: bool) -> SyscallResult<()> {
-        Store::<felt252>::write(address_domain, base, if value {
-            1
-        } else {
-            0
-        })
-    }
-    #[inline(always)]
-    fn read_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8
-    ) -> SyscallResult<bool> {
-        Result::Ok(Store::<felt252>::read_at_offset(address_domain, base, offset)? != 0)
-    }
-    #[inline(always)]
-    fn write_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8, value: bool
-    ) -> SyscallResult<()> {
-        Store::<felt252>::write_at_offset(address_domain, base, offset, if value {
-            1
-        } else {
-            0
-        })
-    }
-    #[inline(always)]
-    fn size() -> u8 {
-        1_u8
+    #[inline]
+    fn unpack(value: felt252) -> bool {
+        value != 0
     }
 }
 
-impl StoreU8 of Store<u8> {
-    fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<u8> {
-        Result::Ok(
-            Store::<felt252>::read(address_domain, base)?.try_into().expect('StoreU8 - non u8')
-        )
+impl StorePackingU8 of StorePacking<u8, felt252> {
+    fn pack(value: u8) -> felt252 {
+        value.into()
     }
-    #[inline(always)]
-    fn write(address_domain: u32, base: StorageBaseAddress, value: u8) -> SyscallResult<()> {
-        Store::<felt252>::write(address_domain, base, value.into())
-    }
-    #[inline(always)]
-    fn read_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8
-    ) -> SyscallResult<u8> {
-        Result::Ok(
-            Store::<felt252>::read_at_offset(address_domain, base, offset)?
-                .try_into()
-                .expect('StoreU8 - non u8')
-        )
-    }
-    #[inline(always)]
-    fn write_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8, value: u8
-    ) -> SyscallResult<()> {
-        Store::<felt252>::write_at_offset(address_domain, base, offset, value.into())
-    }
-    #[inline(always)]
-    fn size() -> u8 {
-        1_u8
+    #[inline]
+    fn unpack(value: felt252) -> u8 {
+        value.try_into().expect('StoreU8 - non u8')
     }
 }
 
-impl StoreU16 of Store<u16> {
-    fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<u16> {
-        Result::Ok(
-            Store::<felt252>::read(address_domain, base)?.try_into().expect('StoreU16 - non u16')
-        )
+impl StorePackingI8 of StorePacking<i8, felt252> {
+    fn pack(value: i8) -> felt252 {
+        value.into()
     }
-    #[inline(always)]
-    fn write(address_domain: u32, base: StorageBaseAddress, value: u16) -> SyscallResult<()> {
-        Store::<felt252>::write(address_domain, base, value.into())
-    }
-    #[inline(always)]
-    fn read_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8
-    ) -> SyscallResult<u16> {
-        Result::Ok(
-            Store::<felt252>::read_at_offset(address_domain, base, offset)?
-                .try_into()
-                .expect('StoreU16 - non u16')
-        )
-    }
-    #[inline(always)]
-    fn write_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8, value: u16
-    ) -> SyscallResult<()> {
-        Store::<felt252>::write_at_offset(address_domain, base, offset, value.into())
-    }
-    #[inline(always)]
-    fn size() -> u8 {
-        1_u8
+    #[inline]
+    fn unpack(value: felt252) -> i8 {
+        value.try_into().expect('StoreI8 - non i8')
     }
 }
 
-impl StoreU32 of Store<u32> {
-    fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<u32> {
-        Result::Ok(
-            Store::<felt252>::read(address_domain, base)?.try_into().expect('StoreU32 - non u32')
-        )
+impl StorePackingU16 of StorePacking<u16, felt252> {
+    fn pack(value: u16) -> felt252 {
+        value.into()
     }
-    #[inline(always)]
-    fn write(address_domain: u32, base: StorageBaseAddress, value: u32) -> SyscallResult<()> {
-        Store::<felt252>::write(address_domain, base, value.into())
-    }
-    #[inline(always)]
-    fn read_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8
-    ) -> SyscallResult<u32> {
-        Result::Ok(
-            Store::<felt252>::read_at_offset(address_domain, base, offset)?
-                .try_into()
-                .expect('StoreU32 - non u32')
-        )
-    }
-    #[inline(always)]
-    fn write_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8, value: u32
-    ) -> SyscallResult<()> {
-        Store::<felt252>::write_at_offset(address_domain, base, offset, value.into())
-    }
-    #[inline(always)]
-    fn size() -> u8 {
-        1_u8
+    #[inline]
+    fn unpack(value: felt252) -> u16 {
+        value.try_into().expect('StoreU16 - non u16')
     }
 }
 
-impl StoreU64 of Store<u64> {
-    fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<u64> {
-        Result::Ok(
-            Store::<felt252>::read(address_domain, base)?.try_into().expect('StoreU64 - non u64')
-        )
+impl StorePackingI16 of StorePacking<i16, felt252> {
+    fn pack(value: i16) -> felt252 {
+        value.into()
     }
-    #[inline(always)]
-    fn write(address_domain: u32, base: StorageBaseAddress, value: u64) -> SyscallResult<()> {
-        Store::<felt252>::write(address_domain, base, value.into())
-    }
-    #[inline(always)]
-    fn read_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8
-    ) -> SyscallResult<u64> {
-        Result::Ok(
-            Store::<felt252>::read_at_offset(address_domain, base, offset)?
-                .try_into()
-                .expect('StoreU64 - non u64')
-        )
-    }
-    #[inline(always)]
-    fn write_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8, value: u64
-    ) -> SyscallResult<()> {
-        Store::<felt252>::write_at_offset(address_domain, base, offset, value.into())
-    }
-    #[inline(always)]
-    fn size() -> u8 {
-        1_u8
+    #[inline]
+    fn unpack(value: felt252) -> i16 {
+        value.try_into().expect('StoreI16 - non i16')
     }
 }
 
-impl StoreU128 of Store<u128> {
-    fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<u128> {
-        Result::Ok(
-            Store::<felt252>::read(address_domain, base)?.try_into().expect('StoreU128 - non u128')
-        )
+impl StorePackingU32 of StorePacking<u32, felt252> {
+    fn pack(value: u32) -> felt252 {
+        value.into()
     }
-    #[inline(always)]
-    fn write(address_domain: u32, base: StorageBaseAddress, value: u128) -> SyscallResult<()> {
-        Store::<felt252>::write(address_domain, base, value.into())
-    }
-    #[inline(always)]
-    fn read_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8
-    ) -> SyscallResult<u128> {
-        Result::Ok(
-            Store::<felt252>::read_at_offset(address_domain, base, offset)?
-                .try_into()
-                .expect('StoreU128 - non u128')
-        )
-    }
-    #[inline(always)]
-    fn write_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8, value: u128
-    ) -> SyscallResult<()> {
-        Store::<felt252>::write_at_offset(address_domain, base, offset, value.into())
-    }
-    #[inline(always)]
-    fn size() -> u8 {
-        1_u8
+    #[inline]
+    fn unpack(value: felt252) -> u32 {
+        value.try_into().expect('StoreU32 - non u32')
     }
 }
 
-impl StoreStorageAddress of Store<StorageAddress> {
-    fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<StorageAddress> {
-        Result::Ok(
-            Store::<felt252>::read(address_domain, base)?.try_into().expect('Non StorageAddress')
-        )
+impl StorePackingI32 of StorePacking<i32, felt252> {
+    fn pack(value: i32) -> felt252 {
+        value.into()
     }
-    #[inline(always)]
-    fn write(
-        address_domain: u32, base: StorageBaseAddress, value: StorageAddress
-    ) -> SyscallResult<()> {
-        Store::<felt252>::write(address_domain, base, value.into())
-    }
-    #[inline(always)]
-    fn read_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8
-    ) -> SyscallResult<StorageAddress> {
-        Result::Ok(
-            Store::<felt252>::read_at_offset(address_domain, base, offset)?
-                .try_into()
-                .expect('Non StorageAddress')
-        )
-    }
-    #[inline(always)]
-    fn write_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8, value: StorageAddress
-    ) -> SyscallResult<()> {
-        Store::<felt252>::write_at_offset(address_domain, base, offset, value.into())
-    }
-    #[inline(always)]
-    fn size() -> u8 {
-        1_u8
+    #[inline]
+    fn unpack(value: felt252) -> i32 {
+        value.try_into().expect('StoreI32 - non i32')
     }
 }
 
-impl StoreContractAddress of Store<ContractAddress> {
-    fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<ContractAddress> {
-        Result::Ok(
-            Store::<felt252>::read(address_domain, base)?.try_into().expect('Non ContractAddress')
-        )
+impl StorePackingU64 of StorePacking<u64, felt252> {
+    fn pack(value: u64) -> felt252 {
+        value.into()
     }
-    #[inline(always)]
-    fn write(
-        address_domain: u32, base: StorageBaseAddress, value: ContractAddress
-    ) -> SyscallResult<()> {
-        Store::<felt252>::write(address_domain, base, value.into())
-    }
-    #[inline(always)]
-    fn read_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8
-    ) -> SyscallResult<ContractAddress> {
-        Result::Ok(
-            Store::<felt252>::read_at_offset(address_domain, base, offset)?
-                .try_into()
-                .expect('Non ContractAddress')
-        )
-    }
-    #[inline(always)]
-    fn write_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8, value: ContractAddress
-    ) -> SyscallResult<()> {
-        Store::<felt252>::write_at_offset(address_domain, base, offset, value.into())
-    }
-    #[inline(always)]
-    fn size() -> u8 {
-        1_u8
+    #[inline]
+    fn unpack(value: felt252) -> u64 {
+        value.try_into().expect('StoreU64 - non u64')
     }
 }
 
-impl StoreClassHash of Store<ClassHash> {
-    fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<ClassHash> {
-        Result::Ok(Store::<felt252>::read(address_domain, base)?.try_into().expect('Non ClassHash'))
+impl StorePackingI64 of StorePacking<i64, felt252> {
+    fn pack(value: i64) -> felt252 {
+        value.into()
     }
-    #[inline(always)]
-    fn write(address_domain: u32, base: StorageBaseAddress, value: ClassHash) -> SyscallResult<()> {
-        Store::<felt252>::write(address_domain, base, value.into())
+    #[inline]
+    fn unpack(value: felt252) -> i64 {
+        value.try_into().expect('StoreI64 - non i64')
     }
-    #[inline(always)]
-    fn read_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8
-    ) -> SyscallResult<ClassHash> {
-        Result::Ok(
-            Store::<felt252>::read_at_offset(address_domain, base, offset)?
-                .try_into()
-                .expect('Non ClassHash')
-        )
+}
+
+impl StorePackingU128 of StorePacking<u128, felt252> {
+    fn pack(value: u128) -> felt252 {
+        value.into()
     }
-    #[inline(always)]
-    fn write_at_offset(
-        address_domain: u32, base: StorageBaseAddress, offset: u8, value: ClassHash
-    ) -> SyscallResult<()> {
-        Store::<felt252>::write_at_offset(address_domain, base, offset, value.into())
+    #[inline]
+    fn unpack(value: felt252) -> u128 {
+        value.try_into().expect('StoreU128 - non u128')
     }
-    #[inline(always)]
-    fn size() -> u8 {
-        1_u8
+}
+
+impl StorePackingI128 of StorePacking<i128, felt252> {
+    fn pack(value: i128) -> felt252 {
+        value.into()
+    }
+    #[inline]
+    fn unpack(value: felt252) -> i128 {
+        value.try_into().expect('StoreI128 - non i128')
+    }
+}
+
+impl StorePackingBytes31 of StorePacking<bytes31, felt252> {
+    fn pack(value: bytes31) -> felt252 {
+        value.into()
+    }
+    #[inline]
+    fn unpack(value: felt252) -> bytes31 {
+        value.try_into().expect('StoreBytes31 - non bytes31')
+    }
+}
+
+impl StorePackingNonZero<T, +TryInto<T, NonZero<T>>> of StorePacking<NonZero<T>, T> {
+    fn pack(value: NonZero<T>) -> T {
+        value.into()
+    }
+    #[inline]
+    fn unpack(value: T) -> NonZero<T> {
+        value.try_into().expect('StoreNonZero - zero value')
+    }
+}
+
+impl StorePackingStorageAddress of StorePacking<StorageAddress, felt252> {
+    fn pack(value: StorageAddress) -> felt252 {
+        value.into()
+    }
+    #[inline]
+    fn unpack(value: felt252) -> StorageAddress {
+        value.try_into().expect('Non StorageAddress')
+    }
+}
+
+impl StorePackingContractAddress of StorePacking<ContractAddress, felt252> {
+    fn pack(value: ContractAddress) -> felt252 {
+        value.into()
+    }
+    #[inline]
+    fn unpack(value: felt252) -> ContractAddress {
+        value.try_into().expect('Non ContractAddress')
+    }
+}
+
+impl StorePackingClassHash of StorePacking<ClassHash, felt252> {
+    fn pack(value: ClassHash) -> felt252 {
+        value.into()
+    }
+    #[inline]
+    fn unpack(value: felt252) -> ClassHash {
+        value.try_into().expect('Non ClassHash')
     }
 }
 
@@ -644,7 +532,6 @@ impl TupleSize4Store<
     }
 }
 
-
 impl ResultStore<T, E, +Store<T>, +Store<E>, +Drop<T>, +Drop<E>> of Store<Result<T, E>> {
     #[inline(always)]
     fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<Result<T, E>> {
@@ -712,7 +599,7 @@ impl ResultStore<T, E, +Store<T>, +Store<E>, +Drop<T>, +Drop<E>> of Store<Result
     }
     #[inline(always)]
     fn size() -> u8 {
-        1 + cmp::max(Store::<T>::size(), Store::<E>::size())
+        1 + core::cmp::max(Store::<T>::size(), Store::<E>::size())
     }
 }
 
@@ -765,7 +652,7 @@ impl OptionStore<T, +Store<T>, +Drop<T>,> of Store<Option<T>> {
                 Store::write(address_domain, base, 1)?;
                 Store::write_at_offset(address_domain, base, 1_u8, x)?;
             },
-            Option::None(x) => { Store::write(address_domain, base, 0)?; }
+            Option::None(_x) => { Store::write(address_domain, base, 0)?; }
         };
         starknet::SyscallResult::Ok(())
     }
@@ -773,4 +660,154 @@ impl OptionStore<T, +Store<T>, +Drop<T>,> of Store<Option<T>> {
     fn size() -> u8 {
         1 + Store::<T>::size()
     }
+}
+
+/// Store for a `ByteArray`.
+///
+/// The layout of a `ByteArray` in storage is as follows:
+/// * Only the length in bytes is stored in the original address where the byte array is logically
+///   stored.
+/// * The actual data is stored in chunks of 256 `bytes31`s in another place in storage
+///   determined by the hash of:
+///   - The address storing the length of the array.
+///   - The chunk index.
+///   - The short string `ByteArray`.
+impl ByteArrayStore of Store<ByteArray> {
+    #[inline(always)]
+    fn read(address_domain: u32, base: StorageBaseAddress) -> SyscallResult<ByteArray> {
+        inner_read_byte_array(address_domain, storage_address_from_base(base))
+    }
+    #[inline(always)]
+    fn write(address_domain: u32, base: StorageBaseAddress, value: ByteArray) -> SyscallResult<()> {
+        inner_write_byte_array(address_domain, storage_address_from_base(base), value)
+    }
+    #[inline(always)]
+    fn read_at_offset(
+        address_domain: u32, base: StorageBaseAddress, offset: u8
+    ) -> SyscallResult<ByteArray> {
+        inner_read_byte_array(address_domain, storage_address_from_base_and_offset(base, offset))
+    }
+    #[inline(always)]
+    fn write_at_offset(
+        address_domain: u32, base: StorageBaseAddress, offset: u8, value: ByteArray
+    ) -> SyscallResult<()> {
+        inner_write_byte_array(
+            address_domain, storage_address_from_base_and_offset(base, offset), value
+        )
+    }
+    #[inline(always)]
+    fn size() -> u8 {
+        1
+    }
+}
+
+/// Returns a pointer to the `chunk`'th chunk of the byte array at `address`.
+/// The pointer is the `Poseidon` hash of:
+/// * `address` - The address of the ByteArray (where the length is stored).
+/// * `chunk` - The index of the chunk.
+/// * The short string `ByteArray` is used as the capacity argument of the sponge construction
+///   (domain separation).
+fn inner_byte_array_pointer(address: StorageAddress, chunk: felt252) -> StorageBaseAddress {
+    let (r, _, _) = core::poseidon::hades_permutation(address.into(), chunk, 'ByteArray'_felt252);
+    storage_base_address_from_felt252(r)
+}
+
+/// Reads a byte array from storage from domain `address_domain` and address `address`.
+/// The length of the byte array is read from `address` at domain `address_domain`.
+/// For more info read the documentation of `ByteArrayStore`.
+fn inner_read_byte_array(address_domain: u32, address: StorageAddress) -> SyscallResult<ByteArray> {
+    let len: usize =
+        match starknet::syscalls::storage_read_syscall(address_domain, address)?.try_into() {
+        Option::Some(x) => x,
+        Option::None => { return SyscallResult::Err(array!['Invalid ByteArray length']); },
+    };
+    let (mut remaining_full_words, pending_word_len) = core::DivRem::div_rem(
+        len, BYTES_IN_BYTES31.try_into().unwrap()
+    );
+    let mut chunk = 0;
+    let mut chunk_base = inner_byte_array_pointer(address, chunk);
+    let mut index_in_chunk = 0_u8;
+    let mut result: ByteArray = Default::default();
+    loop {
+        if remaining_full_words == 0 {
+            break Result::Ok(());
+        }
+        let value =
+            match starknet::syscalls::storage_read_syscall(
+                address_domain, storage_address_from_base_and_offset(chunk_base, index_in_chunk)
+            ) {
+            Result::Ok(value) => value,
+            Result::Err(err) => { break Result::Err(err); },
+        };
+        let value: bytes31 = match value.try_into() {
+            Option::Some(x) => x,
+            Option::None => { break Result::Err(array!['Invalid value']); },
+        };
+        result.data.append(value);
+        remaining_full_words -= 1;
+        index_in_chunk = match core::integer::u8_overflowing_add(index_in_chunk, 1) {
+            Result::Ok(x) => x,
+            Result::Err(_) => {
+                // After reading 256 `bytes31`s `index_in_chunk` will overflow and we move to the
+                // next chunk.
+                chunk += 1;
+                chunk_base = inner_byte_array_pointer(address, chunk);
+                0
+            },
+        };
+    }?;
+    if pending_word_len != 0 {
+        let pending_word = starknet::syscalls::storage_read_syscall(
+            address_domain, storage_address_from_base_and_offset(chunk_base, index_in_chunk)
+        )?;
+        result.pending_word = pending_word;
+        result.pending_word_len = pending_word_len;
+    }
+    Result::Ok(result)
+}
+
+/// Writes a byte array to storage to domain `address_domain` and address `address`.
+/// The length of the byte array is written to `address` at domain `address_domain`.
+/// For more info read the documentation of `ByteArrayStore`.
+fn inner_write_byte_array(
+    address_domain: u32, address: StorageAddress, value: ByteArray
+) -> SyscallResult<()> {
+    let len = value.len();
+    starknet::syscalls::storage_write_syscall(address_domain, address, len.into())?;
+    let mut full_words = value.data.span();
+    let mut chunk = 0;
+    let mut chunk_base = inner_byte_array_pointer(address, chunk);
+    let mut index_in_chunk = 0_u8;
+    loop {
+        let curr_value = match full_words.pop_front() {
+            Option::Some(x) => x,
+            Option::None => { break Result::Ok(()); },
+        };
+        match starknet::syscalls::storage_write_syscall(
+            address_domain,
+            storage_address_from_base_and_offset(chunk_base, index_in_chunk),
+            (*curr_value).into()
+        ) {
+            Result::Ok(_) => {},
+            Result::Err(err) => { break Result::Err(err); },
+        };
+        index_in_chunk = match core::integer::u8_overflowing_add(index_in_chunk, 1) {
+            Result::Ok(x) => x,
+            Result::Err(_) => {
+                // After writing 256 `byte31`s `index_in_chunk` will overflow and we move to the
+                // next chunk.
+                chunk += 1;
+                chunk_base = inner_byte_array_pointer(address, chunk);
+                0
+            },
+        };
+    }?;
+    if value.pending_word_len != 0 {
+        starknet::syscalls::storage_write_syscall(
+            address_domain,
+            storage_address_from_base_and_offset(chunk_base, index_in_chunk),
+            value.pending_word
+        )?;
+    }
+    Result::Ok(())
 }

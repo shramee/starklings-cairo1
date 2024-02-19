@@ -1,12 +1,13 @@
-use traits::IndexView;
+use core::traits::IndexView;
 
-use box::BoxTrait;
-use gas::withdraw_gas;
-use option::OptionTrait;
-use serde::Serde;
+use core::box::BoxTrait;
+use core::gas::withdraw_gas;
+use core::option::OptionTrait;
+use core::serde::Serde;
+use core::metaprogramming::TypeEqual;
 
 #[derive(Drop)]
-extern type Array<T>;
+pub extern type Array<T>;
 
 extern fn array_new<T>() -> Array<T> nopanic;
 extern fn array_append<T>(ref arr: Array<T>, value: T) nopanic;
@@ -24,14 +25,23 @@ extern fn array_slice<T>(
 extern fn array_len<T>(arr: @Array<T>) -> usize nopanic;
 
 #[generate_trait]
-impl ArrayImpl<T> of ArrayTrait<T> {
+pub impl ArrayImpl<T> of ArrayTrait<T> {
     #[inline(always)]
     fn new() -> Array<T> {
         array_new()
     }
     #[inline(always)]
-    fn append(ref self: Array<T>, value: T) {
+    fn append(ref self: Array<T>, value: T) nopanic {
         array_append(ref self, value)
+    }
+    fn append_span<+Clone<T>, +Drop<T>>(ref self: Array<T>, mut span: Span<T>) {
+        match span.pop_front() {
+            Option::Some(current) => {
+                self.append(current.clone());
+                self.append_span(span);
+            },
+            Option::None => {}
+        };
     }
     #[inline(always)]
     fn pop_front(ref self: Array<T>) -> Option<T> nopanic {
@@ -55,14 +65,21 @@ impl ArrayImpl<T> of ArrayTrait<T> {
         array_at(self, index).unbox()
     }
     #[inline(always)]
+    #[must_use]
     fn len(self: @Array<T>) -> usize {
         array_len(self)
     }
     #[inline(always)]
+    #[must_use]
     fn is_empty(self: @Array<T>) -> bool {
-        self.len() == 0_usize
+        let mut snapshot = self;
+        match array_snapshot_pop_front(ref snapshot) {
+            Option::Some(_) => false,
+            Option::None => true,
+        }
     }
     #[inline(always)]
+    #[must_use]
     fn span(self: @Array<T>) -> Span<T> {
         Span { snapshot: self }
     }
@@ -114,14 +131,28 @@ fn deserialize_array_helper<T, +Serde<T>, +Drop<T>>(
 }
 
 // Span.
-struct Span<T> {
+pub struct Span<T> {
     snapshot: @Array<T>
 }
 
 impl SpanCopy<T> of Copy<Span<T>>;
 impl SpanDrop<T> of Drop<Span<T>>;
 
-impl SpanSerde<T, +Serde<T>, +Drop<T>> of Serde<Span<T>> {
+impl SpanFelt252Serde of Serde<Span<felt252>> {
+    fn serialize(self: @Span<felt252>, ref output: Array<felt252>) {
+        (*self).len().serialize(ref output);
+        serialize_array_helper(*self, ref output)
+    }
+
+    fn deserialize(ref serialized: Span<felt252>) -> Option<Span<felt252>> {
+        let length: u32 = (*serialized.pop_front()?).try_into()?;
+        let res = serialized.slice(0, length);
+        serialized = serialized.slice(length, serialized.len() - length);
+        Option::Some(res)
+    }
+}
+
+impl SpanSerde<T, +Serde<T>, +Drop<T>, -TypeEqual<felt252, T>> of Serde<Span<T>> {
     fn serialize(self: @Span<T>, ref output: Array<felt252>) {
         (*self).len().serialize(ref output);
         serialize_array_helper(*self, ref output)
@@ -135,7 +166,7 @@ impl SpanSerde<T, +Serde<T>, +Drop<T>> of Serde<Span<T>> {
 }
 
 #[generate_trait]
-impl SpanImpl<T> of SpanTrait<T> {
+pub impl SpanImpl<T> of SpanTrait<T> {
     #[inline(always)]
     fn pop_front(ref self: Span<T>) -> Option<@T> {
         let mut snapshot = self.snapshot;
@@ -169,16 +200,22 @@ impl SpanImpl<T> of SpanTrait<T> {
         Span { snapshot: array_slice(self.snapshot, start, length).expect('Index out of bounds') }
     }
     #[inline(always)]
+    #[must_use]
     fn len(self: Span<T>) -> usize {
         array_len(self.snapshot)
     }
     #[inline(always)]
+    #[must_use]
     fn is_empty(self: Span<T>) -> bool {
-        self.len() == 0_usize
+        let mut snapshot = self.snapshot;
+        match array_snapshot_pop_front(ref snapshot) {
+            Option::Some(_) => false,
+            Option::None => true,
+        }
     }
 }
 
-impl SpanIndex<T> of IndexView<Span<T>, usize, @T> {
+pub impl SpanIndex<T> of IndexView<Span<T>, usize, @T> {
     #[inline(always)]
     fn index(self: @Span<T>, index: usize) -> @T {
         array_at(*self.snapshot, index).unbox()

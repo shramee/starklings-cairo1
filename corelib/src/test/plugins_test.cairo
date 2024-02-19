@@ -1,20 +1,20 @@
-use test::test_utils::{assert_eq, assert_ne};
+use core::test::test_utils::assert_eq;
 
-#[derive(Copy, Drop, Serde, PartialEq)]
+#[derive(Copy, Debug, Drop, Serde, PartialEq)]
 enum EnumForSerde {
     A,
     B: u32,
     C: u64,
 }
 
-#[derive(Drop, Default, PartialEq)]
+#[derive(Drop, Debug, Default, PartialEq)]
 struct StructForDefault {
     a: felt252,
     b: u256,
     c: bool
 }
 
-#[derive(Drop, Default, PartialEq)]
+#[derive(Drop, Debug, Default, PartialEq)]
 enum EnumForDefault {
     A: felt252,
     B: u256,
@@ -64,14 +64,83 @@ fn test_derive_serde_enum() {
 
 #[test]
 fn test_derive_default_struct() {
-    let actual: StructForDefault = Default::default();
-    let expected = StructForDefault { a: 0, b: 0, c: bool::False };
-    assert_eq(@actual, @expected, 'unexpected default value');
+    assert_eq!(Default::default(), StructForDefault { a: 0, b: 0, c: false });
 }
 
 #[test]
 fn test_derive_default_enum() {
-    let actual: EnumForDefault = Default::default();
-    let expected = EnumForDefault::C(StructForDefault { a: 0, b: 0, c: bool::False });
-    assert_eq(@actual, @expected, 'unexpected default value');
+    assert_eq!(Default::default(), EnumForDefault::C(StructForDefault { a: 0, b: 0, c: false }));
 }
+
+#[derive(Copy, Debug, Drop, Serde, PartialEq)]
+enum LongEnum5 {
+    A,
+    B,
+    C,
+    D,
+    E
+}
+#[derive(Copy, Debug, Drop, Serde, PartialEq)]
+enum longEnum10 {
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H,
+    I,
+    J
+}
+#[derive(Copy, Debug, Drop, Serde, PartialEq)]
+enum longEnum15 {
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H,
+    I,
+    J,
+    K,
+    L,
+    M,
+    N,
+    O
+}
+
+
+#[test]
+fn test_long_enum5_deserialize() {
+    let x = LongEnum5::E;
+    let mut output = Default::default();
+    x.serialize(ref output);
+    let mut serialized = output.span();
+    assert_eq(
+        @Serde::<LongEnum5>::deserialize(ref serialized).expect('failed to read'), @x, 'expected E'
+    );
+}
+#[test]
+fn test_long_enum10_deserialize() {
+    let x = longEnum10::J;
+    let mut output = Default::default();
+    x.serialize(ref output);
+    let mut serialized = output.span();
+    assert_eq(
+        @Serde::<longEnum10>::deserialize(ref serialized).expect('failed to read'), @x, 'expected J'
+    );
+}
+#[test]
+fn test_long_enum15_deserialize() {
+    let x = longEnum15::O;
+    let mut output = Default::default();
+    x.serialize(ref output);
+    let mut serialized = output.span();
+    assert_eq(
+        @Serde::<longEnum15>::deserialize(ref serialized).expect('failed to read'), @x, 'expected O'
+    );
+}
+

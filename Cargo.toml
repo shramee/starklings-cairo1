@@ -24,12 +24,12 @@ glob = "0.3.0"
 cairo-felt = "0.8.2"
 
 # Cairo runner dependencies
-cairo-lang-test-runner = {git = "https://github.com/starkware-libs/cairo", rev = "bf91adecc5a1cb2ced041ba383d7b7c38dd2fa7f"}
-cairo-lang-test-plugin = {git = "https://github.com/starkware-libs/cairo", rev = "bf91adecc5a1cb2ced041ba383d7b7c38dd2fa7f"}
-cairo-lang-runner = {git = "https://github.com/starkware-libs/cairo", rev = "bf91adecc5a1cb2ced041ba383d7b7c38dd2fa7f"}
-cairo-lang-sierra = {git = "https://github.com/starkware-libs/cairo", rev = "bf91adecc5a1cb2ced041ba383d7b7c38dd2fa7f"}
-scarb = { git = "https://github.com/software-mansion/scarb", version = "2.3.0" }
-scarb-ui = { git = "https://github.com/software-mansion/scarb", version = "0.1.0" }
+cairo-lang-test-runner = "2.5.3"
+cairo-lang-test-plugin = "2.5.3"
+cairo-lang-runner = "2.5.3"
+cairo-lang-sierra = "2.5.3"
+scarb = { git = "https://github.com/software-mansion/scarb", version = "2.5.3" }
+scarb-ui = { git = "https://github.com/software-mansion/scarb", version = "0.1.3" }
 
 anyhow = "1.0.66"
 ark-ff = "0.4.0-alpha.7"

@@ -1,4 +1,4 @@
-use test::test_utils::{assert_eq, assert_ne};
+use core::test::test_utils::{assert_eq, assert_ne};
 
 #[test]
 fn test_array() {
@@ -23,7 +23,6 @@ fn test_array_out_of_bound_2() {
 }
 
 #[test]
-#[available_gas(100000)]
 fn test_array_clone() {
     let felt252_snap_array: @Array<felt252> = @array![10, 11, 12];
     let felt252_snap_array_clone = felt252_snap_array.clone();
@@ -75,7 +74,6 @@ fn test_slice_out_of_bound_2() {
 }
 
 #[test]
-#[available_gas(10000000)]
 fn test_equality() {
     let arr1 = array![];
     let arr2 = array![10, 11, 12];
@@ -100,3 +98,49 @@ fn test_equality() {
     assert(arr3 != arr5, 'arr3 == arr5');
     assert(arr4 != arr5, 'arr4 == arr5');
 }
+
+#[test]
+fn test_append() {
+    let mut arr = array![10, 11, 12];
+    arr.append(13);
+    assert(arr.len() == 4, 'Unexpected length');
+    assert_eq(arr[3], @13, 'Unexpected element');
+}
+
+#[test]
+fn test_append_span() {
+    let mut arr = array![10, 11, 12];
+    arr.append_span(arr.span());
+    assert(arr.len() == 6, 'Unexpected length');
+    assert_eq(arr[3], @10, 'Unexpected element');
+    assert_eq(arr[4], @11, 'Unexpected element');
+    assert_eq(arr[5], @12, 'Unexpected element');
+}
+
+mod felt252_span_from_tuple {
+    pub extern fn span_from_tuple<T>(struct_like: Box<@T>) -> @Array<felt252> nopanic;
+}
+
+mod tuple_span_from_tuple {
+    pub extern fn span_from_tuple<T>(
+        struct_like: Box<@T>
+    ) -> @Array<(felt252, felt252, felt252)> nopanic;
+}
+
+#[test]
+fn test_felt252_span_from_tuple() {
+    let span = felt252_span_from_tuple::span_from_tuple(BoxTrait::new(@(10, 20, 30)));
+    assert!(*span[0] == 10);
+    assert!(*span[1] == 20);
+    assert!(*span[2] == 30);
+}
+
+#[test]
+fn test_tuple_span_from_tuple() {
+    let multi_tuple = ((10, 20, 30), (40, 50, 60), (70, 80, 90));
+    let span = tuple_span_from_tuple::span_from_tuple(BoxTrait::new(@multi_tuple));
+    assert!(*span[0] == (10, 20, 30));
+    assert!(*span[1] == (40, 50, 60));
+    assert!(*span[2] == (70, 80, 90));
+}
+

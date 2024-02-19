@@ -1,7 +1,7 @@
-use zeroable::{IsZeroResult, NonZeroIntoImpl, Zeroable};
-use traits::{Into, TryInto};
-use option::OptionTrait;
-use integer::{u256_wide_mul, u512_safe_div_rem_by_u256};
+use core::zeroable::{IsZeroResult, NonZeroIntoImpl, Zeroable};
+use core::traits::{Into, TryInto};
+use core::option::OptionTrait;
+use core::integer::{u256_wide_mul, u512_safe_div_rem_by_u256, U128MulGuarantee};
 
 // TODO(yuval): use signed integers once supported.
 // TODO(yuval): use a single impl of a trait with associated impls, once associated impls are
@@ -12,7 +12,7 @@ use integer::{u256_wide_mul, u512_safe_div_rem_by_u256};
 /// `(s, -t)` or `(-s, t)` are the Bezout coefficients (according to `sub_direction`).
 ///
 /// Uses the Extended Euclidean algorithm.
-fn egcd<
+pub fn egcd<
     T,
     +Copy<T>,
     +Drop<T>,
@@ -42,7 +42,7 @@ fn egcd<
 
 // TODO(yuval): use signed integers once supported.
 /// Returns the inverse of `a` modulo `n`, or None if `gcd(a, n) > 1`.
-fn inv_mod<
+pub fn inv_mod<
     T,
     +Copy<T>,
     +Drop<T>,
@@ -77,13 +77,44 @@ fn inv_mod<
     }
 }
 
+/// Returns `1 / b (mod n)`, or None if `b` is not invertible modulo `n`.
+/// All `b`s will be considered not invertible for `n == 1`.
+/// Additionally returns several `U128MulGuarantee`s that are required for validating the
+/// calculation.
+extern fn u256_guarantee_inv_mod_n(
+    b: u256, n: NonZero<u256>
+) -> Result<
+    (
+        NonZero<u256>,
+        U128MulGuarantee,
+        U128MulGuarantee,
+        U128MulGuarantee,
+        U128MulGuarantee,
+        U128MulGuarantee,
+        U128MulGuarantee,
+        U128MulGuarantee,
+        U128MulGuarantee
+    ),
+    (U128MulGuarantee, U128MulGuarantee)
+> implicits(RangeCheck) nopanic;
+
+/// Returns the inverse of `a` modulo `n`, or None if `a` is not invertible modulo `n`.
+/// All `b`s will be considered not invertible for `n == 1`.
+#[inline(always)]
+pub fn u256_inv_mod(a: u256, n: NonZero<u256>) -> Option<NonZero<u256>> {
+    match u256_guarantee_inv_mod_n(a, n) {
+        Result::Ok((inv_a, _, _, _, _, _, _, _, _)) => Option::Some(inv_a),
+        Result::Err(_) => Option::None(())
+    }
+}
+
 /// Returns `a / b (mod n)`, or None if `b` is not invertible modulo `n`.
-fn u256_div_mod_n(a: u256, b: NonZero<u256>, n: NonZero<u256>) -> Option<u256> {
-    Option::Some(u256_mul_mod_n(a, inv_mod(b, n)?, n))
+pub fn u256_div_mod_n(a: u256, b: u256, n: NonZero<u256>) -> Option<u256> {
+    Option::Some(u256_mul_mod_n(a, u256_inv_mod(b, n)?.into(), n))
 }
 
 /// Returns `a * b (mod n)`.
-fn u256_mul_mod_n(a: u256, b: u256, n: NonZero<u256>) -> u256 {
+pub fn u256_mul_mod_n(a: u256, b: u256, n: NonZero<u256>) -> u256 {
     let (_, r) = u512_safe_div_rem_by_u256(u256_wide_mul(a, b), n);
     r
 }
@@ -92,93 +123,38 @@ fn u256_mul_mod_n(a: u256, b: u256, n: NonZero<u256>) -> u256 {
 
 trait Oneable<T> {
     /// Returns the multiplicative identity element of Self, 1.
+    #[must_use]
     fn one() -> T;
     /// Returns whether self is equal to 1, the multiplicative identity element.
+    #[must_use]
     fn is_one(self: T) -> bool;
     /// Returns whether self is not equal to 1, the multiplicative identity element.
+    #[must_use]
     fn is_non_one(self: T) -> bool;
 }
 
-impl U8Oneable of Oneable<u8> {
-    fn one() -> u8 {
-        1
-    }
-    #[inline(always)]
-    fn is_one(self: u8) -> bool {
-        self == U8Oneable::one()
-    }
-    #[inline(always)]
-    fn is_non_one(self: u8) -> bool {
-        self != U8Oneable::one()
-    }
-}
-
-impl U16Oneable of Oneable<u16> {
-    fn one() -> u16 {
-        1
-    }
-    #[inline(always)]
-    fn is_one(self: u16) -> bool {
-        self == U16Oneable::one()
-    }
-    #[inline(always)]
-    fn is_non_one(self: u16) -> bool {
-        self != U16Oneable::one()
+pub(crate) mod one_based {
+    pub(crate) impl OneableImpl<
+        T, impl OneImpl: core::num::traits::One<T>, +Drop<T>, +Copy<T>
+    > of super::Oneable<T> {
+        fn one() -> T {
+            OneImpl::one()
+        }
+        #[inline(always)]
+        fn is_one(self: T) -> bool {
+            OneImpl::is_one(@self)
+        }
+        #[inline(always)]
+        fn is_non_one(self: T) -> bool {
+            OneImpl::is_non_one(@self)
+        }
     }
 }
 
-impl U32Oneable of Oneable<u32> {
-    fn one() -> u32 {
-        1
-    }
-    #[inline(always)]
-    fn is_one(self: u32) -> bool {
-        self == U32Oneable::one()
-    }
-    #[inline(always)]
-    fn is_non_one(self: u32) -> bool {
-        self != U32Oneable::one()
-    }
-}
-
-impl U64Oneable of Oneable<u64> {
-    fn one() -> u64 {
-        1
-    }
-    #[inline(always)]
-    fn is_one(self: u64) -> bool {
-        self == U64Oneable::one()
-    }
-    #[inline(always)]
-    fn is_non_one(self: u64) -> bool {
-        self != U64Oneable::one()
-    }
-}
-
-impl U128Oneable of Oneable<u128> {
-    fn one() -> u128 {
-        1
-    }
-    #[inline(always)]
-    fn is_one(self: u128) -> bool {
-        self == U128Oneable::one()
-    }
-    #[inline(always)]
-    fn is_non_one(self: u128) -> bool {
-        self != U128Oneable::one()
-    }
-}
-
-impl U256Oneable of Oneable<u256> {
-    fn one() -> u256 {
-        1
-    }
-    #[inline(always)]
-    fn is_one(self: u256) -> bool {
-        self == U256Oneable::one()
-    }
-    #[inline(always)]
-    fn is_non_one(self: u256) -> bool {
-        self != U256Oneable::one()
-    }
-}
+// Oneable impls
+impl U8Oneable = math::one_based::OneableImpl<u8>;
+impl U16Oneable = math::one_based::OneableImpl<u16>;
+impl U32Oneable = math::one_based::OneableImpl<u32>;
+impl U64Oneable = math::one_based::OneableImpl<u64>;
+impl U128Oneable = math::one_based::OneableImpl<u128>;
+impl U256Oneable = math::one_based::OneableImpl<u256>;
