@@ -24,3 +24,4 @@ mod tests {
         assert(42 == bigger(32, 42), '42 bigger than 32');
     }
 }
+ 

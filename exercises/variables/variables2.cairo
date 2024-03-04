@@ -7,8 +7,8 @@ use debug::PrintTrait;
 fn main() {
     let x;
     if x == 10 {
-        ('x is ten!').print();
+       println!("x is ten! ");
     } else {
-        ('x is not ten!').print();
+        println!("x is not ten! ");
     }
 }

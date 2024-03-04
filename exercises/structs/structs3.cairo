@@ -79,4 +79,4 @@ fn calculate_transport_fees() {
 
     assert(package.get_fees(cents_per_gram) == 4500, 'Wrong fees');
 }
-
+ 

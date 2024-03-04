@@ -2,7 +2,7 @@
 // Address all the TODOs to make the tests pass!
 // Execute `starklings hint enums3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+// I AM NOT DONE print 
 
 use debug::PrintTrait;
 
@@ -41,7 +41,7 @@ impl StateImpl of StateTrait {
     }
 
     fn echo(ref self: State, s: felt252) {
-        s.print();
+        println!("{}", s);
     }
 
     fn move_position(ref self: State, p: Point) {

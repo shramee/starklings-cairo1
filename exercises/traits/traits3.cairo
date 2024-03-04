@@ -76,3 +76,4 @@ fn test_traits3() {
     assert(dog.make_noise() == 'woof', 'Wrong noise');
     assert(dog.get_distance() == 1, 'Wrong distance');
 }
+
