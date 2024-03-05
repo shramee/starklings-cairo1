@@ -112,7 +112,7 @@ mod test {
     fn test_stock_purchase() {
         let owner = util_felt_addr('Elizabeth');
         let dispatcher = deploy_contract();
-        let result = dispatcher.get_owner();
+        let _result = dispatcher.get_owner();
         // Call contract as owner
         starknet::testing::set_contract_address(owner);
 

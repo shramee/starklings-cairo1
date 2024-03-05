@@ -55,7 +55,7 @@ mod test {
     #[test]
     #[available_gas(2000000000)]
     fn test_owner_setting() {
-        let owner: felt252 = 'Jill';
+        let _owner: felt252 = 'Jill';
         let mut calldata = ArrayTrait::new();
         calldata.append('Jill');
         let (address0, _) = deploy_syscall(

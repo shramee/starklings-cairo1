@@ -55,5 +55,5 @@ fn test_mul() {
 #[test]
 #[should_panic]
 fn test_u64_mul_overflow_1() {
-    let res = multiplication(0x100000000, 0x100000000);
+    let _res = multiplication(0x100000000, 0x100000000);
 }
