@@ -34,7 +34,7 @@ mod ProgressTracker {
     }
 
 
-    #[external(v0)]
+    #[abi(embed_v0)]
     impl ProgressTrackerImpl of super::IProgressTracker<ContractState> {
         fn set_progress(
             ref self: ContractState, user: ContractAddress, new_progress: u16

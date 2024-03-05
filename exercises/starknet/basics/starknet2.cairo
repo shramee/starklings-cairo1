@@ -24,7 +24,7 @@ mod JillsContract {
     ) { // TODO: Write `owner` to contract_owner storage
     }
 
-    #[external(v0)]
+    #[abi(embed_v0)]
     impl IJillsContractImpl of super::IJillsContract<ContractState> {
         fn get_owner(self: @ContractState) -> ContractAddress { // TODO: Read contract_owner storage
         }
@@ -55,7 +55,6 @@ mod test {
     #[test]
     #[available_gas(2000000000)]
     fn test_owner_setting() {
-        let owner: felt252 = 'Jill';
         let mut calldata = ArrayTrait::new();
         calldata.append('Jill');
         let (address0, _) = deploy_syscall(

@@ -41,7 +41,6 @@ mod test {
     #[available_gas(2000000000)]
     fn test_contract_view() {
         let dispatcher = deploy_contract();
-        let owner = dispatcher.get_owner();
         assert('Joe' == dispatcher.get_owner(), 'Joe should be the owner.');
     }
 
