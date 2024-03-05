@@ -32,11 +32,11 @@ trait StateTrait {
 }
 impl StateImpl of StateTrait {
     fn change_color(ref self: State, new_color: (u8, u8, u8)) {
-        let State{color: _color, position, quit, } = self;
+        let State{color: _, position, quit, } = self;
         self = State { color: new_color, position: position, quit: quit,  };
     }
     fn quit(ref self: State) {
-        let State{color, position, quit: _quit, } = self;
+        let State{color, position, quit: _, } = self;
         self = State { color: color, position: position, quit: true,  };
     }
 
@@ -45,7 +45,7 @@ impl StateImpl of StateTrait {
     }
 
     fn move_position(ref self: State, p: Point) {
-        let State{color, position: _posiotion, quit, } = self;
+        let State{color, position: _, quit, } = self;
         self = State { color: color, position: p, quit: quit,  };
     }
 
