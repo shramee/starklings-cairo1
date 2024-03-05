@@ -40,7 +40,7 @@ mod ContractA {
         self.contract_b.write(contract_b)
     }
 
-    #[external(v0)]
+    #[abi(embed_v0)]
     impl ContractAImpl of super::IContractA<ContractState> {
         fn set_value(ref self: ContractState, value: u128) -> bool {
             // TODO: check if contract_b is enabled.
@@ -70,7 +70,7 @@ mod ContractB {
     #[constructor]
     fn constructor(ref self: ContractState) {}
 
-    #[external(v0)]
+    #[abi(embed_v0)]
     impl ContractBImpl of super::IContractB<ContractState> {
         fn enable(ref self: ContractState) {
             self.enabled.write(true);
