@@ -24,4 +24,3 @@ fn verify_test() {
     assert(82 == price3, 'Incorrect price');
     assert(130 == price4, 'Incorrect price');
 }
- 

@@ -163,4 +163,3 @@ mod test {
         contract0
     }
 }
- 

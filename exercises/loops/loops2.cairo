@@ -16,4 +16,4 @@ fn test_loop() {
     };
 
     assert(result == 5, 'result should be 5');
-} 
+}

@@ -9,7 +9,6 @@
 
 // I AM NOT DONE
 
-
 fn main() {
     let original_price = 51;
     println!("sale_price is {}", sale_price(original_price));

@@ -38,4 +38,4 @@ mod tests {
     fn default_to_baz() {
         assert(foo_if_fizz('literally anything') == 'baz', 'anything else returns baz');
     }
-} 
+}

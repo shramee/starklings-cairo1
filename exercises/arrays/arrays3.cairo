@@ -24,4 +24,3 @@ fn test_arrays3() {
     // You should not change the index accessed.
     a.at(2);
 }
- 

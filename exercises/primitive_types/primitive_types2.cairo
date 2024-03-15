@@ -4,8 +4,6 @@
 
 // I AM NOT DONE
 
-
-
 fn main() {
     // A short string is a string whose length is at most 31 characters, and therefore can fit into a single field element.
     // Short strings are actually felts, they are not a real string.
