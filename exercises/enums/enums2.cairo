@@ -54,20 +54,20 @@ fn print_messages_recursive(messages: Array<Message>, index: u32) {
 
 impl MessagePrintImpl of PrintTrait<Message> {
     fn print(self: Message) {
-        ('___MESSAGE BEGINS___').print();
+        println!("___MESSAGE BEGINS___");
         match self {
-            Message::Quit => ('Quit').print(),
-            Message::Echo(msg) => msg.print(),
+            Message::Quit => println!("Quit"),
+            Message::Echo(msg) => println!("{}", msg),
             Message::Move((a, b)) => {
-                a.print();
-                b.print();
+                println!("{}", a);
+                println!("{}",b);
             },
             Message::ChangeColor((red, green, blue)) => {
-                red.print();
-                green.print();
-                blue.print();
+                println!("{}",red);
+                println!("{}",green);
+                println!("{}",blue);
             }
         }
-        ('___MESSAGE ENDS___').print();
+        println!("___MESSAGE ENDS___");
     }
 }

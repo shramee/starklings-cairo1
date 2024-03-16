@@ -41,7 +41,7 @@ impl StateImpl of StateTrait {
     }
 
     fn echo(ref self: State, s: felt252) {
-        s.print();
+        println!("{}", s);
     }
 
     fn move_position(ref self: State, p: Point) {

@@ -6,8 +6,6 @@
 // TODO
 // Return the solution of x^3 + y - 2
 
-use debug::PrintTrait;
-
 fn poly(x: usize, y: usize) -> usize {
     // FILL ME
     res // Do not change

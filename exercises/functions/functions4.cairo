@@ -8,11 +8,10 @@
 // to future exercises!)
 
 // I AM NOT DONE
-use debug::PrintTrait;
 
 fn main() {
     let original_price = 51;
-    sale_price(original_price).print();
+    println!("sale_price is {}", sale_price(original_price));
 }
 
 fn sale_price(price: u32) -> {

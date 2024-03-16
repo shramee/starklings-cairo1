@@ -6,7 +6,7 @@ use debug::PrintTrait;
 
 fn main() {
     let number = 1_u8; // don't change this line
-    number.print();
+    println!("number is {}", number);
     number = 3; // don't rename this variable
-    number.print();
+    println!("number is {}", number);
 }
