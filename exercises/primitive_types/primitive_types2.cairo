@@ -13,15 +13,12 @@ fn main() {
     if is_alphabetic(
         ref my_first_initial
     ) {
-        
         println!(" Alphabetical !");
     } else if is_numeric(
         ref my_first_initial
     ) {
-        
         println!(" Numerical !");
     } else {
-        
         println!(" Neither alphabetic nor numeric!");
     }
 
@@ -30,15 +27,12 @@ fn main() {
     if is_alphabetic(
         ref your_character
     ) {
-        
         println!(" Alphabetical !");
     } else if is_numeric(
         ref your_character
     ) {
-        
         println!(" Numerical!");
     } else {
-        
         println!(" Neither alphabetic nor numeric!");
     }
 }
