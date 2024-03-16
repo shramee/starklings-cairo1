@@ -40,11 +40,8 @@ fn display_grades(student: @Student, index: usize) {
     // TODO: Modify the following lines so that if there is a grade for the course, it is printed.
     //       Otherwise, print "No grade".
     // 
-    
     println!("grade is {}", course.unwrap());
     display_grades(student, index + 1);
-    
-    
 }
 
 

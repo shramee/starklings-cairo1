@@ -6,7 +6,6 @@
 // TODO
 // Return the solution of x^3 + y - 2
 
-
 fn poly(x: usize, y: usize) -> usize {
     // FILL ME
     res // Do not change
