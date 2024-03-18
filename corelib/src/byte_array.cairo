@@ -17,8 +17,7 @@ use core::zeroable::NonZeroIntoImpl;
 pub(crate) const BYTE_ARRAY_MAGIC: felt252 =
     0x46a6158a16a947e5916b2a2ca68501a45e93d7110e81aa2d6438b1c57c879a3;
 const BYTES_IN_U128: usize = 16;
-// TODO(yuval): change to `BYTES_IN_BYTES31 - 1` once consteval_int supports non-literals.
-const BYTES_IN_BYTES31_MINUS_ONE: usize = consteval_int!(31 - 1);
+const BYTES_IN_BYTES31_MINUS_ONE: usize = BYTES_IN_BYTES31 - 1;
 
 // TODO(yuval): don't allow creation of invalid ByteArray?
 #[derive(Drop, Clone, PartialEq, Serde, Default)]
@@ -224,7 +223,7 @@ pub impl ByteArrayImpl of ByteArrayTrait {
     fn append_word_rev(ref self: ByteArray, word: felt252, len: usize) {
         let mut index = 0;
 
-        let u256{low, high } = word.into();
+        let u256 { low, high } = word.into();
         let low_part_limit = min(len, BYTES_IN_U128);
         loop {
             if index == low_part_limit {
@@ -280,7 +279,7 @@ pub impl ByteArrayImpl of ByteArrayTrait {
     // responsibility.
     #[inline]
     fn append_split_index_lt_16(ref self: ByteArray, word: felt252, split_index: usize) {
-        let u256{low, high } = word.into();
+        let u256 { low, high } = word.into();
 
         let (low_quotient, low_remainder) = u128_safe_divmod(
             low, one_shift_left_bytes_u128(split_index).try_into().unwrap()
@@ -301,7 +300,7 @@ pub impl ByteArrayImpl of ByteArrayTrait {
     // responsibility.
     #[inline]
     fn append_split_index_16(ref self: ByteArray, word: felt252) {
-        let u256{low, high } = word.into();
+        let u256 { low, high } = word.into();
         self.append_split(high.into(), low.into());
     }
 
@@ -314,7 +313,7 @@ pub impl ByteArrayImpl of ByteArrayTrait {
     // responsibility.
     #[inline]
     fn append_split_index_gt_16(ref self: ByteArray, word: felt252, split_index: usize) {
-        let u256{low, high } = word.into();
+        let u256 { low, high } = word.into();
 
         let (high_quotient, high_remainder) = u128_safe_divmod(
             high, one_shift_left_bytes_u128(split_index - BYTES_IN_U128).try_into().unwrap()
