@@ -2,7 +2,7 @@ use anyhow::Context;
 use cairo_lang_runner::{RunResultValue, SierraCasmRunner, StarknetState};
 use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_test_plugin::TestCompilation;
-use cairo_lang_test_runner::{CompiledTestRunner, TestRunConfig};
+use cairo_lang_test_runner::{CompiledTestRunner, RunProfilerConfig, TestRunConfig};
 use camino::Utf8PathBuf;
 use console::style;
 use std::{env::current_dir, fs, path::PathBuf};
@@ -110,7 +110,7 @@ pub fn scarb_run(file_path: &PathBuf) -> anyhow::Result<String> {
                 sierra_program.program,
                 Some(Default::default()),
                 Default::default(),
-                false,
+                None,
             )?;
 
             let result = runner
@@ -166,7 +166,7 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
 
     // Loop through packages, but only process 'exercise_crate'
     // Largely same as this
-    // https://github.com/software-mansion/scarb/blob/v2.5.3/extensions/scarb-cairo-test/src/main.rs#L54
+    // https://github.com/software-mansion/scarb/blob/v2.6.2/extensions/scarb-cairo-test/src/main.rs#L54
     for package in metadata.packages.iter() {
         if package.name != "exercise_crate" {
             continue;
@@ -187,10 +187,10 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
                 filter: "".into(),
                 include_ignored: false,
                 ignored: false,
-                run_profiler: false,
+                run_profiler: RunProfilerConfig::None,
             };
             let runner = CompiledTestRunner::new(test_compilation, config);
-            runner.run()?;
+            runner.run(None)?;
             println!();
         }
     }
