@@ -1,12 +1,12 @@
 # Modules
 
-Modules allow creating individual scopes and organise your code better. Read about [modules in cairo book](https://book.cairo-lang.org/ch07-02-defining-modules-to-control-scope.html).
+Modules allow for the creation of individual scopes and better organization of your code. Read about [modules in cairo book](https://book.cairo-lang.org/ch07-02-defining-modules-to-control-scope.html).
 
-Here's some code to show modules at play,
+Here's some code to show modules at play.
 
 ## Declaring modules
 
-Modules can be declared in two ways,
+Modules can be declared in two ways:
 
 | Code            | Description                  |
 | --------------- | ---------------------------- |
