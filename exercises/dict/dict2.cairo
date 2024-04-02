@@ -40,7 +40,9 @@ fn test_4() {
 
     multiply_element_by_10(ref dict, 4);
 
-    assert(dict.get(2) == 50, 'First element is not 50');
-    assert(dict.get(3) == 100, 'First element is not 100');
+    assert(dict.get(0) == 10, 'First element is not 10');
+    assert(dict.get(1) == 20, 'Second element is not 20');
+    assert(dict.get(2) == 50, 'Third element is not 50');
+    assert(dict.get(3) == 100, 'Fourth element is not 100');
 
 }
