@@ -1,11 +1,12 @@
 // starknet6.cairo
-// This is very example of the Starknet components.
-// It will show you how to get started with components
+// This code is using Starknet components to make a reusable owner feature.
+// This should add OwnableComponent containing functionality which any contracts can include.
 // But something is fishy here as this component is not working, can you find the error and make the tests pass?
 
 // I AM NOT DONE
 
 use starknet::ContractAddress;
+
 #[starknet::interface]
 trait IOwnable<TContractState> {
     fn owner(self: @TContractState) -> ContractAddress;

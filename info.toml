@@ -603,5 +603,5 @@ name = "starknet6"
 path = "exercises/starknet/components/starknet6.cairo"
 mode = "test"
 hint = """
-Is there maybe a decorator that annotates that a component is a components? 🤔🤔🤔
+Is there maybe a decorator that annotates that a module is a component? 🤔🤔🤔
 """
