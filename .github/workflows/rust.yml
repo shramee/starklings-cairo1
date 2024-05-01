@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Setup Rust v1.76
+        run: rustup default 1.76
       - name: Build
         run: cargo build --verbose
       - name: Run tests
