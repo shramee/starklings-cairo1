@@ -12,6 +12,6 @@ struct Rectangle {
 
 ## Further information
 
-- [Defining and instanciating Structs](https://book.cairo-lang.org/ch05-01-defining-and-instantiating-structs.html)
+- [Defining and instantiating Structs](https://book.cairo-lang.org/ch05-01-defining-and-instantiating-structs.html)
 - [An example program using structs](https://book.cairo-lang.org/ch05-02-an-example-program-using-structs.html)
 - [The Method syntax](https://book.cairo-lang.org/ch05-03-method-syntax.html)
