@@ -4,14 +4,6 @@
 
 // I AM NOT DONE
 
-use core::traits::Into;
-use core::result::ResultTrait;
-use starknet::syscalls::deploy_syscall;
-use array::ArrayTrait;
-use traits::TryInto;
-use option::OptionTrait;
-use starknet::class_hash::Felt252TryIntoClassHash;
-
 #[starknet::interface]
 trait IContractA<TContractState> {
     fn set_value(ref self: TContractState, value: u128) -> bool;
@@ -21,13 +13,9 @@ trait IContractA<TContractState> {
 
 #[starknet::contract]
 mod ContractA {
-    use traits::Into;
-    use starknet::info::get_contract_address;
     use starknet::ContractAddress;
     use super::IContractBDispatcher;
     use super::IContractBDispatcherTrait;
-    use result::ResultTrait;
-    use debug::PrintTrait;
 
     #[storage]
     struct Storage {
@@ -88,15 +76,7 @@ mod ContractB {
 
 #[cfg(test)]
 mod test {
-    use option::OptionTrait;
     use starknet::syscalls::deploy_syscall;
-    use traits::Into;
-    use traits::TryInto;
-    use starknet::class_hash::Felt252TryIntoClassHash;
-    use array::ArrayTrait;
-    use result::ResultTrait;
-    use starknet::ContractAddress;
-
     use super::ContractA;
     use super::IContractADispatcher;
     use super::IContractADispatcherTrait;

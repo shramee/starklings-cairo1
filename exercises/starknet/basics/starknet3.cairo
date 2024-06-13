@@ -54,15 +54,7 @@ mod ProgressTracker {
 #[cfg(test)]
 mod test {
     use starknet::ContractAddress;
-    use array::ArrayTrait;
-    use array::SpanTrait;
-    use debug::PrintTrait;
-    use traits::TryInto;
     use starknet::syscalls::deploy_syscall;
-    use core::result::ResultTrait;
-
-    use starknet::Felt252TryIntoContractAddress;
-    use option::OptionTrait;
     use super::IProgressTrackerDispatcher;
     use super::IProgressTrackerDispatcherTrait;
     use super::ProgressTracker;

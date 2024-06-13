@@ -3,11 +3,7 @@
 
 // I AM NOT DONE
 
-use array::ArrayTrait;
-use array::ArrayTCloneImpl;
-use array::SpanTrait;
 use debug::PrintTrait;
-use clone::Clone;
 
 fn main() {
     let arr0 = ArrayTrait::new();
