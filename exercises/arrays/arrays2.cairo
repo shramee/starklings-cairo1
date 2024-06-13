@@ -5,9 +5,6 @@
 
 // I AM NOT DONE
 
-use array::ArrayTrait;
-use option::OptionTrait;
-
 // Don't modify this function
 fn create_array() -> Array<felt252> {
     let mut a = ArrayTrait::new();

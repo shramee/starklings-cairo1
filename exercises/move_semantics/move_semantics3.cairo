@@ -5,10 +5,6 @@
 
 // I AM NOT DONE
 
-use array::ArrayTrait;
-use array::ArrayTCloneImpl;
-use array::SpanTrait;
-use clone::Clone;
 use debug::PrintTrait;
 
 fn main() {

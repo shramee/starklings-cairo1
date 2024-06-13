@@ -3,9 +3,6 @@
 
 // I AM NOT DONE
 
-use option::OptionTrait;
-use array::ArrayTrait;
-
 #[derive(Drop)]
 struct Student {
     name: felt252,

@@ -2,7 +2,6 @@
 // Make me compile without changing line 16 or moving line 13!
 // Execute `starklings hint move_semantics2` or use the `hint` watch subcommand for a hint.
 
-use array::ArrayTrait;
 use debug::PrintTrait;
 
 // I AM NOT DONE
