@@ -10,7 +10,7 @@ use std::{env::current_dir, fs, path::PathBuf};
 use itertools::Itertools;
 use scarb::{
     core::{Config, TargetKind},
-    ops::{self, collect_metadata, CompileOpts, MetadataOptions},
+    ops::{self, collect_metadata, CompileOpts, MetadataOptions, FeaturesOpts, FeaturesSelector},
 };
 
 const AVAILABLE_GAS: usize = 999999999;
@@ -64,6 +64,10 @@ pub fn scarb_run(file_path: &PathBuf) -> anyhow::Result<String> {
         &MetadataOptions {
             version: 1,
             no_deps: false,
+            features: FeaturesOpts { 
+                features: FeaturesSelector::AllFeatures,
+                no_default_features: false, 
+            },
         },
         &ws,
     )?;
@@ -150,6 +154,10 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
         &MetadataOptions {
             version: 1,
             no_deps: false,
+            features: FeaturesOpts { 
+                features: FeaturesSelector::AllFeatures,
+                no_default_features: false, 
+            },
         },
         &ws,
     )
@@ -188,6 +196,8 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
                 include_ignored: false,
                 ignored: false,
                 run_profiler: RunProfilerConfig::None,
+                gas_enabled: false,
+                print_resource_usage: false,
             };
             let runner = CompiledTestRunner::new(test_compilation, config);
             runner.run(None)?;
@@ -210,12 +220,22 @@ pub fn compile(config: &Config, test_targets: bool) -> anyhow::Result<()> {
     let ws = ops::read_workspace(config.manifest_path(), config)?;
     let opts: CompileOpts = match test_targets {
         false => CompileOpts {
-            include_targets: vec![],
-            exclude_targets: vec![TargetKind::TEST],
+            include_target_names: vec![],
+            include_target_kinds: vec![],
+            exclude_target_kinds: vec![TargetKind::TEST],
+            features: FeaturesOpts { 
+                features: FeaturesSelector::AllFeatures,
+                no_default_features: false, 
+            }
         },
         true => CompileOpts {
-            include_targets: vec![TargetKind::TEST],
-            exclude_targets: vec![],
+            include_target_names: vec![],
+            include_target_kinds: vec![TargetKind::TEST],
+            exclude_target_kinds: vec![],
+            features: FeaturesOpts { 
+                features: FeaturesSelector::AllFeatures,
+                no_default_features: false, 
+            }
         },
     };
 
