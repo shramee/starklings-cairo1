@@ -532,8 +532,8 @@ name = "dict3"
 path = "exercises/dict/dict3.cairo"
 mode = "test"
 hint = """
-Example of custom data structures using dicts can be found in this chapter :
-https://book.cairo-lang.org/ch03-03-custom-data-structures.html
+Example of dicts can be found in this chapter :
+https://book.cairo-lang.org/ch03-02-dictionaries.html
 """
 
 # MODULES
