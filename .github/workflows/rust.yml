@@ -16,7 +16,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Setup Rust v1.80.1
         run: rustup default 1.80.1
+      - name: Update dependencies
       - name: Build
-        run: cargo build --verbose
+        run: cargo update
       - name: Run tests
         run: cargo test --verbose
