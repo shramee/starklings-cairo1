@@ -1,7 +1,7 @@
 use anyhow::Context;
 use cairo_lang_runner::{RunResultValue, SierraCasmRunner, StarknetState};
 use cairo_lang_sierra::program::VersionedProgram;
-use cairo_lang_test_plugin::TestCompilation;
+use cairo_lang_test_plugin::{TestCompilation, TestCompilationMetadata};
 use cairo_lang_test_runner::{CompiledTestRunner, RunProfilerConfig, TestRunConfig};
 use camino::Utf8PathBuf;
 use console::style;
@@ -10,7 +10,7 @@ use std::{env::current_dir, fs, path::PathBuf};
 use itertools::Itertools;
 use scarb::{
     core::{Config, TargetKind},
-    ops::{self, collect_metadata, CompileOpts, MetadataOptions, FeaturesOpts, FeaturesSelector},
+    ops::{self, collect_metadata, CompileOpts, FeaturesOpts, FeaturesSelector, MetadataOptions},
 };
 
 const AVAILABLE_GAS: usize = 999999999;
@@ -64,9 +64,9 @@ pub fn scarb_run(file_path: &PathBuf) -> anyhow::Result<String> {
         &MetadataOptions {
             version: 1,
             no_deps: false,
-            features: FeaturesOpts { 
+            features: FeaturesOpts {
                 features: FeaturesSelector::AllFeatures,
-                no_default_features: false, 
+                no_default_features: false,
             },
         },
         &ws,
@@ -154,9 +154,9 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
         &MetadataOptions {
             version: 1,
             no_deps: false,
-            features: FeaturesOpts { 
+            features: FeaturesOpts {
                 features: FeaturesSelector::AllFeatures,
-                no_default_features: false, 
+                no_default_features: false,
             },
         },
         &ws,
@@ -184,12 +184,8 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
             if target.kind != "test" {
                 continue;
             }
-            let file_path = target_dir.join(format!("{}.test.json", target.name.clone()));
-            let test_compilation = serde_json::from_str::<TestCompilation>(
-                &fs::read_to_string(file_path.clone())
-                    .with_context(|| format!("failed to read file: {file_path}"))?,
-            )
-            .with_context(|| format!("failed to deserialize compiled tests file: {file_path}"))?;
+
+            let test_compilation = deserialize_test_compilation(&target_dir, target.name.clone())?;
 
             let config = TestRunConfig {
                 filter: "".into(),
@@ -208,6 +204,30 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
     anyhow::Ok("".into())
 }
 
+fn deserialize_test_compilation(
+    target_dir: &Utf8PathBuf,
+    name: String,
+) -> anyhow::Result<TestCompilation> {
+    let file_path = target_dir.join(format!("{}.test.json", name));
+    let test_comp_metadata = serde_json::from_str::<TestCompilationMetadata>(
+        &fs::read_to_string(file_path.clone())
+            .with_context(|| format!("failed to read file: {file_path}"))?,
+    )
+    .with_context(|| format!("failed to deserialize compiled tests metadata file: {file_path}"))?;
+
+    let file_path = target_dir.join(format!("{}.test.sierra.json", name));
+    let sierra_program = serde_json::from_str::<VersionedProgram>(
+        &fs::read_to_string(file_path.clone())
+            .with_context(|| format!("failed to read file: {file_path}"))?,
+    )
+    .with_context(|| format!("failed to deserialize compiled tests sierra file: {file_path}"))?;
+
+    Ok(TestCompilation {
+        sierra_program: sierra_program.into_v1()?,
+        metadata: test_comp_metadata,
+    })
+}
+
 // Prepares scarb config for exercise runner crate
 pub fn scarb_config(crate_path: PathBuf) -> Config {
     let path = Utf8PathBuf::from_path_buf(crate_path.join(PathBuf::from("Scarb.toml"))).unwrap();
@@ -223,19 +243,19 @@ pub fn compile(config: &Config, test_targets: bool) -> anyhow::Result<()> {
             include_target_names: vec![],
             include_target_kinds: vec![],
             exclude_target_kinds: vec![TargetKind::TEST],
-            features: FeaturesOpts { 
+            features: FeaturesOpts {
                 features: FeaturesSelector::AllFeatures,
-                no_default_features: false, 
-            }
+                no_default_features: false,
+            },
         },
         true => CompileOpts {
             include_target_names: vec![],
             include_target_kinds: vec![TargetKind::TEST],
             exclude_target_kinds: vec![],
-            features: FeaturesOpts { 
+            features: FeaturesOpts {
                 features: FeaturesSelector::AllFeatures,
-                no_default_features: false, 
-            }
+                no_default_features: false,
+            },
         },
     };
 
