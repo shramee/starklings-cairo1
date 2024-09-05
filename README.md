@@ -23,12 +23,23 @@
 ## Setup and run
 
 Make sure you have Rust and Cargo installed with the `default` toolchain.  
-With rustup `curl https://sh.rustup.rs -sSf | sh -s`
+With rustup 
+```sh
+curl https://sh.rustup.rs -sSf | sh -s
+```
 
-1. Clone the repo and go in the directory,  
-   `git clone https://github.com/shramee/starklings-cairo1.git && cd starklings-cairo1`.
-2. Run `cargo run -r --bin starklings`, this might take a while the first time.
-3. You should see this intro message, run `cargo run -r --bin starklings watch` when you are ready!
+1. Clone the repo and go in the directory,
+   ```
+   git clone https://github.com/shramee/starklings-cairo1.git && cd starklings-cairo1
+   ```
+2. Run starklings (this might take a while the first time),
+   ```sh
+   cargo run -r --bin starklings
+   ```
+3. You should see an intro message, when you are ready run starklings in watch mode,
+   ```sh
+   cargo run -r --bin starklings watch
+   ```
 
 ## Start at a specific exercise `NEW`
 
