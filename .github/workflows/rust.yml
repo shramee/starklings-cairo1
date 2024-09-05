@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Rust v1.80.0
-        run: rustup default 1.80.0
+      - name: Setup Rust v1.80.1
+        run: rustup default 1.80.1
       - name: Build
         run: cargo build --verbose
       - name: Run tests
