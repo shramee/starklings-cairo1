@@ -20,12 +20,16 @@ trait IProgressTracker<TContractState> {
 mod ProgressTracker {
     use starknet::ContractAddress;
     use starknet::get_caller_address; // Required to use get_caller_address function
-
+    use storage::StoragePointerReadAccess;
+    use storage::StoragePointerWriteAccess;
+    use storage::StoragePathEntry;
+    use storage::Map;
+    
     #[storage]
     struct Storage {
         contract_owner: ContractAddress,
-        // TODO: Set types for LegacyMap
-        progress: LegacyMap<>
+        // TODO: Set types for Map
+        progress: Map<>
     }
 
     #[constructor]

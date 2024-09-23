@@ -586,7 +586,7 @@ name = "starknet4"
 path = "exercises/starknet/basics/starknet4.cairo"
 mode = "test"
 hint = """ 
-You can use LegacyMap<felt252, u32> for inventory.
+You can use Map<felt252, u32> for inventory.
 """
 
 [[exercises]]
