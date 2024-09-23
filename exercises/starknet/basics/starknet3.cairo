@@ -28,7 +28,7 @@ mod ProgressTracker {
     #[storage]
     struct Storage {
         contract_owner: ContractAddress,
-        // TODO: Set types for LegacyMap
+        // TODO: Set types for Map
         progress: Map<>
     }
 
