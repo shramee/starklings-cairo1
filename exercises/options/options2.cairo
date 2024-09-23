@@ -3,8 +3,6 @@
 
 // I AM NOT DONE
 
-use option::OptionTrait;
-
 #[test]
 fn test_options() {
     let target = 'starklings';

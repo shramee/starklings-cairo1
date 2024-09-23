@@ -24,18 +24,10 @@ mod JoesContract {
 
 #[cfg(test)]
 mod test {
-    use array::ArrayTrait;
-    use array::SpanTrait;
     use super::JoesContract;
     use starknet::syscalls::deploy_syscall;
-    use traits::TryInto;
-    use option::OptionTrait;
-    use starknet::class_hash::Felt252TryIntoClassHash;
-    use core::result::ResultTrait;
     use super::IJoesContractDispatcher;
     use super::IJoesContractDispatcherTrait;
-    use starknet::ContractAddress;
-    use debug::PrintTrait;
 
     #[test]
     #[available_gas(2000000000)]

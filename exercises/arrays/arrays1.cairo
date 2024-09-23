@@ -6,9 +6,6 @@
 
 // I AM NOT DONE
 
-use array::ArrayTrait;
-use option::OptionTrait;
-
 fn create_array() -> Array<felt252> {
     let a = ArrayTrait::new(); // something to change here...
     a.append(1);
