@@ -186,13 +186,12 @@ pub fn scarb_test(file_path: &PathBuf) -> anyhow::Result<String> {
             }
 
             let test_compilation = deserialize_test_compilation(&target_dir, target.name.clone())?;
-
             let config = TestRunConfig {
                 filter: "".into(),
                 include_ignored: false,
                 ignored: false,
                 run_profiler: RunProfilerConfig::None,
-                gas_enabled: false,
+                gas_enabled: true,
                 print_resource_usage: false,
             };
             let runner = CompiledTestRunner::new(test_compilation, config);
