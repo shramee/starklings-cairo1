@@ -5,7 +5,7 @@ use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_test_plugin::{TestCompilation, TestCompilationMetadata};
 use camino::Utf8PathBuf;
 use console::style;
-use nargo::{insert_all_files_for_workspace_into_file_manager, parse_all};
+use nargo::{insert_all_files_for_workspace_into_file_manager, ops::TestStatus, parse_all};
 use nargo_toml::{get_package_manifest, resolve_workspace_from_toml, PackageSelection};
 use noirc_frontend::hir::FunctionNameMatch;
 use std::{env::current_dir, fs, path::PathBuf};
@@ -171,7 +171,7 @@ pub fn nargo_test(file_path: &PathBuf) -> anyhow::Result<String> {
 
     let pattern = FunctionNameMatch::Anything;
 
-    workspace.into_iter()
+    let test_reports:Vec<Vec<(String, TestStatus)>> = workspace.into_iter()
             .filter(|package| package.name.to_string() == "exercise_crate")
             .map(|package| {
                 run_tests::<Bn254BlackBoxSolver>(
@@ -186,9 +186,16 @@ pub fn nargo_test(file_path: &PathBuf) -> anyhow::Result<String> {
                     &CompileOptions::default(),
                 )
             })
-            .collect::<Result<Vec<_>, _>>();
+            .collect::<Result<Vec<_>, _>>()?;
 
-    anyhow::Ok("".into())
+    let test_report: Vec<(String, TestStatus)> = test_reports.into_iter().flatten().collect();
+
+    if test_report.iter().any(|(_, status)| status.failed()) {
+        anyhow::bail!("Some tests failed");
+    } else {
+        Ok("".into())
+    }
+
 }
 
 fn deserialize_test_compilation(
