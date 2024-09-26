@@ -5,7 +5,7 @@ name = "intro1"
 path = "noir_exercises/1.intro/intro1.nr"
 mode = "test"
 hint = """
-It should compile and test
+It should compile to ACIR
 """
 
 [[exercises]]

@@ -28,11 +28,11 @@ fn temp_file() -> String {
 #[derive(Deserialize, Copy, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum Mode {
-    // Indicates that the exercise should be compiled as a binary
+    // Indicates that the exercise should be compiled as ACIR
     Build,
-    // Indicates that the exercise should run
+    // Indicates that the exercise should be executed ?? TODO: Adding Prove instead ? 
     Run,
-    // Indicates that the exercise should be tested
+    // Indicates that the exercise should be compile and tested from the written Rust-like test 
     Test,
 }
 

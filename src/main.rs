@@ -27,6 +27,7 @@ mod scarb;
 mod utils;
 mod verify;
 mod noir;
+mod noir_test;
 
 // In sync with crate version
 const VERSION: &str = "5.3.0";
