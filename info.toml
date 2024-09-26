@@ -2,7 +2,7 @@
 
 [[exercises]]
 name = "intro1"
-path = "noir_exercises/1.intro/intro1.nr"
+path = "exercises/1.intro/intro1.nr"
 mode = "test"
 hint = """
 It should compile to ACIR. Remove the // I AM NOT DONE comment to continue
@@ -10,7 +10,7 @@ It should compile to ACIR. Remove the // I AM NOT DONE comment to continue
 
 [[exercises]]
 name = "intro2"
-path = "exercises/intro/intro2.cairo"
+path = "exercises_cairo/intro/intro2.cairo"
 mode = "run"
 hint = """
 No hints this time ;)
@@ -20,7 +20,7 @@ No hints this time ;)
 
 [[exercises]]
 name = "variables1"
-path = "exercises/variables/variables1.cairo"
+path = "exercises_cairo/variables/variables1.cairo"
 mode = "run"
 hint = """
 The declaration on line 8 is missing a keyword that is needed in Cairo
@@ -28,7 +28,7 @@ to create a new variable binding."""
 
 [[exercises]]
 name = "variables2"
-path = "exercises/variables/variables2.cairo"
+path = "exercises_cairo/variables/variables2.cairo"
 mode = "run"
 hint = """
 What happens if you annotate line 7 with a type annotation?
@@ -39,7 +39,7 @@ What if x is the same type as 10? What if it's a different type? (e.g. a u8)"""
 
 [[exercises]]
 name = "variables3"
-path = "exercises/variables/variables3.cairo"
+path = "exercises_cairo/variables/variables3.cairo"
 mode = "run"
 hint = """
 Oops! In this exercise, we have a variable binding that we've created on
@@ -50,7 +50,7 @@ programming language -- thankfully the Cairo compiler has caught this for us!"""
 
 [[exercises]]
 name = "variables4"
-path = "exercises/variables/variables4.cairo"
+path = "exercises_cairo/variables/variables4.cairo"
 mode = "run"
 hint = """
 In Cairo, variable bindings are immutable by default. But here we're trying
@@ -59,7 +59,7 @@ a variable binding mutable instead."""
 
 [[exercises]]
 name = "variables5"
-path = "exercises/variables/variables5.cairo"
+path = "exercises_cairo/variables/variables5.cairo"
 mode = "run"
 hint = """
 In variables4 we already learned how to make an immutable variable mutable
@@ -74,7 +74,7 @@ Try to solve this exercise afterwards using this technique."""
 
 [[exercises]]
 name = "variables6"
-path = "exercises/variables/variables6.cairo"
+path = "exercises_cairo/variables/variables6.cairo"
 mode = "run"
 hint = """
 We know about variables and mutability, but there is another important type of
@@ -89,19 +89,19 @@ You can read about the constants here: https://book.cairo-lang.org/ch02-01-varia
 
 [[exercises]]
 name = "primitive_types1"
-path = "exercises/primitive_types/primitive_types1.cairo"
+path = "exercises_cairo/primitive_types/primitive_types1.cairo"
 mode = "run"
 hint = "No hints this time ;)"
 
 [[exercises]]
 name = "primitive_types2"
-path = "exercises/primitive_types/primitive_types2.cairo"
+path = "exercises_cairo/primitive_types/primitive_types2.cairo"
 mode = "run"
 hint = "No hints this time ;)"
 
 [[exercises]]
 name = "primitive_types3"
-path = "exercises/primitive_types/primitive_types3.cairo"
+path = "exercises_cairo/primitive_types/primitive_types3.cairo"
 mode = "run"
 hint = """
 You'll need to make a pattern to bind `name` and `age` to the appropriate parts
@@ -114,7 +114,7 @@ You can do it!!
 
 [[exercises]]
 name = "primitive_types4"
-path = "exercises/primitive_types/primitive_types4.cairo"
+path = "exercises_cairo/primitive_types/primitive_types4.cairo"
 mode = "test"
 hint = """
 There are multiple integer types in Cairo. You can read about them here:
@@ -130,7 +130,7 @@ Take a look at the top of the file to see how these traits are imported.
 
 [[exercises]]
 name = "operations1"
-path = "exercises/operations/operations1.cairo"
+path = "exercises_cairo/operations/operations1.cairo"
 mode = "test"
 hint = """You can check the list of available operators here:
 https://book.cairo-lang.org/appendix-02-operators-and-symbols.html
@@ -138,7 +138,7 @@ https://book.cairo-lang.org/appendix-02-operators-and-symbols.html
 
 [[exercises]]
 name = "operations2"
-path = "exercises/operations/operations2.cairo"
+path = "exercises_cairo/operations/operations2.cairo"
 mode = "test"
 hint = """Use % for modulus, / for division, and * for multiplication."""
 
@@ -146,7 +146,7 @@ hint = """Use % for modulus, / for division, and * for multiplication."""
 
 [[exercises]]
 name = "if1"
-path = "exercises/if/if1.cairo"
+path = "exercises_cairo/if/if1.cairo"
 mode = "test"
 hint = """
 Remember in Cairo that:
@@ -156,7 +156,7 @@ Remember in Cairo that:
 
 [[exercises]]
 name = "if2"
-path = "exercises/if/if2.cairo"
+path = "exercises_cairo/if/if2.cairo"
 mode = "test"
 hint = """
 For that first compiler error, it's important in Cairo that each conditional
@@ -167,7 +167,7 @@ conditions checking different input values."""
 
 [[exercises]]
 name = "functions1"
-path = "exercises/functions/functions1.cairo"
+path = "exercises_cairo/functions/functions1.cairo"
 mode = "run"
 hint = """
 This main function is calling a function that it expects to exist, but the
@@ -177,7 +177,7 @@ Sounds a lot like `main`, doesn't it?"""
 
 [[exercises]]
 name = "functions2"
-path = "exercises/functions/functions2.cairo"
+path = "exercises_cairo/functions/functions2.cairo"
 mode = "run"
 hint = """
 Cairo requires that all parts of a function's signature have type annotations,
@@ -185,7 +185,7 @@ but `call_me` is missing the type annotation of `num`. What is the basic type in
 
 [[exercises]]
 name = "functions3"
-path = "exercises/functions/functions3.cairo"
+path = "exercises_cairo/functions/functions3.cairo"
 mode = "run"
 hint = """
 This time, the function *declaration* is okay, but there's something wrong
@@ -196,7 +196,7 @@ Watch mode will only jump to the next exercise if you remove the I AM NOT DONE c
 
 [[exercises]]
 name = "functions4"
-path = "exercises/functions/functions4.cairo"
+path = "exercises_cairo/functions/functions4.cairo"
 mode = "run"
 hint = """
 The error message points to line 18 and says it expects a type after the
@@ -208,7 +208,7 @@ the `is_even` function for an example!
 
 [[exercises]]
 name = "quizs1"
-path = "exercises/quizs/quizs1.cairo"
+path = "exercises_cairo/quizs/quizs1.cairo"
 mode = "test"
 hint = """No hints this time ;)"""
 
@@ -216,14 +216,14 @@ hint = """No hints this time ;)"""
 
 [[exercises]]
 name = "loops1"
-path = "exercises/loops/loops1.cairo"
+path = "exercises_cairo/loops/loops1.cairo"
 mode = "test"
 hint = """
 The `break` condition is reached too early. Can you introduce a condition so that the loop runs a little more?"""
 
 [[exercises]]
 name = "loops2"
-path = "exercises/loops/loops2.cairo"
+path = "exercises_cairo/loops/loops2.cairo"
 mode = "test"
 hint = """
 You can return values from loops by adding the value you want returned after the `break` expression you use to stop the loop. Don't forget that assigning a variable to the value returned from a `loop` is an expression, and thus must end with a semicolomn.
@@ -234,13 +234,13 @@ You can return values from loops by adding the value you want returned after the
 
 [[exercises]]
 name = "enums1"
-path = "exercises/enums/enums1.cairo"
+path = "exercises_cairo/enums/enums1.cairo"
 mode = "run"
 hint = "https://book.cairo-lang.org/ch06-01-enums.html"
 
 [[exercises]]
 name = "enums2"
-path = "exercises/enums/enums2.cairo"
+path = "exercises_cairo/enums/enums2.cairo"
 mode = "run"
 hint = """
 You can create enumerations that have different variants with different types
@@ -250,7 +250,7 @@ https://book.cairo-lang.org/ch06-01-enums.html
 
 [[exercises]]
 name = "enums3"
-path = "exercises/enums/enums3.cairo"
+path = "exercises_cairo/enums/enums3.cairo"
 mode = "test"
 hint = """
 As a first step, you can define enums to compile this code without errors.
@@ -264,7 +264,7 @@ https://book.cairo-lang.org/ch06-01-enums.html
 
 [[exercises]]
 name = "options1"
-path = "exercises/options/options1.cairo"
+path = "exercises_cairo/options/options1.cairo"
 mode = "test"
 hint = """
 Options can have a Some value, with an inner value, or a None value, without an inner value.
@@ -275,7 +275,7 @@ https://book.cairo-lang.org/ch06-01-enums.html#the-option-enum-and-its-advantage
 
 [[exercises]]
 name = "options2"
-path = "exercises/options/options2.cairo"
+path = "exercises_cairo/options/options2.cairo"
 mode = "test"
 hint = """
 check out: https://github.com/starkware-libs/cairo/blob/main/corelib/src/option.cairo
@@ -284,7 +284,7 @@ to see the implementation of the Option type and its methods.
 
 [[exercises]]
 name = "options3"
-path = "exercises/options/options3.cairo"
+path = "exercises_cairo/options/options3.cairo"
 mode = "test"
 hint = """
 Reminder: You can use a match statement with an Option to handle both the Some and None cases.
@@ -295,7 +295,7 @@ This syntax is more flexible than using unwrap, which only handles the Some case
 
 [[exercises]]
 name = "arrays1"
-path = "exercises/arrays/arrays1.cairo"
+path = "exercises_cairo/arrays/arrays1.cairo"
 mode = "test"
 hint = """
 You can declare an array in Cairo using the following syntax:
@@ -308,7 +308,7 @@ The `pop_front` method removes the first element from the array and returns an O
 
 [[exercises]]
 name = "arrays2"
-path = "exercises/arrays/arrays2.cairo"
+path = "exercises_cairo/arrays/arrays2.cairo"
 mode = "test"
 hint = """
 How can you remove the first element from the array?
@@ -318,7 +318,7 @@ This will prevent the `Variable not dropped` error.
 
 [[exercises]]
 name = "arrays3"
-path = "exercises/arrays/arrays3.cairo"
+path = "exercises_cairo/arrays/arrays3.cairo"
 mode = "test"
 hint = """
 The test fails because you are trying to access an element that is out of bounds!
@@ -331,7 +331,7 @@ Without changing the index accessed, how can we make the test pass? Is there a m
 
 [[exercises]]
 name = "structs1"
-path = "exercises/structs/structs1.cairo"
+path = "exercises_cairo/structs/structs1.cairo"
 mode = "test"
 hint = """
 Cairo has a single type of struct that are named collections of related data stored in fields.
@@ -354,7 +354,7 @@ Read more about structs in the Structs section of this article: https://book.cai
 
 [[exercises]]
 name = "structs2"
-path = "exercises/structs/structs2.cairo"
+path = "exercises_cairo/structs/structs2.cairo"
 mode = "test"
 hint = """
 Cairo requires you to initialize all fields when creating a struct and there is no update syntax available at the moment.
@@ -369,7 +369,7 @@ Read more about structs in the Structs section of this article: https://book.cai
 
 [[exercises]]
 name = "structs3"
-path = "exercises/structs/structs3.cairo"
+path = "exercises_cairo/structs/structs3.cairo"
 mode = "test"
 hint = """
 For is_international: What makes a package international? Seems related to the places it goes through right?
@@ -384,7 +384,7 @@ This section will help you understanding more about methods https://book.cairo-l
 
 [[exercises]]
 name = "move_semantics1"
-path = "exercises/move_semantics/move_semantics1.cairo"
+path = "exercises_cairo/move_semantics/move_semantics1.cairo"
 mode = "run"
 hint = """
 So you've got the "ref argument must be a mutable variable." error on line 17,
@@ -398,7 +398,7 @@ Read more about move semantics and ownership here: https://book.cairo-lang.org/c
 
 [[exercises]]
 name = "move_semantics2"
-path = "exercises/move_semantics/move_semantics2.cairo"
+path = "exercises_cairo/move_semantics/move_semantics2.cairo"
 mode = "run"
 hint = """
 So, `arr0` is passed into the `fill_arr` function as an argument. In Cairo,
@@ -419,7 +419,7 @@ There's a few ways to fix this, try them all if you want:
 
 [[exercises]]
 name = "move_semantics3"
-path = "exercises/move_semantics/move_semantics3.cairo"
+path = "exercises_cairo/move_semantics/move_semantics3.cairo"
 mode = "run"
 hint = """
 The difference between this one and the previous ones is that the first line
@@ -429,7 +429,7 @@ an existing binding to be a mutable binding instead of an immutable one :)"""
 
 [[exercises]]
 name = "move_semantics4"
-path = "exercises/move_semantics/move_semantics4.cairo"
+path = "exercises_cairo/move_semantics/move_semantics4.cairo"
 mode = "run"
 hint = """
 Stop reading whenever you feel like you have enough direction :) Or try
@@ -444,7 +444,7 @@ So the end goal is to:
 
 [[exercises]]
 name = "move_semantics5"
-path = "exercises/move_semantics/move_semantics5.cairo"
+path = "exercises_cairo/move_semantics/move_semantics5.cairo"
 mode = "test"
 hint = """
 Carefully reason about how each function takes ownership of the variable passed.
@@ -455,7 +455,7 @@ Can we still use it later on?
 
 [[exercises]]
 name = "move_semantics6"
-path = "exercises/move_semantics/move_semantics6.cairo"
+path = "exercises_cairo/move_semantics/move_semantics6.cairo"
 mode = "run"
 hint = """
 The first problem is that `get_value` is taking ownership of the Number struct.
@@ -473,7 +473,7 @@ Can you figure out how?
 
 [[exercises]]
 name = "traits1"
-path = "exercises/traits/traits1.cairo"
+path = "exercises_cairo/traits/traits1.cairo"
 mode = "test"
 hint = """ 
 If you want to implement a trait for a type, you have to implement all the methods in the trait.
@@ -488,13 +488,13 @@ https://book.cairo-lang.org/ch08-02-traits-in-cairo.html
 
 [[exercises]]
 name = "traits2"
-path = "exercises/traits/traits2.cairo"
+path = "exercises_cairo/traits/traits2.cairo"
 mode = "test"
 hint = """ No hints for this one! It is very similar to the previous exercise."""
 
 [[exercises]]
 name = "traits3"
-path = "exercises/traits/traits3.cairo"
+path = "exercises_cairo/traits/traits3.cairo"
 mode = "test"
 hint = """ 
 You can implement multiple traits for a type.
@@ -509,7 +509,7 @@ If you're having trouble updating the distance value in the `Fish` and `Dog` imp
 
 [[exercises]]
 name = "dict1"
-path = "exercises/dict/dict1.cairo"
+path = "exercises_cairo/dict/dict1.cairo"
 mode = "test"
 hint = """
 More info about the Felt252Dict type can be found in the following chapter :
@@ -519,7 +519,7 @@ https://book.cairo-lang.org/ch03-02-dictionaries.html
 
 [[exercises]]
 name = "dict2"
-path = "exercises/dict/dict2.cairo"
+path = "exercises_cairo/dict/dict2.cairo"
 mode = "test"
 hint = """
 More info about the Felt252Dict type can be found in the following chapter :
@@ -529,7 +529,7 @@ https://book.cairo-lang.org/ch03-02-dictionaries.html
 
 [[exercises]]
 name = "dict3"
-path = "exercises/dict/dict3.cairo"
+path = "exercises_cairo/dict/dict3.cairo"
 mode = "test"
 hint = """
 Example of dicts can be found in this chapter :
@@ -540,7 +540,7 @@ https://book.cairo-lang.org/ch03-02-dictionaries.html
 
 [[exercises]]
 name = "modules1"
-path = "exercises/modules/modules1.cairo"
+path = "exercises_cairo/modules/modules1.cairo"
 mode = "test"
 hint = """
 You can bring a parent's modules items in the current module with super::item_name
@@ -548,7 +548,7 @@ You can bring a parent's modules items in the current module with super::item_na
 
 [[exercises]]
 name = "modules2"
-path = "exercises/modules/modules2.cairo"
+path = "exercises_cairo/modules/modules2.cairo"
 mode = "test"
 hint = """
 While using functions/structs and other items from outside the module,
@@ -559,7 +559,7 @@ you can refer to them with their full path or import them in the current context
 
 [[exercises]]
 name = "starknet1"
-path = "exercises/starknet/basics/starknet1.cairo"
+path = "exercises_cairo/starknet/basics/starknet1.cairo"
 mode = "test"
 hint = """
 No hints this time ;)
@@ -567,7 +567,7 @@ No hints this time ;)
 
 [[exercises]]
 name = "starknet2"
-path = "exercises/starknet/basics/starknet2.cairo"
+path = "exercises_cairo/starknet/basics/starknet2.cairo"
 mode = "test"
 hint = """
 No hints this time ;)
@@ -575,7 +575,7 @@ No hints this time ;)
 
 [[exercises]]
 name = "starknet3"
-path = "exercises/starknet/basics/starknet3.cairo"
+path = "exercises_cairo/starknet/basics/starknet3.cairo"
 mode = "test"
 hint = """
 No hints this time ;)
@@ -583,7 +583,7 @@ No hints this time ;)
 
 [[exercises]]
 name = "starknet4"
-path = "exercises/starknet/basics/starknet4.cairo"
+path = "exercises_cairo/starknet/basics/starknet4.cairo"
 mode = "test"
 hint = """ 
 You can use Map<felt252, u32> for inventory.
@@ -591,7 +591,7 @@ You can use Map<felt252, u32> for inventory.
 
 [[exercises]]
 name = "starknet5"
-path = "exercises/starknet/interoperability/starknet5.cairo"
+path = "exercises_cairo/starknet/interoperability/starknet5.cairo"
 mode = "test"
 hint = """ 
 You can call other contracts from inside a contract. To do this, you will need to create a Dispatcher object
@@ -600,7 +600,7 @@ of the type of the called contract. Dispatchers have associated methods availabl
 
 [[exercises]]
 name = "starknet6"
-path = "exercises/starknet/components/starknet6.cairo"
+path = "exercises_cairo/starknet/components/starknet6.cairo"
 mode = "test"
 hint = """
 Is there maybe a decorator that annotates that a module is a component? 🤔🤔🤔
