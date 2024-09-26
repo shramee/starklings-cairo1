@@ -4400,6 +4400,53 @@ dependencies = [
 ]
 
 [[package]]
+name = "noirlings"
+version = "0.1.0"
+dependencies = [
+ "acvm",
+ "anyhow",
+ "argh",
+ "ark-ff",
+ "ark-std 0.3.0",
+ "assert_cmd",
+ "bn254_blackbox_solver",
+ "cairo-lang-runner",
+ "cairo-lang-sierra",
+ "cairo-lang-test-plugin",
+ "cairo-lang-test-runner",
+ "camino",
+ "clap",
+ "colored",
+ "console",
+ "fm",
+ "glob",
+ "home",
+ "indicatif 0.16.2",
+ "itertools 0.10.5",
+ "nargo",
+ "nargo_toml",
+ "noirc_driver",
+ "noirc_errors",
+ "noirc_frontend",
+ "notify",
+ "num-bigint",
+ "num-traits 0.2.19",
+ "predicates",
+ "rayon",
+ "regex",
+ "salsa",
+ "scarb",
+ "scarb-ui",
+ "serde",
+ "serde_json",
+ "serial_test",
+ "termcolor",
+ "thiserror",
+ "toml 0.5.11",
+ "unescaper",
+]
+
+[[package]]
 name = "nom"
 version = "7.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6076,53 +6123,6 @@ name = "stable_deref_trait"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
-
-[[package]]
-name = "starklings"
-version = "0.1.0"
-dependencies = [
- "acvm",
- "anyhow",
- "argh",
- "ark-ff",
- "ark-std 0.3.0",
- "assert_cmd",
- "bn254_blackbox_solver",
- "cairo-lang-runner",
- "cairo-lang-sierra",
- "cairo-lang-test-plugin",
- "cairo-lang-test-runner",
- "camino",
- "clap",
- "colored",
- "console",
- "fm",
- "glob",
- "home",
- "indicatif 0.16.2",
- "itertools 0.10.5",
- "nargo",
- "nargo_toml",
- "noirc_driver",
- "noirc_errors",
- "noirc_frontend",
- "notify",
- "num-bigint",
- "num-traits 0.2.19",
- "predicates",
- "rayon",
- "regex",
- "salsa",
- "scarb",
- "scarb-ui",
- "serde",
- "serde_json",
- "serial_test",
- "termcolor",
- "thiserror",
- "toml 0.5.11",
- "unescaper",
-]
 
 [[package]]
 name = "starknet-crypto"

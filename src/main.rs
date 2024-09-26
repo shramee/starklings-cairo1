@@ -33,7 +33,7 @@ mod noir_test;
 const VERSION: &str = "5.3.0";
 
 #[derive(FromArgs, PartialEq, Debug)]
-/// starklings is a collection of small exercises to get you used to writing and reading Rust code
+/// noirlings is a collection of small exercises to get you used to writing and reading Rust code
 struct Args {
     /// show outputs from the test exercises
     #[argh(switch)]
@@ -108,7 +108,7 @@ struct LspArgs {}
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand, name = "list")]
-/// Lists the exercises available in starklings
+/// Lists the exercises available in noirlings
 struct ListArgs {
     #[argh(switch, short = 'p')]
     /// show only the paths of the exercises
@@ -147,10 +147,10 @@ fn main() {
 
     if !Path::new("info.toml").exists() {
         println!(
-            "{} must be run from the starklings directory",
+            "{} must be run from the noirlings directory",
             std::env::current_exe().unwrap().to_str().unwrap()
         );
-        println!("Try `cd starklings/`!");
+        println!("Try `cd noirlings/`!");
         std::process::exit(1);
     }
 
@@ -260,10 +260,10 @@ fn main() {
                 .expect("Couldn't find toolchain path, do you have `rustc` installed?");
             project
                 .exercises_to_json()
-                .expect("Couldn't parse starklings exercises files");
+                .expect("Couldn't parse noirlings exercises files");
 
             if project.crates.is_empty() {
-                println!("Failed find any exercises, make sure you're in the `starklings` folder");
+                println!("Failed find any exercises, make sure you're in the `noirlings` folder");
             } else if project.write_to_disk().is_err() {
                 println!("Failed to write rust-project.json to disk for rust-analyzer");
             } else {
@@ -301,7 +301,7 @@ fn main() {
                 }
                 Ok(WatchStatus::Unfinished) => {
                     println!("We hope you're enjoying learning about Rust!");
-                    println!("If you want to continue working on the exercises at a later point, you can simply run `starklings watch` again");
+                    println!("If you want to continue working on the exercises at a later point, you can simply run `noirlings watch` again");
                 }
             }
         }
@@ -454,73 +454,41 @@ fn rustc_exists() -> bool {
         .unwrap_or(false)
 }
 
-const DEFAULT_OUT: &str = r#"Thanks for installing starklings!
+const DEFAULT_OUT: &str = r#"Thanks for installing noirlings!
 
-Is this your first time? Don't worry, starklings is made for beginners! We are
+Is this your first time? Don't worry, noirlings is made for beginners! We are
 going to teach you a bunch of stuff about StarkNet and Cairo.
 
-Here's how starklings works,
+Here's how noirlings works,
 
-1. To start starklings run `cargo run -r --bin starklings watch`
+1. To start noirlings run `cargo run -r --bin noirlings watch`
 2. It'll automatically start with the first exercise. Don't get confused by
-error message popping up as soon as you run starklings! This is part of the
+error message popping up as soon as you run noirlings! This is part of the
 exercise that you're supposed to solve, so open the exercise file in an editor
 and start your detective work!
 3. If you're stuck on an exercise, there is a helpful hint you can view by
-typing `hint` (in watch mode), or running `cargo run -r --bin starklings hint
+typing `hint` (in watch mode), or running `cargo run -r --bin noirlings hint
 exercise_name`.
 4. When you have solved the exercise successfully, Remove `// I AM NOT DONE`
 comment to move on to the next exercise.
-5. If an exercise doesn't make sense to you, please open an issue on GitHub!
-(https://github.com/shramee/starklings-cairo1/issues/new).
+5. If an exercise doesn't make sense to you, please open an issue on GitHub!.
 
-Got all that? Great! To get started, run `starklings watch` in order to get the
+Got all that? Great! To get started, run `noirlings watch` in order to get the
 first exercise. Make sure to have your editor open!"#;
 
 const FINISH_LINE: &str = r#"+----------------------------------------------------+
 |          You made it to the finish line!          |
-+--------------------------  ------------------------+
++--------------------------  ------------------------+                                                                                
 
-                          
-                                 @@@@@@@@@@@@@@&                                
-                          #@@@@@@@@@@@@@@@@@@@@@@@@@@@/                         
-                      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@(                     
-                   &@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@(                  
-                 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                
-               @@@@@@@@@@@*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@              
-             &@@@@@@@@@@@   @@@@@@@@@@@@@@@&               @@@@@@@@             
-            @@@@@@@@@@,       *@@@@@@@@@                      @@@@@@&           
-           @@@@@@@@@@@@@@   @@@@@@@@@@                         *@@@@@&          
-          /@@@@@@@@@@@@@@@-@@@@@@@@@               .*********/@@@@@@@@          
-          @@@@@@@@@@@@@@@@@@@@@@@@               **********@@@@@@@@@@@@         
-          @@@@@@@@@@@@@@@@@@@@@@                *********@@@@@@@@@@@@@@         
-          @@@@@@@@@@@@@@@@@@@@                *********@@@@@@@@@@@@@@@@         
-          @@@@@@@@@@@@@@@@*                 ,********&@@@@@@@@@@@@@@@@@         
-          @@@@@@                          *********/@@@@@@@@@@@@@@@@@@@         
-          ,@@@@@@(                      *********/@@@@@@@@@@@@@@@@@@@@          
-           @@@@@@@@/,               .**********@@@@@@@%**%@@@@@@@@@@@(          
-            @@@@@@@@@@*****,,,**************@@@@@@@@&******%@@@@@@@@(           
-             ,@@@@@@@@@@@@/************(@@@@@@@@@@@@@******@@@@@@@@             
-               @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&              
-                 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                
-                   /@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                   
-                      *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                      
-                          .@@@@@@@@@@@@@@@@@@@@@@@@@@@                          
-                                 .@@@@@@@@@@@@&                                 
-                                                                                
-                                                                                
+We hope you enjoyed learning about Noir ! 
+If you noticed any issues, please don't hesitate to report them to our repo."#;
 
-We hope you enjoyed learning about Cairo and Starknet!
-If you noticed any issues, please don't hesitate to report them to our repo.
-https://github.com/shramee/starklings-cairo1/"#;
+pub const WELCOME: &str = r#"noirlings - An interactive tutorial to get started with the Noir DSL
 
-pub const WELCOME: &str = r#"starklings - An interactive tutorial to get started with Cairo and Starknet
 
-       _             _    _ _
-      | |           | |  | (_)
-   ___| |_ __ _ _ __| | _| |_ _ __   __ _ ___
-  / __| __/ _` | '__| |/ / | | '_ \ / _` / __|
-  \__ \ || (_| | |  |   <| | | | | | (_| \__ \
-  |___/\__\__,_|_|  |_|\_\_|_|_| |_|\__, |___/
-                                     __/ |
-                                    |___/"#;
+ _   _       _      _ _                 
+| \ | | ___ (_)_ __| (_)_ __   __ _ ___ 
+|  \| |/ _ \| | '__| | | '_ \ / _` / __|
+| |\  | (_) | | |  | | | | | | (_| \__ \
+|_| \_|\___/|_|_|  |_|_|_| |_|\__, |___/
+                              |___/"#;
