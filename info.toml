@@ -2,10 +2,10 @@
 
 [[exercises]]
 name = "intro1"
-path = "exercises/intro/intro1.cairo"
-mode = "run"
+path = "noir_exercises/1.intro/intro1.nr"
+mode = "test"
 hint = """
-No hints this time ;)
+It should compile and test
 """
 
 [[exercises]]

@@ -7,6 +7,7 @@ use std::io::Read;
 use std::path::PathBuf;
 use std::process::{self};
 
+use crate::noir::nargo_test;
 use crate::scarb::{scarb_build, scarb_run, scarb_test};
 
 const I_AM_DONE_REGEX: &str = r"(?m)^\s*///?\s*I\s+AM\s+NOT\s+DONE";
@@ -102,7 +103,7 @@ impl Exercise {
     }
 
     pub fn test(&self) -> anyhow::Result<String> {
-        scarb_test(&self.path)
+        nargo_test(&self.path)
     }
 
     pub fn state(&self) -> State {
