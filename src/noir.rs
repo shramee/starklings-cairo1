@@ -161,10 +161,6 @@ pub fn nargo_test(file_path: &PathBuf) -> anyhow::Result<String> {
         Some(NOIR_ARTIFACT_VERSION_STRING.to_string()),
     )?;
 
-    rayon::ThreadPoolBuilder::new()
-    .stack_size(8 * 1024 * 1024)
-    .build_global()?;
-
     let mut workspace_file_manager = workspace.new_file_manager();
     insert_all_files_for_workspace_into_file_manager(&workspace, &mut workspace_file_manager);
     let parsed_files = parse_all(&workspace_file_manager);

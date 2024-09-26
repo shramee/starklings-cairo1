@@ -136,6 +136,10 @@ struct PathsArgs {}
 fn main() {
     let args: Args = argh::from_env();
 
+    let _ = rayon::ThreadPoolBuilder::new()
+    .stack_size(8 * 1024 * 1024)
+    .build_global();
+
     if args.version {
         println!("v{VERSION}");
         std::process::exit(0);
@@ -457,7 +461,7 @@ fn rustc_exists() -> bool {
 const DEFAULT_OUT: &str = r#"Thanks for installing noirlings!
 
 Is this your first time? Don't worry, noirlings is made for beginners! We are
-going to teach you a bunch of stuff about StarkNet and Cairo.
+going to teach you a bunch of stuff about the noir DSL language and prover backends!
 
 Here's how noirlings works,
 
@@ -486,9 +490,9 @@ If you noticed any issues, please don't hesitate to report them to our repo."#;
 pub const WELCOME: &str = r#"noirlings - An interactive tutorial to get started with the Noir DSL
 
 
- _   _       _      _ _                 
-| \ | | ___ (_)_ __| (_)_ __   __ _ ___ 
-|  \| |/ _ \| | '__| | | '_ \ / _` / __|
-| |\  | (_) | | |  | | | | | | (_| \__ \
-|_| \_|\___/|_|_|  |_|_|_| |_|\__, |___/
-                              |___/"#;
+    _   _       _      _ _                 
+    | \ | | ___ (_)_ __| (_)_ __   __ _ ___ 
+    |  \| |/ _ \| | '__| | | '_ \ / _` / __|
+    | |\  | (_) | | |  | | | | | | (_| \__ \
+    |_| \_|\___/|_|_|  |_|_|_| |_|\__, |___/
+                                |___/"#;
