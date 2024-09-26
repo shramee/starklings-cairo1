@@ -26,6 +26,10 @@ pub fn verify<'a>(
                 .progress_chars("#>-"),
         );
         bar.set_position(num_done as u64);
+        if exercise.looks_done() {
+            num_done += 1;
+            continue;
+        }
         let exercise_result = {
             let run_result = match exercise.mode {
                 Mode::Build => utils::build_exercise(exercise),

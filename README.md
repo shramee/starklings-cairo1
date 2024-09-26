@@ -39,7 +39,7 @@ cargo run -r --bin starklings watch starknet1
 ```
 starklings - An interactive tutorial to get started with Cairo and Starknet
 
-    _   _       _      _ _                 
+     _   _       _      _ _                 
     | \ | | ___ (_)_ __| (_)_ __   __ _ ___ 
     |  \| |/ _ \| | '__| | | '_ \ / _` / __|
     | |\  | (_) | | |  | | | | | | (_| \__ \
