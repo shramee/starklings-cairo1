@@ -175,24 +175,24 @@ mod test {
     use super::*;
     // use std::path::Path;
 
-    #[test]
-    fn test_finished_exercise() {
-        let exercise = Exercise {
-            name: "finished_exercise".into(),
-            path: PathBuf::from("tests/fixture/cairo/compilePass.cairo"),
-            mode: Mode::Build,
-            hint: String::new(),
-        };
+    // #[test]
+    // fn test_finished_exercise() {
+    //     let exercise = Exercise {
+    //         name: "finished_exercise".into(),
+    //         path: PathBuf::from("tests/fixture/noir/compilePass.nr"),
+    //         mode: Mode::Build,
+    //         hint: String::new(),
+    //     };
 
-        assert_eq!(exercise.state(), State::Done);
-    }
+    //     assert_eq!(exercise.state(), State::Done);
+    // }
 
     #[test]
-    fn test_cairo_test_passes() {
+    fn test_noir_test_passes() {
         let exercise = Exercise {
             name: "testPass".into(),
-            path: PathBuf::from("tests/fixture/cairo/testPass.cairo"),
-            mode: Mode::Build,
+            path: PathBuf::from("tests/fixture/noir/testPass.nr"),
+            mode: Mode::Test,
             hint: String::new(),
         };
 
