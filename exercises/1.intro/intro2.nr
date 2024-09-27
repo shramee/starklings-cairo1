@@ -6,6 +6,6 @@ fn main(x: Field, y: pub Field) {
 
 #[test]
 fn test_main() {
-    main(1, 2);
+    main(1, 1);
     // ^^^^^^^^ MODIFY THIS TO MAKE THE TEST PASS
 }

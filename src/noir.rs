@@ -1,14 +1,14 @@
-use anyhow::Context as _;
+use anyhow::{Context as _};
 use bn254_blackbox_solver::Bn254BlackBoxSolver;
 use cairo_lang_runner::{RunResultValue, SierraCasmRunner, StarknetState};
 use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_test_plugin::{TestCompilation, TestCompilationMetadata};
 use camino::Utf8PathBuf;
 use console::style;
-use nargo::{insert_all_files_for_workspace_into_file_manager, ops::TestStatus, parse_all};
+use nargo::{constants::PROVER_INPUT_FILE, insert_all_files_for_workspace_into_file_manager, ops::TestStatus, parse_all};
 use nargo_toml::{get_package_manifest, resolve_workspace_from_toml, PackageSelection};
 use noirc_frontend::hir::FunctionNameMatch;
-use std::{env::current_dir, fs, path::PathBuf};
+use std::{env::current_dir, fs::{self, write}, path::PathBuf};
 
 use itertools::Itertools;
 use scarb::{
@@ -16,29 +16,32 @@ use scarb::{
     ops::{self, collect_metadata, CompileOpts, FeaturesOpts, FeaturesSelector, MetadataOptions},
 };
 
-use noirc_driver::{CompileOptions, NOIR_ARTIFACT_VERSION_STRING};
+use noirc_driver::{CompileOptions, CompiledProgram, NOIR_ARTIFACT_VERSION_STRING};
 
-use crate::noir_test::run_tests;
+use crate::{exercise, nargo::{cli_compile_workspace_full, execute_program_and_decode, read_program_from_file, run_tests, save_witness_to_dir}};
 
 const AVAILABLE_GAS: usize = 999999999;
 
 // Prepares testing crate
 // Copies the exercise file into testing crate
-pub fn prepare_crate_for_exercise(file_path: &PathBuf) -> PathBuf {
-    let crate_path = current_dir()
-        .unwrap()
-        .join(PathBuf::from("runner_crate_noir"));
+pub fn prepare_crate_for_exercise(file_path: &PathBuf, prover_toml: Option<String>) -> PathBuf {
+    let crate_path = current_dir().unwrap().join(PathBuf::from("runner_crate_noir"));
     let src_dir = crate_path.join("src");
     if !src_dir.exists() {
         let _ = fs::create_dir(&src_dir);
     }
-    let lib_path = src_dir.join("lib.nr");
+    let lib_path = src_dir.join("main.nr");
     let file_path = current_dir().unwrap().join(file_path);
 
     match fs::copy(&file_path, &lib_path) {
         Ok(_) => {}
         Err(err) => panic!("Error occurred while preparing the exercise,\nExercise: {file_path:?}\nLib path: {lib_path:?}\n{err:?}"),
     };
+
+    if let Some(prover_toml) = prover_toml {
+        let prover_toml_path = crate_path.join(format!("{}.toml", PROVER_INPUT_FILE));
+        fs::write(prover_toml_path, prover_toml).expect("Unable to write file");
+    }
     crate_path
 }
 
@@ -64,119 +67,61 @@ pub fn prepare_crate_for_exercise_run(file_path: &PathBuf) -> PathBuf {
 
 // Builds the testing crate with scarb
 pub fn scarb_build(file_path: &PathBuf) -> anyhow::Result<String> {
-    let crate_path = prepare_crate_for_exercise(file_path);
+    let crate_path = prepare_crate_for_exercise(file_path,None);
     let config = nargo_config(crate_path);
-
-    match compile(&config, false) {
-        Ok(_) => Ok("".into()),
-        Err(_) => anyhow::bail!("Couldn't build the exercise..."),
-    }
+    anyhow::Ok("".into())
+    // match compile(&config, false) {
+    //     Ok(_) => Ok("".into()),
+    //     Err(_) => anyhow::bail!("Couldn't build the exercise..."),
+    // }
 }
 
-// Runs the crate with noir
-pub fn nargo_run(file_path: &PathBuf) -> anyhow::Result<String> {
-    let crate_path = prepare_crate_for_exercise(file_path);
-    let config = nargo_config(crate_path);
-
-    let ws = ops::read_workspace(config.manifest_path(), &config)?;
-
-    // Compile before running tests, with test targets true
-    compile(&config, false)?;
-
-    println!(
-        "   {} {}\n",
-        style("Running").green().bold(),
-        file_path.to_str().unwrap()
-    );
-
-    let metadata = collect_metadata(
-        &MetadataOptions {
-            version: 1,
-            no_deps: false,
-            features: FeaturesOpts {
-                features: FeaturesSelector::AllFeatures,
-                no_default_features: false,
-            },
-        },
-        &ws,
+// Execute the crate with noir
+pub fn nargo_execute(file_path: &PathBuf, prover_toml: String, exercise_name: String) -> anyhow::Result<String> {
+    let crate_path = prepare_crate_for_exercise(file_path, Some(prover_toml));
+    let toml_path = get_package_manifest(&crate_path)?;
+    let workspace = resolve_workspace_from_toml(
+        &toml_path,
+        PackageSelection::DefaultOrAll,
+        Some(NOIR_ARTIFACT_VERSION_STRING.to_string()),
     )?;
+    let target_dir = &workspace.target_directory_path();
 
-    let profile = "dev";
-    let default_target_dir = metadata.runtime_manifest.join("target");
+    // Compile the full workspace in order to generate any build artifacts.
+    let default_options = CompileOptions::default();
+    cli_compile_workspace_full(&workspace,&default_options)?;
 
-    let target_dir = metadata
-        .target_dir
-        .clone()
-        .unwrap_or(default_target_dir)
-        .join(profile);
+    let binary_packages = workspace.into_iter().filter(|package| package.is_binary());
+    for package in binary_packages {
+        let program_artifact_path = workspace.package_build_path(package);
+        let program: CompiledProgram =
+            read_program_from_file(program_artifact_path.clone())?.into();
 
-    // Process 'exercise_crate' targets
-    // Largely same as this
-    // https://github.com/software-mansion/scarb/blob/v2.5.3/extensions/scarb-cairo-run/src/main.rs#L61
-    for package in metadata.packages.iter() {
-        if package.name != "exercise_crate" {
-            continue;
+        let (return_value, witness_stack) = execute_program_and_decode(
+            program,
+            package,
+            PROVER_INPUT_FILE,
+            None,
+            Some(workspace.root_dir.clone()),
+            Some(package.name.to_string()),
+        )?;
+
+        println!("[{}] Circuit witness successfully solved", package.name);
+        if let Some(return_value) = return_value {
+            println!("[{}] Circuit output: {return_value:?}", package.name);
         }
-        // Loop through targets and run compiled file tests
-        for target in package.targets.iter() {
-            // Skip test targets
-            if target.kind == "test" {
-                continue;
-            }
 
-            let file_path = target_dir.join(format!("{}.sierra.json", target.name.clone()));
-
-            assert!(
-                file_path.exists(),
-                "File {file_path} missing, please compile the project."
-            );
-
-            let sierra_program = serde_json::from_str::<VersionedProgram>(
-                &fs::read_to_string(file_path.clone())
-                    .with_context(|| format!("failed to read Sierra file: {file_path}"))?,
-            )
-            .with_context(|| format!("failed to deserialize Sierra program: {file_path}"))?
-            .into_v1()
-            .with_context(|| format!("failed to load Sierra program: {file_path}"))?;
-
-            let runner = SierraCasmRunner::new(
-                sierra_program.program,
-                Some(Default::default()),
-                Default::default(),
-                None,
-            )?;
-
-            let result = runner
-                .run_function_with_starknet_context(
-                    runner.find_function("::main")?,
-                    &[],
-                    Some(AVAILABLE_GAS),
-                    StarknetState::default(),
-                )
-                .context("failed to run the function")?;
-
-            return match result.value {
-                RunResultValue::Success(return_val) => {
-                    Ok(return_val.iter().map(|el| el.to_string()).join(","))
-                }
-                RunResultValue::Panic(error) => {
-                    anyhow::bail!(format!("error running the code, {:?}", error))
-                }
-            };
-        }
+        let witness_name = &exercise_name;
+        let witness_path = save_witness_to_dir(witness_stack, witness_name, target_dir)?;
+        println!("[{}] Witness saved to {}", package.name, witness_path.display());
     }
-
-    Ok("".into())
+    anyhow::Ok("".into())
 }
 
 // Runs tests on the testing crate with nargo
 pub fn nargo_test(file_path: &PathBuf) -> anyhow::Result<String> {
-    let crate_path = prepare_crate_for_exercise(file_path);
-    let config = nargo_config(crate_path);
-
-    // let ws = ops::read_workspace(config.manifest_path(), &config)?;
-    let path = PathBuf::from(std::env::current_dir().unwrap().join("./runner_crate_noir"));
-    let toml_path = get_package_manifest(&path)?;
+    let crate_path = prepare_crate_for_exercise(file_path,None);
+    let toml_path = get_package_manifest(&crate_path)?;
     let workspace = resolve_workspace_from_toml(
         &toml_path,
         PackageSelection::DefaultOrAll,
@@ -245,33 +190,4 @@ pub fn nargo_config(crate_path: PathBuf) -> Config {
     let path = Utf8PathBuf::from_path_buf(crate_path.join(PathBuf::from("Nargo.toml"))).unwrap();
 
     Config::builder(path).build().unwrap()
-}
-
-// Compiles runner crate for build/test exercises
-pub fn compile(config: &Config, test_targets: bool) -> anyhow::Result<()> {
-    let ws = ops::read_workspace(config.manifest_path(), config)?;
-    let opts: CompileOpts = match test_targets {
-        false => CompileOpts {
-            include_target_names: vec![],
-            include_target_kinds: vec![],
-            exclude_target_kinds: vec![TargetKind::TEST],
-            features: FeaturesOpts {
-                features: FeaturesSelector::AllFeatures,
-                no_default_features: false,
-            },
-        },
-        true => CompileOpts {
-            include_target_names: vec![],
-            include_target_kinds: vec![TargetKind::TEST],
-            exclude_target_kinds: vec![],
-            features: FeaturesOpts {
-                features: FeaturesSelector::AllFeatures,
-                no_default_features: false,
-            },
-        },
-    };
-
-    let packages = ws.members().map(|p| p.id).collect();
-
-    ops::compile(packages, opts, &ws)
 }

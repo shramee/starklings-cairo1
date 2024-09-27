@@ -31,9 +31,9 @@ pub fn verify<'a>(
             continue;
         }
         let exercise_result = {
-            let run_result = match exercise.mode {
+            let run_result = match &exercise.mode {
                 Mode::Build => utils::build_exercise(exercise),
-                Mode::Run => utils::run_exercise(exercise),
+                Mode::Execute(str) => utils::execute_exercise(exercise, str.clone()),
                 Mode::Test => utils::test_exercise(exercise),
             };
             match run_result {
@@ -68,7 +68,7 @@ fn prompt_for_completion(exercise: &Exercise, prompt_output: Option<String>) -> 
 
     let success_msg = match exercise.mode {
         Mode::Build => "The code is compiling!",
-        Mode::Run => "The code is compiling!",
+        Mode::Execute(_) => "The code is compiling!",
         Mode::Test => "The code is compiling, and the tests pass!",
         // Mode::Clippy => clippy_success_msg,
     };

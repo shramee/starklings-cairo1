@@ -34,6 +34,7 @@ noirc_errors = { git = "https://github.com/noir-lang/noir.git" }
 noirc_frontend = { git = "https://github.com/noir-lang/noir.git"}
 acvm = { git = "https://github.com/noir-lang/noir.git" }
 fm = { git = "https://github.com/noir-lang/noir.git" }
+noirc_artifacts = {git =  "https://github.com/noir-lang/noir.git"  }
 termcolor = "1.4.1"
 rayon = "1.10.0"
 

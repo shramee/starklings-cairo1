@@ -22,10 +22,10 @@ pub fn build_exercise(exercise: &Exercise) -> Result<String, ()> {
 
 // Build the given Exercise and return an object with information
 // about the state of the compilation
-pub fn run_exercise(exercise: &Exercise) -> Result<String, ()> {
+pub fn execute_exercise(exercise: &Exercise, prover_toml: String) -> Result<String, ()> {
     progress!("Running {} exercise...", exercise);
 
-    let compilation_result = exercise.run();
+    let compilation_result = exercise.execute(prover_toml);
 
     if let Err(error) = compilation_result {
         eprintln!("{error}");
@@ -46,7 +46,7 @@ pub fn test_exercise(exercise: &Exercise) -> Result<String, ()> {
 
     if let Some(error) = compilation_result.as_ref().err() {
         warn!(
-            "Testing of {} failed! Please try again. Here's the output:",
+            "Testing of {} failed! Please try again. See the output above ^",
             exercise
         );
         println!("{error}");
@@ -65,7 +65,7 @@ pub fn print_exercise_output(exercise_output: String) {
 pub fn print_exercise_success(exercise: &Exercise) {
     match exercise.mode {
         Mode::Build => success!("Successfully built {}!", exercise),
-        Mode::Run => success!("Successfully ran {}!", exercise),
+        Mode::Execute(ref string) => success!("Successfully ran {}!\n With inputs: {}", exercise, string),
         Mode::Test => success!("Successfully tested {}!", exercise),
     }
 }

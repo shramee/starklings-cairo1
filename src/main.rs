@@ -23,7 +23,6 @@ mod ui;
 mod exercise;
 mod nargo;
 mod noir;
-mod noir_test;
 mod project;
 mod run;
 mod scarb;
@@ -491,9 +490,9 @@ If you noticed any issues, please don't hesitate to report them to our repo."#;
 pub const WELCOME: &str = r#"noirlings - An interactive tutorial to get started with the Noir DSL
 
 
-    _   _       _      _ _                 
+     _   _       _      _ _                 
     | \ | | ___ (_)_ __| (_)_ __   __ _ ___ 
     |  \| |/ _ \| | '__| | | '_ \ / _` / __|
     | |\  | (_) | | |  | | | | | | (_| \__ \
     |_| \_|\___/|_|_|  |_|_|_| |_|\__, |___/
-                                |___/"#;
+                                  |___/"#;

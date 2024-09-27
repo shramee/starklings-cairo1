@@ -13,5 +13,5 @@ rust-project.json
 *.o
 solutions/
 **/runner-crate/src/lib.cairo
-runner_crate_noir/src/lib.nr
-runner_crate_noir_run/src/main.nr
+runner_crate_noir/src/*.nr
+runner_crate_noir/Prover.toml
