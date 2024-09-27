@@ -30,7 +30,7 @@ pub fn prepare_crate_for_exercise(file_path: &PathBuf, prover_toml: Option<Strin
     if !src_dir.exists() {
         let _ = fs::create_dir(&src_dir);
     }
-    let lib_path = src_dir.join("lib.nr");
+    let lib_path = src_dir.join("main.nr");
     let file_path = current_dir().unwrap().join(file_path);
 
     match fs::copy(&file_path, &lib_path) {
@@ -42,6 +42,26 @@ pub fn prepare_crate_for_exercise(file_path: &PathBuf, prover_toml: Option<Strin
         let prover_toml_path = crate_path.join(format!("{}.toml", PROVER_INPUT_FILE));
         fs::write(prover_toml_path, prover_toml).expect("Unable to write file");
     }
+    crate_path
+}
+
+// Prepares testing crate
+// Copies the exercise file into testing crate
+pub fn prepare_crate_for_exercise_run(file_path: &PathBuf) -> PathBuf {
+    let crate_path = current_dir()
+        .unwrap()
+        .join(PathBuf::from("runner_crate_noir_run"));
+    let src_dir = crate_path.join("src");
+    if !src_dir.exists() {
+        let _ = fs::create_dir(&src_dir);
+    }
+    let lib_path = src_dir.join("main.nr");
+    let file_path = current_dir().unwrap().join(file_path);
+
+    match fs::copy(&file_path, &lib_path) {
+        Ok(_) => {}
+        Err(err) => panic!("Error occurred while preparing the exercise,\nExercise: {file_path:?}\nLib path: {lib_path:?}\n{err:?}"),
+    };
     crate_path
 }
 
@@ -114,22 +134,23 @@ pub fn nargo_test(file_path: &PathBuf) -> anyhow::Result<String> {
 
     let pattern = FunctionNameMatch::Anything;
 
-    let test_reports:Vec<Vec<(String, TestStatus)>> = workspace.into_iter()
-            .filter(|package| package.name.to_string() == "exercise_crate")
-            .map(|package| {
-                run_tests::<Bn254BlackBoxSolver>(
-                    &workspace_file_manager,
-                    &parsed_files,
-                    package,
-                    pattern,
-                    false,
-                    None,
-                    Some(workspace.root_dir.clone()),
-                    Some(package.name.to_string()),
-                    &CompileOptions::default(),
-                )
-            })
-            .collect::<Result<Vec<_>, _>>()?;
+    let test_reports: Vec<Vec<(String, TestStatus)>> = workspace
+        .into_iter()
+        .filter(|package| package.name.to_string() == "exercise_crate")
+        .map(|package| {
+            run_tests::<Bn254BlackBoxSolver>(
+                &workspace_file_manager,
+                &parsed_files,
+                package,
+                pattern,
+                false,
+                None,
+                Some(workspace.root_dir.clone()),
+                Some(package.name.to_string()),
+                &CompileOptions::default(),
+            )
+        })
+        .collect::<Result<Vec<_>, _>>()?;
 
     let test_report: Vec<(String, TestStatus)> = test_reports.into_iter().flatten().collect();
 
@@ -138,7 +159,6 @@ pub fn nargo_test(file_path: &PathBuf) -> anyhow::Result<String> {
     } else {
         Ok("".into())
     }
-
 }
 
 fn deserialize_test_compilation(
