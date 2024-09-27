@@ -1,5 +1,6 @@
 use regex::Regex;
-use serde::Deserialize;
+use serde::de::{self, Visitor};
+use serde::{Deserialize, Deserializer};
 
 use std::fmt::{self, Display, Formatter};
 use std::fs::{remove_file, File};
@@ -7,7 +8,7 @@ use std::io::Read;
 use std::path::PathBuf;
 use std::process::{self};
 
-use crate::noir::nargo_test;
+use crate::noir::{nargo_execute, nargo_test};
 use crate::scarb::{scarb_build, scarb_run, scarb_test};
 
 const I_AM_DONE_REGEX: &str = r"(?m)^\s*///?\s*I\s+AM\s+NOT\s+DONE";
@@ -25,16 +26,65 @@ fn temp_file() -> String {
 }
 
 // The mode of the exercise.
-#[derive(Deserialize, Copy, Clone, Debug)]
+#[derive(Deserialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum Mode {
     // Indicates that the exercise should be compiled as ACIR
     Build,
-    // Indicates that the exercise should be executed ?? TODO: Adding Prove instead ? 
-    Run,
+    /** Allow execution with export of witnesses. 
+    Need to specify input values inline like 
+    """
+    { execute = "a = '1' \nb = '2'" }
+    """
+    */
+    Execute(String),
     // Indicates that the exercise should be compile and tested from the written Rust-like test 
     Test,
 }
+
+
+fn deserialize_mode<'de, D>(deserializer: D) -> Result<Mode, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    struct ModeVisitor;
+
+    impl<'de> Visitor<'de> for ModeVisitor {
+        type Value = Mode;
+
+        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+            formatter.write_str("a string or a map representing a mode")
+        }
+
+        fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            match value {
+                "test" => Ok(Mode::Test),
+                "build" => Ok(Mode::Build),
+                _ => Err(de::Error::unknown_variant(value, &["test", "build"])),
+            }
+        }
+
+        fn visit_map<M>(self, mut map: M) -> Result<Self::Value, M::Error>
+        where
+            M: de::MapAccess<'de>,
+        {
+            let key: String = map.next_key()?.ok_or_else(|| de::Error::custom("missing key"))?;
+            match key.as_str() {
+                "execute" => {
+                    let value: String = map.next_value()?;
+                    Ok(Mode::Execute(value))
+                }
+                _ => Err(de::Error::unknown_field(&key, &["execute"])),
+            }
+        }
+    }
+
+    deserializer.deserialize_any(ModeVisitor)
+}
+
 
 #[derive(Deserialize)]
 pub struct ExerciseList {
@@ -50,6 +100,7 @@ pub struct Exercise {
     // The path to the file containing the exercise's source code
     pub path: PathBuf,
     // The mode of the exercise (Test/Build)
+    #[serde(deserialize_with = "deserialize_mode")]
     pub mode: Mode,
     // The hint text associated with the exercise
     pub hint: String,
@@ -98,8 +149,8 @@ impl Exercise {
         scarb_build(&self.path)
     }
 
-    pub fn run(&self) -> anyhow::Result<String> {
-        scarb_run(&self.path)
+    pub fn execute(&self, prover_toml: String) -> anyhow::Result<String> {
+        nargo_execute(&self.path, prover_toml, self.name.clone())
     }
 
     pub fn test(&self) -> anyhow::Result<String> {
