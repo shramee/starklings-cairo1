@@ -4425,6 +4425,7 @@ dependencies = [
  "itertools 0.10.5",
  "nargo",
  "nargo_toml",
+ "noirc_abi",
  "noirc_driver",
  "noirc_errors",
  "noirc_frontend",

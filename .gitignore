@@ -14,3 +14,4 @@ rust-project.json
 solutions/
 **/runner-crate/src/lib.cairo
 runner_crate_noir/src/lib.nr
+runner_crate_noir_run/src/main.nr

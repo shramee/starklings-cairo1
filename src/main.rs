@@ -21,13 +21,14 @@ use std::time::Duration;
 #[macro_use]
 mod ui;
 mod exercise;
+mod nargo;
+mod noir;
+mod noir_test;
 mod project;
 mod run;
 mod scarb;
 mod utils;
 mod verify;
-mod noir;
-mod noir_test;
 
 // In sync with crate version
 const VERSION: &str = "5.3.0";
@@ -137,8 +138,8 @@ fn main() {
     let args: Args = argh::from_env();
 
     let _ = rayon::ThreadPoolBuilder::new()
-    .stack_size(8 * 1024 * 1024)
-    .build_global();
+        .stack_size(8 * 1024 * 1024)
+        .build_global();
 
     if args.version {
         println!("v{VERSION}");

@@ -28,6 +28,7 @@ scarb-ui = { git = "https://github.com/software-mansion/scarb", tag = "v2.8.2" }
 nargo = { git = "https://github.com/noir-lang/noir.git" }
 bn254_blackbox_solver = { git = "https://github.com/noir-lang/noir.git" }
 nargo_toml = { git = "https://github.com/noir-lang/noir.git" }
+noirc_abi = { git = "https://github.com/noir-lang/noir.git" }
 noirc_driver = { git = "https://github.com/noir-lang/noir.git" }
 noirc_errors = { git = "https://github.com/noir-lang/noir.git" }
 noirc_frontend = { git = "https://github.com/noir-lang/noir.git"}
