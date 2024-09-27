@@ -2,15 +2,22 @@ use std::path::Path;
 
 use acvm::acir::circuit::ExpressionWidth;
 use fm::FileManager;
-use nargo::{insert_all_files_for_workspace_into_file_manager, ops::{collect_errors, compile_contract, compile_program, report_errors}, package::Package, parse_all, workspace::Workspace};
-use noirc_driver::{CompilationResult, CompileOptions, CompiledContract, NOIR_ARTIFACT_VERSION_STRING};
+use nargo::{
+    insert_all_files_for_workspace_into_file_manager,
+    ops::{collect_errors, compile_contract, compile_program, report_errors},
+    package::Package,
+    parse_all,
+    workspace::Workspace,
+};
+use noirc_driver::{
+    CompilationResult, CompileOptions, CompiledContract, NOIR_ARTIFACT_VERSION_STRING,
+};
 use noirc_frontend::hir::ParsedFiles;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 use super::{read_program_from_file, save_contract_to_file, save_program_to_file};
 
-
-pub fn compile_workspace_full(
+pub fn cli_compile_workspace_full(
     workspace: &Workspace,
     compile_options: &CompileOptions,
 ) -> Result<(), anyhow::Error> {
@@ -18,8 +25,12 @@ pub fn compile_workspace_full(
     insert_all_files_for_workspace_into_file_manager(workspace, &mut workspace_file_manager);
     let parsed_files = parse_all(&workspace_file_manager);
 
-    let compiled_workspace =
-        compile_workspace(&workspace_file_manager, &parsed_files, workspace, compile_options);
+    let compiled_workspace = cli_compile_workspace(
+        &workspace_file_manager,
+        &parsed_files,
+        workspace,
+        compile_options,
+    );
 
     report_errors(
         compiled_workspace,
@@ -31,7 +42,7 @@ pub fn compile_workspace_full(
     Ok(())
 }
 
-fn compile_workspace(
+fn cli_compile_workspace(
     file_manager: &FileManager,
     parsed_files: &ParsedFiles,
     workspace: &Workspace,
@@ -44,9 +55,14 @@ fn compile_workspace(
         .partition(|package| package.is_binary());
 
     // Compile all of the packages in parallel.
-    let program_warnings_or_errors: CompilationResult<()> =
-        compile_programs(file_manager, parsed_files, workspace, &binary_packages, compile_options);
-    let contract_warnings_or_errors: CompilationResult<()> = compiled_contracts(
+    let program_warnings_or_errors: CompilationResult<()> = cli_compile_programs(
+        file_manager,
+        parsed_files,
+        workspace,
+        &binary_packages,
+        compile_options,
+    );
+    let contract_warnings_or_errors: CompilationResult<()> = cli_compiled_contracts(
         file_manager,
         parsed_files,
         &contract_packages,
@@ -66,8 +82,7 @@ fn compile_workspace(
     }
 }
 
-
-fn compile_programs(
+fn cli_compile_programs(
     file_manager: &FileManager,
     parsed_files: &ParsedFiles,
     workspace: &Workspace,
@@ -93,17 +108,24 @@ fn compile_programs(
         )?;
 
         let target_width =
-            get_target_width(package.expression_width, compile_options.expression_width);
+            cli_get_target_width(package.expression_width, compile_options.expression_width);
         let program = nargo::ops::transform_program(program, target_width);
 
-        save_program_to_file(&program.into(), &package.name, workspace.target_directory_path());
+        save_program_to_file(
+            &program.into(),
+            &package.name,
+            workspace.target_directory_path(),
+        );
 
         Ok(((), warnings))
     };
 
     // Configure a thread pool with a larger stack size to prevent overflowing stack in large programs.
     // Default is 2MB.
-    let pool = rayon::ThreadPoolBuilder::new().stack_size(4 * 1024 * 1024).build().unwrap();
+    let pool = rayon::ThreadPoolBuilder::new()
+        .stack_size(4 * 1024 * 1024)
+        .build()
+        .unwrap();
     let program_results: Vec<CompilationResult<()>> =
         pool.install(|| binary_packages.par_iter().map(compile_package).collect());
 
@@ -111,7 +133,7 @@ fn compile_programs(
     collect_errors(program_results).map(|(_, warnings)| ((), warnings))
 }
 
-fn compiled_contracts(
+fn cli_compiled_contracts(
     file_manager: &FileManager,
     parsed_files: &ParsedFiles,
     contract_packages: &[Package],
@@ -124,9 +146,14 @@ fn compiled_contracts(
             let (contract, warnings) =
                 compile_contract(file_manager, parsed_files, package, compile_options)?;
             let target_width =
-                get_target_width(package.expression_width, compile_options.expression_width);
+                cli_get_target_width(package.expression_width, compile_options.expression_width);
             let contract = nargo::ops::transform_contract(contract, target_width);
-            save_contract(contract, package, target_dir, compile_options.show_artifact_paths);
+            cli_save_contract(
+                contract,
+                package,
+                target_dir,
+                compile_options.show_artifact_paths,
+            );
             Ok(((), warnings))
         })
         .collect();
@@ -135,7 +162,7 @@ fn compiled_contracts(
     collect_errors(contract_results).map(|(_, warnings)| ((), warnings))
 }
 
-fn save_contract(
+fn cli_save_contract(
     contract: CompiledContract,
     package: &Package,
     target_dir: &Path,
@@ -152,7 +179,6 @@ fn save_contract(
     }
 }
 
-
 /// Default expression width used for Noir compilation.
 /// The ACVM native type `ExpressionWidth` has its own default which should always be unbounded,
 /// while we can sometimes expect the compilation target width to change.
@@ -160,7 +186,7 @@ fn save_contract(
 pub const DEFAULT_EXPRESSION_WIDTH: ExpressionWidth = ExpressionWidth::Bounded { width: 4 };
 
 /// If a target width was not specified in the CLI we can safely override the default.
-pub(crate) fn get_target_width(
+pub(crate) fn cli_get_target_width(
     package_default_width: Option<ExpressionWidth>,
     compile_options_width: Option<ExpressionWidth>,
 ) -> ExpressionWidth {

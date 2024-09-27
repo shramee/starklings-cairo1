@@ -18,7 +18,7 @@ use scarb::{
 
 use noirc_driver::{CompileOptions, CompiledProgram, NOIR_ARTIFACT_VERSION_STRING};
 
-use crate::{exercise, nargo::{compile_workspace_full, execute_program_and_decode, read_program_from_file, run_tests, save_witness_to_dir}};
+use crate::{exercise, nargo::{cli_compile_workspace_full, execute_program_and_decode, read_program_from_file, run_tests, save_witness_to_dir}};
 
 const AVAILABLE_GAS: usize = 999999999;
 
@@ -69,7 +69,7 @@ pub fn nargo_execute(file_path: &PathBuf, prover_toml: String, exercise_name: St
 
     // Compile the full workspace in order to generate any build artifacts.
     let default_options = CompileOptions::default();
-    compile_workspace_full(&workspace,&default_options)?;
+    cli_compile_workspace_full(&workspace,&default_options)?;
 
     let binary_packages = workspace.into_iter().filter(|package| package.is_binary());
     for package in binary_packages {
