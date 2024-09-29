@@ -8,7 +8,7 @@ use std::io::Read;
 use std::path::PathBuf;
 use std::process::{self};
 
-use crate::noir::{nargo_execute, nargo_test};
+use crate::noir::{nargo_compile, nargo_execute, nargo_test};
 use crate::scarb::{scarb_build, scarb_run, scarb_test};
 
 const I_AM_DONE_REGEX: &str = r"(?m)^\s*///?\s*I\s+AM\s+NOT\s+DONE";
@@ -31,17 +31,16 @@ fn temp_file() -> String {
 pub enum Mode {
     // Indicates that the exercise should be compiled as ACIR
     Build,
-    /** Allow execution with export of witnesses. 
-    Need to specify input values inline like 
+    /** Allow execution with export of witnesses.
+    Need to specify input values inline like
     """
     { execute = "a = '1' \nb = '2'" }
     """
     */
     Execute(String),
-    // Indicates that the exercise should be compile and tested from the written Rust-like test 
+    // Indicates that the exercise should be compile and tested from the written Rust-like test
     Test,
 }
-
 
 fn deserialize_mode<'de, D>(deserializer: D) -> Result<Mode, D::Error>
 where
@@ -71,7 +70,9 @@ where
         where
             M: de::MapAccess<'de>,
         {
-            let key: String = map.next_key()?.ok_or_else(|| de::Error::custom("missing key"))?;
+            let key: String = map
+                .next_key()?
+                .ok_or_else(|| de::Error::custom("missing key"))?;
             match key.as_str() {
                 "execute" => {
                     let value: String = map.next_value()?;
@@ -84,7 +85,6 @@ where
 
     deserializer.deserialize_any(ModeVisitor)
 }
-
 
 #[derive(Deserialize)]
 pub struct ExerciseList {
@@ -146,7 +146,7 @@ impl Drop for FileHandle {
 
 impl Exercise {
     pub fn build(&self) -> anyhow::Result<String> {
-        scarb_build(&self.path)
+        nargo_compile(&self.path)
     }
 
     pub fn execute(&self, prover_toml: String) -> anyhow::Result<String> {

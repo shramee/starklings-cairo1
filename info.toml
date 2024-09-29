@@ -9,9 +9,17 @@ It should compile to ACIR and execute with a=1 and b=2. Remove the // I AM NOT D
 """
 
 [[exercises]]
-name = "intro1"
+name = "intro2"
 path = "exercises/1.intro/intro2.nr"
 mode = "test"
+hint = """
+Modify the test, maybe just change one of the argument ;)
+"""
+
+[[exercises]]
+name = "intro3"
+path = "exercises/1.intro/intro3.nr"
+mode = "build"
 hint = """
 Modify the test, maybe just change one of the argument ;)
 """

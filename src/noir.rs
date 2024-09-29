@@ -1,14 +1,21 @@
-use anyhow::{Context as _};
+use anyhow::Context as _;
 use bn254_blackbox_solver::Bn254BlackBoxSolver;
 use cairo_lang_runner::{RunResultValue, SierraCasmRunner, StarknetState};
 use cairo_lang_sierra::program::VersionedProgram;
 use cairo_lang_test_plugin::{TestCompilation, TestCompilationMetadata};
 use camino::Utf8PathBuf;
 use console::style;
-use nargo::{constants::PROVER_INPUT_FILE, insert_all_files_for_workspace_into_file_manager, ops::TestStatus, parse_all};
+use nargo::{
+    constants::PROVER_INPUT_FILE, insert_all_files_for_workspace_into_file_manager,
+    ops::TestStatus, parse_all,
+};
 use nargo_toml::{get_package_manifest, resolve_workspace_from_toml, PackageSelection};
 use noirc_frontend::hir::FunctionNameMatch;
-use std::{env::current_dir, fs::{self, write}, path::PathBuf};
+use std::{
+    env::current_dir,
+    fs::{self, write},
+    path::PathBuf,
+};
 
 use itertools::Itertools;
 use scarb::{
@@ -18,14 +25,22 @@ use scarb::{
 
 use noirc_driver::{CompileOptions, CompiledProgram, NOIR_ARTIFACT_VERSION_STRING};
 
-use crate::{exercise, nargo::{cli_compile_workspace_full, execute_program_and_decode, read_program_from_file, run_tests, save_witness_to_dir}};
+use crate::{
+    exercise,
+    nargo::{
+        cli_compile_workspace_full, compile, execute_program_and_decode, read_program_from_file,
+        run_tests, save_witness_to_dir,
+    },
+};
 
 const AVAILABLE_GAS: usize = 999999999;
 
 // Prepares testing crate
 // Copies the exercise file into testing crate
 pub fn prepare_crate_for_exercise(file_path: &PathBuf, prover_toml: Option<String>) -> PathBuf {
-    let crate_path = current_dir().unwrap().join(PathBuf::from("runner_crate_noir"));
+    let crate_path = current_dir()
+        .unwrap()
+        .join(PathBuf::from("runner_crate_noir"));
     let src_dir = crate_path.join("src");
     if !src_dir.exists() {
         let _ = fs::create_dir(&src_dir);
@@ -66,18 +81,20 @@ pub fn prepare_crate_for_exercise_run(file_path: &PathBuf) -> PathBuf {
 }
 
 // Builds the testing crate with scarb
-pub fn scarb_build(file_path: &PathBuf) -> anyhow::Result<String> {
-    let crate_path = prepare_crate_for_exercise(file_path,None);
-    let config = nargo_config(crate_path);
-    anyhow::Ok("".into())
-    // match compile(&config, false) {
-    //     Ok(_) => Ok("".into()),
-    //     Err(_) => anyhow::bail!("Couldn't build the exercise..."),
-    // }
+pub fn nargo_compile(file_path: &PathBuf) -> anyhow::Result<String> {
+    let _: PathBuf = prepare_crate_for_exercise(file_path, None);
+    match compile() {
+        Ok(_) => Ok("".into()),
+        Err(err) => anyhow::bail!("Failed to compile the program: {:?}", err),
+    }
 }
 
 // Execute the crate with noir
-pub fn nargo_execute(file_path: &PathBuf, prover_toml: String, exercise_name: String) -> anyhow::Result<String> {
+pub fn nargo_execute(
+    file_path: &PathBuf,
+    prover_toml: String,
+    exercise_name: String,
+) -> anyhow::Result<String> {
     let crate_path = prepare_crate_for_exercise(file_path, Some(prover_toml));
     let toml_path = get_package_manifest(&crate_path)?;
     let workspace = resolve_workspace_from_toml(
@@ -89,7 +106,7 @@ pub fn nargo_execute(file_path: &PathBuf, prover_toml: String, exercise_name: St
 
     // Compile the full workspace in order to generate any build artifacts.
     let default_options = CompileOptions::default();
-    cli_compile_workspace_full(&workspace,&default_options)?;
+    cli_compile_workspace_full(&workspace, &default_options)?;
 
     let binary_packages = workspace.into_iter().filter(|package| package.is_binary());
     for package in binary_packages {
@@ -113,14 +130,18 @@ pub fn nargo_execute(file_path: &PathBuf, prover_toml: String, exercise_name: St
 
         let witness_name = &exercise_name;
         let witness_path = save_witness_to_dir(witness_stack, witness_name, target_dir)?;
-        println!("[{}] Witness saved to {}", package.name, witness_path.display());
+        println!(
+            "[{}] Witness saved to {}",
+            package.name,
+            witness_path.display()
+        );
     }
     anyhow::Ok("".into())
 }
 
 // Runs tests on the testing crate with nargo
 pub fn nargo_test(file_path: &PathBuf) -> anyhow::Result<String> {
-    let crate_path = prepare_crate_for_exercise(file_path,None);
+    let crate_path = prepare_crate_for_exercise(file_path, None);
     let toml_path = get_package_manifest(&crate_path)?;
     let workspace = resolve_workspace_from_toml(
         &toml_path,

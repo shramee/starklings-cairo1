@@ -15,3 +15,4 @@ solutions/
 **/runner-crate/src/lib.cairo
 runner_crate_noir/src/*.nr
 runner_crate_noir/Prover.toml
+runner_crate_noir_run/src/*.nr
