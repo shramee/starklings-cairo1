@@ -1,4 +1,3 @@
-// I AM NOT DONE
 
 fn main(x: Field, y: pub Field) {
     assert(x != y);
@@ -6,6 +5,6 @@ fn main(x: Field, y: pub Field) {
 
 #[test]
 fn test_main() {
-    main(1, 1);
+    main(1, 2);
     // ^^^^^^^^ MODIFY THIS TO MAKE THE TEST PASS
 }

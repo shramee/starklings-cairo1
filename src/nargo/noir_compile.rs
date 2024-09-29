@@ -1,7 +1,10 @@
 use std::path::PathBuf;
 
 use anyhow::bail;
-use nargo::{insert_all_files_for_workspace_into_file_manager, parse_all, prepare_package};
+use nargo::{
+    insert_all_files_for_workspace_into_file_manager, ops::report_errors, parse_all,
+    prepare_package,
+};
 use nargo_toml::{get_package_manifest, resolve_workspace_from_toml, PackageSelection};
 use noirc_driver::{check_crate, CompileOptions, NOIR_ARTIFACT_VERSION_STRING};
 
@@ -21,12 +24,11 @@ pub(crate) fn compile() -> anyhow::Result<()> {
     let package = workspace.members.first().unwrap();
 
     let (mut context, crate_id) = prepare_package(&workspace_file_manager, &parsed_files, package);
-    match check_crate(&mut context, crate_id, &CompileOptions::default()) {
-        Ok(_) => Ok(()),
-        Err(err) => {
-            bail!("Failed to check crate: {:?}", err);
-        }
-    }
+    let compilation_result = check_crate(&mut context, crate_id, &CompileOptions::default());
+
+    report_errors(compilation_result, &workspace_file_manager, false, false)?;
+
+    Ok(())
 }
 
 #[test]
