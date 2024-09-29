@@ -7,7 +7,7 @@ use bn254_blackbox_solver::Bn254BlackBoxSolver;
 
 use nargo::constants::PROVER_INPUT_FILE;
 use nargo::ops::DefaultForeignCallExecutor;
-use nargo::package::Package;
+use nargo::package::{self, Package};
 use nargo::{
     insert_all_files_for_workspace_into_file_manager, parse_all, prepare_package, NargoError,
 };
@@ -20,12 +20,10 @@ use noirc_driver::{
 
 use anyhow::{bail, Result};
 
-pub(crate) fn run() -> anyhow::Result<()> {
-    let program_dir = PathBuf::from(
-        std::env::current_dir()
-            .unwrap()
-            .join("./runner_crate_noir_run"),
-    );
+use super::read_inputs_from_file;
+
+pub(crate) fn run() -> anyhow::Result<WitnessStack<FieldElement>> {
+    let program_dir = PathBuf::from(std::env::current_dir().unwrap().join("./runner_crate_noir"));
     let toml_path = get_package_manifest(&program_dir)?;
     let workspace = resolve_workspace_from_toml(
         &toml_path,
@@ -43,29 +41,28 @@ pub(crate) fn run() -> anyhow::Result<()> {
     check_crate(&mut context, crate_id, &CompileOptions::default())
         .expect("Any errors should have occurred when collecting test functions");
 
-    let binary_packages = workspace.into_iter().filter(|package| package.is_binary());
-    for package in binary_packages {
-        let program: CompiledProgram =
-            match compile_main(&mut context, crate_id, &CompileOptions::default(), None) {
-                Result::Ok((program, _)) => program,
-                Result::Err(_) => {
-                    bail!("Failed to compile the program")
-                }
-            };
+    let package = workspace.members.first().unwrap();
+    let program: CompiledProgram =
+        match compile_main(&mut context, crate_id, &CompileOptions::default(), None) {
+            Result::Ok((program, _)) => program,
+            Result::Err(_) => {
+                bail!("Failed to compile the program")
+            }
+        };
 
-        let (return_value, _) = execute_program_and_decode(
-            program,
-            None,
-            Some(workspace.root_dir.clone()),
-            Some(package.name.to_string()),
-        )?;
+    let (return_value, witness_stack) = execute_program_and_decode(
+        program,
+        None,
+        Some(workspace.root_dir.clone()),
+        Some(package.name.to_string()),
+        &package,
+    )?;
 
-        println!("[{}] Circuit witness successfully solved", package.name);
-        if let Some(return_value) = return_value {
-            println!("[{}] Circuit output: {return_value:?}", package.name);
-        }
+    println!("[{}] Circuit witness successfully solved", package.name);
+    if let Some(return_value) = return_value {
+        println!("[{}] Circuit output: {return_value:?}", package.name);
     }
-    Ok(())
+    Ok(witness_stack)
 }
 
 fn execute_program_and_decode(
@@ -73,9 +70,11 @@ fn execute_program_and_decode(
     foreign_call_resolver_url: Option<&str>,
     root_path: Option<PathBuf>,
     package_name: Option<String>,
+    package: &package::Package,
 ) -> anyhow::Result<(Option<InputValue>, WitnessStack<FieldElement>)> {
     // Parse the initial witness values from Prover.toml
-    let inputs_map = BTreeMap::new();
+    let (inputs_map, _) =
+        read_inputs_from_file(&package.root_dir, "Prover", Format::Toml, &program.abi)?;
     let witness_stack = execute_program(
         &program,
         &inputs_map,

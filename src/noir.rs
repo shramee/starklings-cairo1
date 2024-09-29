@@ -29,7 +29,7 @@ use crate::{
     exercise,
     nargo::{
         cli_compile_workspace_full, compile, execute_program_and_decode, read_program_from_file,
-        run_tests, save_witness_to_dir,
+        run, run_tests, save_witness_to_dir,
     },
 };
 
@@ -95,6 +95,21 @@ pub fn nargo_execute(
     prover_toml: String,
     exercise_name: String,
 ) -> anyhow::Result<String> {
+    /*      Small version example
+    let path = prepare_crate_for_exercise(file_path, Some(prover_toml));
+    let witness_stack = run().unwrap();
+
+    let witness_name = &exercise_name;
+    let witness_path = save_witness_to_dir(witness_stack, witness_name, target_dir)?;
+    println!(
+        "[{}] Witness saved to {}",
+        package.name,
+        witness_path.display()
+    );
+
+    Ok("".into())
+    */
+
     let crate_path = prepare_crate_for_exercise(file_path, Some(prover_toml));
     let toml_path = get_package_manifest(&crate_path)?;
     let workspace = resolve_workspace_from_toml(
