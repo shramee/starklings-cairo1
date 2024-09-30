@@ -487,7 +487,7 @@ const FINISH_LINE: &str = r#"+--------------------------------------------------
 We hope you enjoyed learning about Noir ! 
 If you noticed any issues, please don't hesitate to report them to our repo."#;
 
-pub const WELCOME: &str = r#"noirlings - An interactive tutorial to get started with the Noir DSL
+pub const WELCOME: &str = r#"Noirlings - An interactive tutorial to get started with the Noir DSL
 
 
      _   _       _      _ _                 
