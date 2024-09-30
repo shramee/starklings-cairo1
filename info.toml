@@ -1,25 +1,27 @@
+#-----------------------------------------------------------------------
 # INTRO
-
 [[exercises]]
 name = "intro1"
-path = "exercises/1.intro/intro1.nr"
-mode = { execute = "x = '1'\ny = '2'" }
-hint = """
-It should compile to ACIR and execute with a=1 and b=2. Remove the // I AM NOT DONE comment to continue
-"""
-
-[[exercises]]
-name = "intro2"
-path = "exercises/1.intro/intro2.nr"
+path = "exercises/01_intro/intro1.nr"
 mode = "test"
 hint = """
-Modify the test, maybe just change one of the argument ;)
+No hint needed
+"""
+
+#-----------------------------------------------------------------------
+# VARIABLES
+[[exercises]]
+name = "variables1"
+path = "exercises/02_variables/variables1.nr"
+mode = "test"
+hint = """
+Declare the variable
 """
 
 [[exercises]]
-name = "intro3"
-path = "exercises/1.intro/intro3.nr"
-mode = "build"
+name = "variables2"
+path = "exercises/02_variables/variables2.nr"
+mode = "test"
 hint = """
-Modify the test, maybe just change one of the argument ;)
+Add a value for the variable
 """
