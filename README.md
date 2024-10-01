@@ -16,7 +16,7 @@
 
 # STARKLINGS
 
-### An interactive tutorial to get you up and running with Cairo and Starknet
+### An interactive tutorial to get you up and running with Cairo and Starknet.
 
 ---
 
