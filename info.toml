@@ -25,3 +25,23 @@ mode = "test"
 hint = """
 Add a value for the variable
 """
+
+#-----------------------------------------------------------------------
+# OPERATIONS
+[[exercises]]
+name = "operations1"
+path = "exercises/03_operations/operations1.nr"
+mode = "test"
+hint = """
+Add a value for the variable
+"""
+
+#-----------------------------------------------------------------------
+# OPERATIONS
+[[exercises]]
+name = "operations2"
+path = "exercises/03_operations/operations2.nr"
+mode = "test"
+hint = """
+Add a value for the variable
+"""
