@@ -1,4 +1,28 @@
 #-----------------------------------------------------------------------
+# EXAMPLES FOR CONTRIBUTORS
+#[[exercises]]
+#name = "example_build"
+#path = "exercises/examples_for_contributors/example_build.nr"
+#mode = "build"
+#hint = """
+#Modify the test, maybe just change one of the argument ;)
+#"""
+#[[exercises]]
+#name = "example_execute"
+#path = "exercises/examples_for_contributors/example_execute.nr"
+#mode = { execute = "x = '1'\ny = '2'" }
+#hint = """
+#It should compile to ACIR and execute with a=1 and b=2. Remove the // I AM NOT DONE comment to continue
+#"""
+#[[exercises]]
+#name = "example_test"
+#path = "exercises/examples_for_contributors/example_test.nr"
+#mode = "test"
+#hint = """
+#Modify the test, maybe just change one of the argument ;)
+#"""
+
+#-----------------------------------------------------------------------
 # INTRO
 [[exercises]]
 name = "intro1"
@@ -26,6 +50,7 @@ hint = """
 Add a value for the variable
 """
 
+#-----------------------------------------------------------------------
 # OPERATIONS
 [[exercises]]
 name = "operations1"
@@ -43,6 +68,7 @@ hint = """
 Add a value for the variable
 """
 
+#-----------------------------------------------------------------------
 # STRUCTS
 [[exercises]]
 name = "structs1"
