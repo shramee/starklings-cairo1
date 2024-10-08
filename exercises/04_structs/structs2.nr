@@ -5,7 +5,9 @@
 // I AM NOT DONE
 
 struct Package {
+    // ISO 3166-1 alpha-3 Country code
     sender_country: [u8; 3],
+    // ISO 3166-1 alpha-3 Country code
     recipient_country: [u8; 3],
     weight_in_grams: u32,
 }
@@ -18,7 +20,7 @@ trait PackageTrait {
 
 impl PackageTrait for Package {
     fn new(sender_country: [u8; 3], recipient_country: [u8; 3], weight_in_grams: u32) -> Self {
-        assert(weight_in_grams == 0);
+        assert(weight_in_grams != 0);
         Package { sender_country, recipient_country, weight_in_grams,  }
     }
 
