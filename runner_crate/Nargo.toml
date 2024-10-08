@@ -1,5 +1,5 @@
 [package]
-name = "exercise_crate"
+name = "runner_crate"
 type = "bin"
 authors = [""]
 compiler_version = ">=0.33.0"

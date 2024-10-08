@@ -25,7 +25,6 @@ mod nargo;
 mod noir;
 mod project;
 mod run;
-mod scarb;
 mod utils;
 mod verify;
 
