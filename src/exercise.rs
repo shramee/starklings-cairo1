@@ -9,7 +9,6 @@ use std::path::PathBuf;
 use std::process::{self};
 
 use crate::noir::{nargo_compile, nargo_execute, nargo_test};
-use crate::scarb::{scarb_build, scarb_run, scarb_test};
 
 const I_AM_DONE_REGEX: &str = r"(?m)^\s*///?\s*I\s+AM\s+NOT\s+DONE";
 const CONTEXT: usize = 2;

@@ -16,14 +16,6 @@ serde_json = "1.0.81"
 home = "0.5.3"
 glob = "0.3.0"
 
-# Cairo runner dependencies
-cairo-lang-test-runner = "2.8.2"
-cairo-lang-test-plugin = "2.8.2"
-cairo-lang-runner = "2.8.2"
-cairo-lang-sierra = "2.8.2"
-scarb = { git = "https://github.com/software-mansion/scarb", tag = "v2.8.2" }
-scarb-ui = { git = "https://github.com/software-mansion/scarb", tag = "v2.8.2" }
-
 # Noir runner dependencies
 nargo = { git = "https://github.com/noir-lang/noir.git" }
 bn254_blackbox_solver = { git = "https://github.com/noir-lang/noir.git" }

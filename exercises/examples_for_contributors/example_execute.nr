@@ -1,6 +1,6 @@
 // I AM NOT DONE
 
-// Inputs
+// Inputs in the info.toml - inlined
 // x="1"
 // y="2"
 
