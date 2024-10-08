@@ -5,20 +5,22 @@
 // I AM NOT DONE
 
 struct Package {
-    sender_country: [u8],
-    recipient_country: [u8],
+    // ISO 3166-1 alpha-3 Country code
+    sender_country: [u8; 3],
+    // ISO 3166-1 alpha-3 Country code
+    recipient_country: [u8; 3],
     weight_in_grams: u32,
 }
 
 trait PackageTrait {
-    fn new(sender_country: [u8], recipient_country: [u8], weight_in_grams: u32) -> Self;
+    fn new(sender_country: [u8; 3], recipient_country: [u8; 3], weight_in_grams: u32) -> Self;
     fn is_international(self) -> //???;
     fn get_fees(self, cents_per_gram: u32) -> //???;
 }
 
 impl PackageTrait for Package {
-    fn new(sender_country: [u8], recipient_country: [u8], weight_in_grams: u32) -> Self {
-        assert(weight_in_grams == 0);
+    fn new(sender_country: [u8; 3], recipient_country: [u8; 3], weight_in_grams: u32) -> Self {
+        assert(weight_in_grams != 0);
         Package { sender_country, recipient_country, weight_in_grams,  }
     }
 
@@ -33,18 +35,18 @@ impl PackageTrait for Package {
     }
 }
 
-#[test]
-#[should_panic]
+
+#[test(should_fail)]
 fn fail_creating_weightless_package() {
-    let sender_country = "Spain".as_bytes();
-    let recipient_country = "Austria".as_bytes();
+    let sender_country = "ESP".as_bytes();
+    let recipient_country = "AUT".as_bytes();
     let _ = Package::new(sender_country, recipient_country, 0);
 }
 
 #[test]
 fn create_international_package() {
-    let sender_country = "Spain".as_bytes();
-    let recipient_country = "Russia".as_bytes();
+    let sender_country = "ESP".as_bytes();
+    let recipient_country = "RUS".as_bytes();
 
     let mut package = Package::new(sender_country, recipient_country, 1200);
 
@@ -53,7 +55,7 @@ fn create_international_package() {
 
 #[test]
 fn create_local_package() {
-    let sender_country = "Canada".as_bytes();
+    let sender_country = "CAN".as_bytes();
     let recipient_country = sender_country;
 
     let mut package = Package::new(sender_country, recipient_country, 1200);
@@ -63,8 +65,8 @@ fn create_local_package() {
 
 #[test]
 fn calculate_transport_fees() {
-    let sender_country = "Spain".as_bytes();
-    let recipient_country = "Spain".as_bytes();
+    let sender_country = "ESP".as_bytes();
+    let recipient_country = "ESP".as_bytes();
 
     let cents_per_gram = 3;
 
