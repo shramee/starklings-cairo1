@@ -33,8 +33,7 @@ impl PackageTrait for Package {
     }
 }
 
-#[test]
-#[should_panic]
+#[test(should_fail)]
 fn fail_creating_weightless_package() {
     let sender_country = "Spain".as_bytes();
     let recipient_country = "Austria".as_bytes();

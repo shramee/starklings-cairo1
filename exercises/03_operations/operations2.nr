@@ -51,8 +51,7 @@ fn test_mul() {
     assert(res == 84);
 }
 
-#[test]
-#[should_panic]
+#[test(should_fail)]
 fn test_u64_mul_overflow_1() {
     let _res = multiplication(0x100000000, 0x100000000);
 }
