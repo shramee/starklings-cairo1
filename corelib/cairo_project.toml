@@ -1,9 +1,0 @@
-[crate_roots]
-core = "src"
-
-[config.global]
-edition = "2023_11"
-
-[config.global.experimental_features]
-negative_impls = true
-coupons = true
