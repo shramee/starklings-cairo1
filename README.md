@@ -1,6 +1,6 @@
 # NOIRLINGS
 
-### An interactive tutorial to get you up and running with Noir and Aztec
+### An interactive tutorial to get you up and running with Noir
 
 ---
 
