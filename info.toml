@@ -25,3 +25,20 @@ mode = "test"
 hint = """
 Add a value for the variable
 """
+
+#-----------------------------------------------------------------------
+# STRUCTS
+[[exercises]]
+name = "structs1"
+path = "exercises/04_structs/structs1.nr"
+mode = "test"
+hint = """
+Declare the variable
+"""
+
+[[exercises]]
+name = "structs2"
+path = "exercises/04_structs/structs2.nr"
+mode = "test"
+hint = """
+"""
