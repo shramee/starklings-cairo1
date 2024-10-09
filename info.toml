@@ -85,9 +85,53 @@ mode = "test"
 hint = """
 """
 
+#-----------------------------------------------------------------------
+# BIG INT
 [[exercises]]
 name = "bigint1"
 path = "exercises/06_bigint/bigint1.nr"
 mode = "test"
 hint = """
+"""
+
+#-----------------------------------------------------------------------
+# HASH MAPS
+[[exercises]]
+name = "hashmaps1"
+path = "exercises/07_hash_maps/hashmaps1.nr"
+mode = "test"
+hint = """
+Check what required fields have a hashmap
+"""
+
+[[exercises]]
+name = "hashmaps2"
+path = "exercises/07_hash_maps/hashmaps2.nr"
+mode = "test"
+hint = """
+Check the 'insert' method
+"""
+
+[[exercises]]
+name = "hashmaps2"
+path = "exercises/07_hash_maps/hashmaps3.nr"
+mode = "test"
+hint = """
+Check the 'get' method
+"""
+
+[[exercises]]
+name = "hashmaps2"
+path = "exercises/07_hash_maps/hashmaps4.nr"
+mode = "test"
+hint = """
+Check the 'contains_key' method
+"""
+
+[[exercises]]
+name = "hashmaps2"
+path = "exercises/07_hash_maps/hashmaps5.nr"
+mode = "test"
+hint = """
+Check the 'remove' method
 """
