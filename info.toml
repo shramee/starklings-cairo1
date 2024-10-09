@@ -84,3 +84,10 @@ path = "exercises/04_structs/structs2.nr"
 mode = "test"
 hint = """
 """
+
+[[exercises]]
+name = "bigint1"
+path = "exercises/06_bigint/bigint1.nr"
+mode = "test"
+hint = """
+"""
