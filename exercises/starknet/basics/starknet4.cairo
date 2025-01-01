@@ -20,6 +20,7 @@ trait ILizInventory<TContractState> {
 mod LizInventory {
     use starknet::ContractAddress;
     use starknet::get_caller_address;
+    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map};
 
     #[storage]
     struct Storage {
