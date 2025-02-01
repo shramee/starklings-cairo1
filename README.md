@@ -66,9 +66,8 @@ starklings - An interactive tutorial to get started with Cairo and Starknet
 
 Thanks for installing starklings!
 
-Is this your first time? Don't worry, starklings is made for beginners! We are
-going to teach you a bunch of stuff about StarkNet and Cairo.
-
+First time here? No problem! Starklings is made just for beginners, and we’re 
+excited to show you the ropes of StarkNet and Cairo. Let’s dive in together!
 Here's how starklings works,
 
 1. To start starklings run `cargo run -r --bin starklings watch`
