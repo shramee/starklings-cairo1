@@ -7,9 +7,11 @@
 // I AM NOT DONE
 
 fn create_array() -> Array<felt252> {
-    let a = ArrayTrait::new(); // something to change here...
-    a.append(1);
-    a
+    let mut a = ArrayTrait<felt252>::new(); 
+    a.append(0);
+    a.append(23);
+    a.append(3);
+    a.append(23);
 }
 
 
