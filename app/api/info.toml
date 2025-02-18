@@ -1,0 +1,810 @@
+# INTRO
+
+[[exercises]]
+id = "intro1"
+name = "Intro 1"
+path = "exercises/intro/intro1.cairo"
+mode = "run"
+description = """
+Welcome to Starklings: Cairo v1
+This exercise doesn't do anything yet but it still compiles! Cairo file getting run
+needs to have a `main` function. So this file is a valid Cairo file.
+Other exercises will require you to write Cairo code to make the exercise file compile.
+"""
+hint = """
+No hints this time ;)
+"""
+
+[[exercises]]
+id = "intro2"
+name = "Intro 2"
+path = "exercises/intro/intro2.cairo"
+mode = "run"
+description = """
+This exercise won't compile... Can you make it compile?
+"""
+hint = """
+No hints this time ;)
+"""
+
+# VARIABLES
+
+[[exercises]]
+id = "variables1"
+name = "Variables 1"
+path = "exercises/variables/variables1.cairo"
+mode = "run"
+description = """
+Make me compile!
+"""
+hint = """
+The declaration on line 2 is missing a keyword that is needed in Cairo to create a new variable binding."""
+
+[[exercises]]
+id = "variables2"
+name = "Variables 2"
+path = "exercises/variables/variables2.cairo"
+mode = "run"
+description = """
+Make me compile!
+"""
+hint = """
+What happens if you annotate line 2 with a type annotation?
+What if you give x a value?
+What if you do both?
+What type should x be, anyway? (remember what the basic type in Cairo is?)
+What if x is the same type as 10? What if it's a different type? (e.g. a u8)"""
+
+[[exercises]]
+id = "variables3"
+name = "Variables 3"
+path = "exercises/variables/variables3.cairo"
+mode = "run"
+description = """
+Make me compile!
+"""
+hint = """
+Oops! In this exercise, we have a variable binding that we've created on line 2, and we're trying to use it on line 3, but we haven't given it a value. 
+We can't print out something that isn't there; try giving x a value!
+This is an error that can cause bugs that's very easy to make in any programming language -- thankfully the Cairo compiler has caught this for us!"""
+
+[[exercises]]
+id = "variables4"
+name = "Variables 4"
+path = "exercises/variables/variables4.cairo"
+mode = "run"
+description = """
+Make me compile!
+"""
+hint = """
+In Cairo, variable bindings are immutable by default. But here we're trying to reassign a different value to x! There's a keyword we can use to make a variable binding mutable instead."""
+
+[[exercises]]
+id = "variables5"
+name = "Variables 5"
+path = "exercises/variables/variables5.cairo"
+mode = "run"
+description = """
+Make me compile!
+"""
+hint = """
+In variables4 we already learned how to make an immutable variable mutable using a special keyword. Unfortunately this doesn't help us much in this exercise because we want to assign a different typed value to an existing variable. Sometimes you may also like to reuse existing variable names because you are just converting values to different types like in this exercise.
+Fortunately Cairo has a powerful solution to this problem: 'Shadowing'!
+You can see an example of variables and 'shadowing' here: https://book.cairo-lang.org/ch02-01-variables-and-mutability.html?highlight=shadow#shadowing
+You can read about the different integer types here: https://book.cairo-lang.org/ch02-02-data-types.html#integer-types
+Try to solve this exercise afterwards using this technique."""
+
+[[exercises]]
+id = "variables6"
+name = "Variables 6"
+path = "exercises/variables/variables6.cairo"
+mode = "run"
+description = """
+Make me compile!
+"""
+hint = """
+We know about variables and mutability, but there is another important type of variable available: constants.
+Constants are always immutable and they are declared with keyword 'const' rather than keyword 'let'.
+Constants types must also always be annotated.
+You can read about the constants here: https://book.cairo-lang.org/ch02-01-variables-and-mutability.html?highlight=const#constants
+"""
+
+# PRIMITIVE TYPES
+
+[[exercises]]
+id = "primitive_types1"
+name = "Primitive Types 1"
+path = "exercises/primitive_types/primitive_types1.cairo"
+mode = "run"
+description = """
+Fill in the rest of the line that has code missing!
+No hints, there's no tricks, just get used to typing these :)
+"""
+hint = "No hints this time ;)"
+
+[[exercises]]
+id = "primitive_types2"
+name = "Primitive Types 2"
+path = "exercises/primitive_types/primitive_types2.cairo"
+mode = "run"
+description = """
+Fill in the rest of the line that has code missing!
+No hints, there's no tricks, just get used to typing these :)
+"""
+hint = "No hints this time ;)"
+
+[[exercises]]
+id = "primitive_types3"
+name = "Primitive Types 3"
+path = "exercises/primitive_types/primitive_types3.cairo"
+mode = "run"
+description = """
+Destructure the `cat` tuple to call print on each member.
+"""
+hint = """
+You'll need to make a pattern to bind `name` and `age` to the appropriate parts of the tuple.
+If you're familiar with Rust, you should know that Cairo has a similar syntax to destructure tuples into multiple variables.
+https://book.cairo-lang.org/ch02-02-data-types.html?highlight=destructu#the-tuple-type
+You can do it!!
+"""
+
+[[exercises]]
+id = "primitive_types4"
+name = "Primitive Types 4"
+path = "exercises/primitive_types/primitive_types4.cairo"
+mode = "test"
+description = """
+Modify the integer types to make the tests pass.
+Learn how to convert between integer types, and felts.
+"""
+hint = """
+There are multiple integer types in Cairo. You can read about them here:
+https://book.cairo-lang.org/ch02-02-data-types.html#integer-types
+If you try to sum two integers and the result is bigger than the biggest integer of this type, you'll get a compilation error.
+You can convert integers to felts using the `.into()` method.
+You can convert felts to integers using the `.try_into()` method. 
+This method will return an `Option` type, so you'll need to unwrap it. 
+"""
+
+# OPERATIONS
+
+[[exercises]]
+id = "operations1"
+name = "Operations 1"
+path = "exercises/operations/operations1.cairo"
+mode = "test"
+description = """
+Integer types implement basic comparison and arithmetic operators.
+Felt252 operations should be avoided where possible, as they could have unwanted behavior.
+"""
+hint = """You can check the list of available operators here:
+https://book.cairo-lang.org/appendix-02-operators-and-symbols.html
+"""
+
+[[exercises]]
+id = "operations2"
+name = "Operations 2"
+path = "exercises/operations/operations2.cairo"
+mode = "test"
+description = """
+Cairo has native integer types e.g. u8, u32, ...u256, usize which support more operators than felts
+And always watch out for overflows e.g in the last test
+Let try to use them
+"""
+hint = """Use % for modulus, / for division, and * for multiplication."""
+
+# IF
+
+[[exercises]]
+id = "if1"
+name = "If 1"
+path = "exercises/if/if1.cairo"
+mode = "test"
+description = """
+Complete this function to return the bigger number!
+"""
+hint = """
+Remember in Cairo that:
+- the `if` condition does not need to be surrounded by parentheses
+- `if`/`else` conditionals are expressions
+- Each condition is followed by a `{}` block."""
+
+[[exercises]]
+id = "if2"
+name = "If 2"
+path = "exercises/if/if2.cairo"
+mode = "test"
+description = """
+Step 1: Make me compile!
+Step 2: Get the bar_for_fuzz and default_to_baz tests passing!
+"""
+hint = """
+For that first compiler error, it's important in Cairo that each conditional block returns the same type! To get the tests passing, you will need a couple conditions checking different input values."""
+
+# FUNCTIONS
+
+[[exercises]]
+id = "functions1"
+name = "Functions 1"
+path = "exercises/functions/functions1.cairo"
+mode = "run"
+description = """
+Make me compile!
+"""
+hint = """
+This main function is calling a function that it expects to exist, but the function doesn't exist. It expects this function to have the name `call_me`.
+It expects this function to not take any arguments and not return a value.
+Sounds a lot like `main`, doesn't it?"""
+
+[[exercises]]
+id = "functions2"
+name = "Functions 2"
+path = "exercises/functions/functions2.cairo"
+mode = "run"
+description = """
+Make me compile!
+"""
+hint = """
+Cairo requires that all parts of a function's signature have type annotations, but `call_me` is missing the type annotation of `num`. 
+What is the basic type in Cairo?"""
+
+[[exercises]]
+id = "functions3"
+name = "Functions 3"
+path = "exercises/functions/functions3.cairo"
+mode = "run"
+description = """
+Make me compile!
+"""
+hint = """
+This time, the function *declaration* is okay, but there's something wrong with the place where we're calling the function.
+As a reminder, you can freely play around with different solutions in Starklings! 
+You can click compile as many times as you want!
+"""
+
+
+[[exercises]]
+id = "functions4"
+name = "Functions 4"
+path = "exercises/functions/functions4.cairo"
+mode = "run"
+description = """
+This store is having a sale where if the price is an even number, you get 10 Cairobucks off, but if it's an odd number, it's 3 Cairobucks off.
+(Don't worry about the function bodies themselves, we're only interested in the signatures for now. If anything, this is a good way to peek ahead to future exercises!)
+"""
+hint = """
+The error message points to line 6 and says it expects a type after the `->`. 
+This is where the function's return type should be -- take a look at the `is_even` function for an example!
+"""
+
+# QUIZ 1
+
+[[exercises]]
+id = "quizs1"
+name = "Quizs 1"
+path = "exercises/quizs/quizs1.cairo"
+mode = "test"
+description = """
+Mary is buying apples. The price of an apple is calculated as follows:
+- An apple costs 3 cairobucks.
+- If Mary buys more than 40 apples, each apple only costs 2 cairobuck!
+Write a function that calculates the price of an order of apples given the quantity bought. No hints this time!
+"""
+hint = """No hints this time ;)"""
+
+# LOOPS
+
+[[exercises]]
+id = "loops1"
+name = "Loops 1"
+path = "exercises/loops/loops1.cairo"
+mode = "test"
+description = """
+"""
+hint = """
+The `break` condition is reached too early. Can you introduce a condition so that the loop runs a little more?"""
+
+[[exercises]]
+id = "loops2"
+name = "Loops 2"
+path = "exercises/loops/loops2.cairo"
+mode = "test"
+description = """
+"""
+hint = """
+You can return values from loops by adding the value you want returned after the `break` expression you use to stop the loop. Don't forget that assigning a variable to the value returned from a `loop` is an expression, and thus must end with a semicolomn.
+"""
+
+
+# ENUMS
+
+[[exercises]]
+id = "enums1"
+name = "Enums 1"
+path = "exercises/enums/enums1.cairo"
+mode = "run"
+description = """
+Make me compile!
+"""
+hint = "Take a look at https://book.cairo-lang.org/ch06-01-enums.html for more information on how enums work on Cairo."
+
+[[exercises]]
+id = "enums2"
+name = "Enums 2"
+path = "exercises/enums/enums2.cairo"
+mode = "run"
+description = """
+"""
+hint = """
+You can create enumerations that have different variants with different types such as no data, structs, a single felt string, tuples, ...etc
+https://book.cairo-lang.org/ch06-01-enums.html
+"""
+
+[[exercises]]
+id = "enums3"
+name = "Enums 3"
+path = "exercises/enums/enums3.cairo"
+mode = "test"
+description = """
+Address all the TODOs to make the tests pass!
+"""
+hint = """
+As a first step, you can define enums to compile this code without errors. Then, create a match expression in `process()`.
+Note that you need to deconstruct some message variants in the match expression to get value in the variant.
+https://book.cairo-lang.org/ch06-01-enums.html
+"""
+
+# OPTIONS
+
+[[exercises]]
+id = "options1"
+name = "Options 1"
+path = "exercises/options/options1.cairo"
+mode = "test"
+description = """
+"""
+hint = """
+Options can have a Some value, with an inner value, or a None value, without an inner value.
+There's multiple ways to get at the inner value, you can use unwrap, or pattern match. 
+Unwrapping is the easiest, but how do you do it safely so that it doesn't panic in your face later?
+https://book.cairo-lang.org/ch06-01-enums.html#the-option-enum-and-its-advantages
+"""
+
+[[exercises]]
+id = "options2"
+name = "Options 2"
+path = "exercises/options/options2.cairo"
+mode = "test"
+description = """
+"""
+hint = """
+check out: https://github.com/starkware-libs/cairo/blob/main/corelib/src/option.cairo to see the implementation of the Option type and its methods.
+"""
+
+[[exercises]]
+id = "options3"
+name = "Options 3"
+path = "exercises/options/options3.cairo"
+mode = "test"
+description = """
+"""
+hint = """
+Reminder: You can use a match statement with an Option to handle both the Some and None cases.
+This syntax is more flexible than using unwrap, which only handles the Some case, and contributes to more robust code.
+"""
+
+# Arrays
+
+[[exercises]]
+id = "arrays1"
+name = "Arrays 1"
+path = "exercises/arrays/arrays1.cairo"
+mode = "test"
+description = """
+Your task is to create an `Array` which holds three elements of type `felt252`.
+The first element shoud be 0.
+Make me compile and pass the test!
+"""
+hint = """
+You can declare an array in Cairo using the following syntax:
+`let your_array = ArrayTrait::new();`
+You can append elements to an array using the following syntax:
+`your_array.append(element);`
+The `pop_front` method removes the first element from the array and returns an Option::Some(value) if the array is not empty, or Option::None() if the array is empty.
+"""
+
+[[exercises]]
+id = "arrays2"
+name = "Arrays 2"
+path = "exercises/arrays/arrays2.cairo"
+mode = "test"
+description = """
+Your task is to make the test pass without modifying the `create_array` function.
+Make me compile and pass the test!
+"""
+hint = """
+How can you remove the first element from the array?
+Take a look at the previous exercise for a hint. Don't forget to call `.unwrap()` on the returned value.
+This will prevent the `Variable not dropped` error.
+"""
+
+[[exercises]]
+id = "arrays3"
+name = "Arrays 3"
+path = "exercises/arrays/arrays3.cairo"
+mode = "test"
+description = """
+Make me compile and pass the test!
+"""
+hint = """
+The test fails because you are trying to access an element that is out of bounds!
+By using array.pop_front(), we remove the first element from the array, so the index of the last element is no longer 2.
+Without changing the index accessed, how can we make the test pass? Is there a method that returns an option that could help us?
+"""
+
+
+# STRUCTS
+
+[[exercises]]
+id = "structs1"
+name = "Structs 1"
+path = "exercises/structs/structs1.cairo"
+mode = "test"
+description = """
+Address all the TODOs to make the tests pass!
+"""
+hint = """
+Cairo has a single type of struct that are named collections of related data stored in fields.
+In this exercise you need to complete and implement a struct.
+Read more about structs in the Structs section of this article: https://book.cairo-lang.org/ch05-01-defining-and-instantiating-structs.html """
+
+
+[[exercises]]
+id = "structs2"
+name = "Structs 2"
+path = "exercises/structs/structs2.cairo"
+mode = "test"
+description = """
+Address all the TODOs to make the tests pass!
+Remember: There are some shortcuts that can be taken when destructuring structs.
+let Foo {x, y} = foo; // Creates variables x and y with values foo.x and foo.y
+let Foo {x: a, y: b} = foo; // Creates variables a and b with values foo.x and foo.y
+"""
+hint = """
+Cairo requires you to initialize all fields when creating a struct and there is no update syntax available at the moment.
+You can have multiple data types in a struct, and even other structs.
+
+Read more about structs in the Structs section of this article: https://book.cairo-lang.org/ch05-01-defining-and-instantiating-structs.html """
+
+[[exercises]]
+id = "structs3"
+name = "Structs 3"
+path = "exercises/structs/structs3.cairo"
+mode = "test"
+description = """
+Structs contain data, but can also have logic. In this exercise we have defined the Package struct and we want to test some logic attached to it.
+Make the code compile and the tests pass!
+"""
+hint = """
+For is_international: What makes a package international? Seems related to the places it goes through right?
+
+For get_fees: This method takes an additional argument, is there a field in the Package struct that this relates to?
+
+Looking at the test functions will also help you understand more about the syntax.
+This section will help you understanding more about methods https://book.cairo-lang.org/ch05-03-method-syntax.html
+"""
+
+# MOVE SEMANTICS
+
+[[exercises]]
+id = "move_semantics1"
+name = "Move Semantics 1"
+path = "exercises/move_semantics/move_semantics1.cairo"
+mode = "run"
+description = """
+"""
+hint = """
+So you've got the "ref argument must be a mutable variable." error on line 10, right? The fix for this is going to be adding one keyword, and the addition is NOT on line 10 where the error is.
+Also: Try accessing `arr0` after having called `fill_arr()`. See what happens!
+Read more about move semantics and ownership here: https://book.cairo-lang.org/ch04-01-what-is-ownership.html
+"""
+
+[[exercises]]
+id = "move_semantics2"
+name = "Move Semantics 2"
+path = "exercises/move_semantics/move_semantics2.cairo"
+mode = "run"
+description = """
+Make me compile without changing line 7 or moving line 4!
+"""
+hint = """
+So, `arr0` is passed into the `fill_arr` function as an argument. In Cairo, when an argument is passed to a function and it's not explicitly returned, you can't use the original variable anymore. We call this "moving" a variable.
+Variables that are moved into a function (or block scope) and aren't explicitly returned get "dropped" at the end of that function. This is also what happens here.
+There's a few ways to fix this, try them all if you want:
+1. Make another, separate version of the data that's in `arr0` and pass that
+   to `fill_arr` instead.
+2. Make `fill_arr` *mutably* borrow a reference to its argument (which will need to be
+   mutable) with the `ref` keyword , modify it directly, then not return anything. Then you can get rid
+   of `arr1` entirely -- note that this will change what gets printed by the
+   first `print`
+3. Make `fill_arr` borrow an immutable view of its argument instead of taking ownership by using the snapshot operator `@`,
+   and then copy the data within the function in order to return an owned
+   `Array<felt>`. This requires an explicit clone of the array and should generally be avoided in Cairo, as the memory is write-once and cloning can be expensive. To clone an object, you will need to import the trait `clone::Clone` and the implementation of the Clone trait for the array located in `array::ArrayTCloneImpl`"""
+
+[[exercises]]
+id = "move_semantics3"
+name = "Move Semantics 3"
+path = "exercises/move_semantics/move_semantics3.cairo"
+mode = "run"
+description = """
+Make me compile without adding new lines-- just changing existing lines!
+(no lines with multiple semicolons necessary!)
+"""
+hint = """
+The difference between this one and the previous ones is that the first line of `fn fill_arr` that had `let mut arr = arr;` is no longer there. You can, instead of adding that line back, add `mut` in one place that will change an existing binding to be a mutable binding instead of an immutable one :)"""
+
+[[exercises]]
+id = "move_semantics4"
+name = "Move Semantics 4"
+path = "exercises/move_semantics/move_semantics4.cairo"
+mode = "run"
+description = """
+Refactor this code so that instead of passing `arr0` into the `fill_arr` function, the Array gets created in the function itself and passed back to the main function.
+"""
+hint = """
+Stop reading whenever you feel like you have enough direction :) Or try doing one step and then fixing the compiler errors that result!
+So the end goal is to:
+   - get rid of the first line in main that creates the new array
+   - so then `arr0` doesn't exist, so we can't pass it to `fill_arr`
+   - we don't want to pass anything to `fill_arr`, so its signature should
+     reflect that it does not take any arguments
+   - since we're not creating a new array in `main` anymore, we need to create
+     a new array in `fill_arr`, similarly to the way we did in `main`"""
+
+[[exercises]]
+id = "move_semantics5"
+name = "Move Semantics 5"
+path = "exercises/move_semantics/move_semantics5.cairo"
+mode = "test"
+description = """
+Make me compile only by reordering the lines in `main()`, but without adding, changing or removing any of them.
+"""
+hint = """
+Carefully reason about how each function takes ownership of the variable passed.
+It depends on the keyword used to pass the variable.
+What happens when a function takes ownership of a variable and then returns it?
+Can we still use it later on?
+"""
+
+[[exercises]]
+id = "move_semantics6"
+name = "Move Semantics 6"
+path = "exercises/move_semantics/move_semantics6.cairo"
+mode = "run"
+description = """
+You can't change anything except adding or removing references.
+"""
+hint = """
+The first problem is that `get_value` is taking ownership of the Number struct.
+So `Number` is moved and can't be used for `set_value` 
+`number` is moved to `get_value` first, meaning that `set_value` cannot manipulate the data.
+What can we use to pass an immutable reference to `get_value`? What special operator do we use for that?
+What other operator do we use to "desnap" a snapshot?
+Hint: It involves the `@` and `*` operators.
+
+Once you've fixed that, `set_value`'s function signature will also need to be adjusted.
+Can you figure out how?
+"""
+
+# TRAITS
+
+[[exercises]]
+id = "traits1"
+name = "Traits 1"
+path = "exercises/traits/traits1.cairo"
+mode = "test"
+description = """
+Time to implement some traits!
+Your task is to implement the trait `AnimalTrait` for the type `Animal`
+Fill in the impl block to make the code work.
+"""
+hint = """ 
+If you want to implement a trait for a type, you have to implement all the methods in the trait.
+Based on the signature of the method, you can easily implement it.
+
+In the test, you need to instantiate two objects of type `Animal`.
+You can call the method of a trait by using the MyTrait::foo() syntax.
+How would you instantiate the two objects with AnimalTrait?
+Maybe you need to specify the type of the object?
+https://book.cairo-lang.org/ch08-02-traits-in-cairo.html
+"""
+
+[[exercises]]
+id = "traits2"
+name = "Traits 2"
+path = "exercises/traits/traits2.cairo"
+mode = "test"
+description = """
+The previous exercise did not make the distinction between different types of animals, but this one does.
+The trait `AnimalTrait` has two functions:
+`new` and `make_noise`.
+`new` should return a new instance of the type implementing the trait.
+`make_noise` should return the noise the animal makes.
+The types `Cat` and `Cow` are already defined for you.
+You need to implement the trait `AnimalTrait` for them.
+"""
+hint = """ No hints for this one! It is very similar to the previous exercise."""
+
+[[exercises]]
+id = "traits3"
+name = "Traits 3"
+path = "exercises/traits/traits3.cairo"
+mode = "test"
+description = """
+The previous exercise showed how to implement a trait for multiple types.
+This exercise shows how you can implement multiple traits for a single type.
+This is useful when you have types that share some common functionality, but also have some unique functionality.
+"""
+hint = """ 
+You can implement multiple traits for a type.
+When a trait is destined to be implemented by a single type, you don't need to use generics.
+If you're having trouble updating the distance value in the `Fish` and `Dog` impls, remember that you need to first
+1. Destructure the object into mutable variables
+2. Update the distance variable
+3. Reconstruct `self` with the updated variables (`self = MyStruct { ... }`) 
+"""
+
+# DICT
+
+[[exercises]]
+id = "dict1"
+name = "Dict 1"
+path = "exercises/dict/dict1.cairo"
+mode = "test"
+description = """
+The Felt252Dict maps a felt252 to a value of the specified type.
+In this exercise, you will map a `felt252` key to a value of type `u32`.
+
+Your task is to create a `Felt252Dict`  containing three elements of type `u32`.
+The first element should map the key 'A' to the value 1, the second key 'B' to the value 2
+and the third should map 'bob' to the value 3.
+Make me compile and pass the test!
+"""
+hint = """
+More info about the Felt252Dict type can be found in the following chapter :
+https://book.cairo-lang.org/ch03-02-dictionaries.html
+"""
+
+
+[[exercises]]
+id = "dict2"
+name = "Dict 2"
+path = "exercises/dict/dict2.cairo"
+mode = "test"
+description = """
+Dictionaries can be used to simulate dynamic array : the value they store can be accessed and modified.
+Your task is to create a function that multiplies the elements stored at the indexes 0 to n of a dictionary by 10
+Make me compile and pass the test!
+"""
+hint = """
+More info about the Felt252Dict type can be found in the following chapter :
+https://book.cairo-lang.org/ch03-02-dictionaries.html
+"""
+
+
+[[exercises]]
+id = "dict3"
+name = "Dict 3"
+path = "exercises/dict/dict3.cairo"
+mode = "test"
+description = """
+Custom data structure using dicts
+Using Felt252Dict in structs allow us to simulate mutable data structures
+In this exercise we have a struct Team where a Felt252Dict maps the name of a player to its level and keeps track of the number of player.
+Using the methods set and get from the Felt252DictTrait, implement the required functions to interact with the team
+Make me compile and pass the test!
+"""
+hint = """
+Example of custom data structures using dicts can be found in this chapter :
+https://book.cairo-lang.org/ch03-03-custom-data-structures.html
+"""
+
+# MODULES
+
+[[exercises]]
+id = "modules1"
+name = "Modules 1"
+path = "exercises/modules/modules1.cairo"
+mode = "test"
+description = """
+We are writing an app for a restaurant,
+but take_order functions are not being called correctly.
+Can you fix this?
+"""
+hint = """
+You can bring a parent's modules items in the current module with super::item_name
+"""
+
+[[exercises]]
+id = "modules2"
+name = "Modules 2"
+path = "exercises/modules/modules2.cairo"
+mode = "test"
+description = """
+These modules have some issues, can you fix?
+"""
+hint = """
+While using functions/structs and other items from outside the module, you can refer to them with their full path or import them in the current context with the use keyword.
+"""
+
+# STARKNET
+
+[[exercises]]
+id = "starknet1"
+name = "Starknet 1"
+path = "exercises/starknet/basics/starknet1.cairo"
+mode = "test"
+description = """
+Starkling, Joe, is writing a really simple contract.
+The contract shows that he is the owner of the contract.
+However, his contract is not working. What's he missing?
+"""
+hint = """
+No hints this time ;)
+"""
+
+[[exercises]]
+id = "starknet2"
+name = "Starknet 2"
+path = "exercises/starknet/basics/starknet2.cairo"
+mode = "test"
+description = """
+Joe's contract in the last exercise showed that Joe is the owner of the contract.
+He thanks you for helping him out!
+Jill says that contract should allow setting the owner when contract is deployed.
+Help Jill rewrite the contract with a Storage and a constructor.
+There is a `ContractAddress` type which should be used for Wallet addresses.
+"""
+hint = """
+No hints this time ;)
+"""
+
+[[exercises]]
+id = "starknet3"
+name = "Starknet 3"
+path = "exercises/starknet/basics/starknet3.cairo"
+mode = "test"
+description = """
+Joe liked Jill's work very much. He really likes how useful storage can be.
+Now they decided to write a contract to track the number of exercises they complete successfully. Jill says they can use the owner code and allow
+only the owner to update the contract, they agree.
+Can you help them write this contract?
+"""
+hint = """
+No hints this time ;)
+"""
+
+[[exercises]]
+id = "starknet4"
+name = "Starknet 4"
+path = "exercises/starknet/basics/starknet4.cairo"
+mode = "test"
+description = """
+Liz, a friend of Jill, wants to manage inventory for her store on-chain.
+This is a bit challenging for Joe and Jill, Liz prepared an outline for how contract should work, can you help Jill and Joe write it?
+"""
+hint = """ 
+You can use LegacyMap<felt252, u32> for inventory.
+"""
+
+[[exercises]]
+id = "starknet5"
+name = "Starknet 5"
+path = "exercises/starknet/interoperability/starknet5.cairo"
+mode = "test"
+description = """
+Address all the TODOs to make the tests pass!
+"""
+hint = """ 
+You can call other contracts from inside a contract. To do this, you will need to create a Dispatcher object of the type of the called contract. Dispatchers have associated methods available under the `DispatcherTrait`, corresponding to the external functions of the contract that you want to call.
+"""

@@ -1,0 +1,37 @@
+{
+  "name": "wasm-cairo",
+  "collaborators": [
+    "cryptonerdcn <cryptonerdcn@gmail.com> (https://twitter.com/cryptonerdcn)"
+  ],
+  "description": "WASM runtime for Cairo language and Starknet",
+  "version": "0.8.8",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cryptonerdcn/wasm-cairo.git"
+  },
+  "files": [
+    "wasm-cairo_bg.wasm",
+    "wasm-cairo.js",
+    "wasm-cairo.d.ts",
+    "LICENSE_APACHE"
+  ],
+  "module": "wasm-cairo.js",
+  "types": "wasm-cairo.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ],
+  "keywords": [
+    "no_std",
+    "wasm",
+    "cairo",
+    "starkware",
+    "starknet",
+    "zero-knowledge",
+    "zk",
+    "dapp",
+    "zk-STARK",
+    "zkSTARK",
+    "off-chain"
+  ]
+}
