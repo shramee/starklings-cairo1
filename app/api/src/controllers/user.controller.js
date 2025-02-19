@@ -48,9 +48,9 @@ export const resolveExercise = async (req, res, next) => {
 
   let response;
   try {
-    response = await readFileAsync("info.toml", "utf8");
+    response = await readFileAsync('info.toml', 'utf8');
   } catch (error) {
-    throw { statusCode: 500, message: "Error al leer el archivo2" };
+    throw { statusCode: 500, message: "Error reading exercises info file" };
   }
   let result = toml.parse(response);
 

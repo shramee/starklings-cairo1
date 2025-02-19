@@ -15,7 +15,7 @@ export const getAllExercises = async (req, res, next) => {
   try {
     response = await readFileAsync('info.toml', 'utf8');
   } catch (error) {
-      throw { statusCode: 500, message: 'Error al leer el archivo' };
+    throw { statusCode: 500, message: 'Error reading exercises info file' };
   }
   let result = toml.parse(response);
   let i = 1;
@@ -27,12 +27,12 @@ export const getAllExercises = async (req, res, next) => {
 };
 
 export const getExercise = async (req, res) => {
-  
+
   let response;
   try {
     response = await readFileAsync('info.toml', 'utf8');
   } catch (error) {
-      throw { statusCode: 500, message: 'Error al leer el archivo' };
+    throw { statusCode: 500, message: 'Error reading exercises info file' };
   }
   let result = toml.parse(response);
 
@@ -47,9 +47,9 @@ export const getExercise = async (req, res) => {
   exercise.antiCheat = antiCheatJson[req.params.id]
 
   try {
-      exercise.code = await readFileAsync(exercise.path, 'utf8');
+    exercise.code = await readFileAsync(exercise.path, 'utf8');
   } catch (error) {
-      throw { statusCode: 500, message: 'Error al leer el archivo' };
+    throw { statusCode: 500, message: 'Error reading exercise file at path ' + exercise.path };
   }
 
   return res.json(exercise);
@@ -60,7 +60,7 @@ export const getHint = async (req, res) => {
   try {
     response = await readFileAsync('info.toml', 'utf8');
   } catch (error) {
-      throw { statusCode: 500, message: 'Error al leer el archivo' };
+    throw { statusCode: 500, message: 'Error reading exercises info file' };
   }
   let result = toml.parse(response);
 
