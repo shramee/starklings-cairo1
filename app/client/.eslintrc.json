@@ -1,0 +1,228 @@
+{
+  "root": true,
+  "ignorePatterns": ["**/*", "!jest.setup.ts", "!tsconfig.base.json"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.mjs", "*.cjs"],
+      "plugins": ["lodash", "testing-library"],
+      "rules": {
+        "lodash/import-scope": ["error", "method"],
+        "no-duplicate-imports": "error",
+        "mui-path-imports/mui-path-imports": "error",
+        "simple-import-sort/imports": [
+          "error",
+          {
+            "groups": [
+              // Util for registering tsconfig paths inside jest.
+              // Allows access to nx namespaces.
+              // Needs to come first before all other imports.
+              // https://nx.dev/packages/jest#global-setup/teardown-with-nx-libraries
+              ["@nx/js/src/internal"],
+              ["@cloudbees/shared-node-utils/initDotEnv/immediate"],
+              // Packages `react` related packages come first.
+              ["^react", "^@?\\w"],
+              // Internal packages.
+              ["^@(cloudbees)(/.*|$)"],
+              // Side effect imports.
+              ["^\\u0000"],
+              // Parent imports. Put `..` last.
+              ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+              // Other relative imports. Put same-folder imports and `.` last.
+              ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+              // Style imports.
+              ["^.+\\.?(css)$"]
+            ]
+          }
+        ],
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["!date-fns/*"],
+            "paths": [
+              {
+                "name": "@auth0/auth0-react",
+                "importNames": ["useAuth0"],
+                "message": "Please use custom 'useAuth()' hook instead."
+              },
+              {
+                "name": "lodash/debounce",
+                "message": "Import 'debounce' from '@mui/material/utils/debounce' instead."
+              },
+              {
+                "name": "styled",
+                "importNames": ["default"],
+                "message": "Please import { styled } from '@mui/material/styles'"
+              },
+              {
+                "name": "@emotion/styled",
+                "importNames": ["default"],
+                "message": "Please import { styled } from '@mui/material/styles'"
+              },
+              {
+                "name": "date-fns",
+                "message": "Please use `import [package] from 'date-fns/[package]'` instead."
+              },
+              {
+                "name": "react-dom/test-utils",
+                "importNames": ["act"],
+                "message": "Import 'act' from '@testing-library/react' instead.\nhttps://testing-library.com/docs/react-testing-library/api/#act\n"
+              },
+              {
+                "name": "@testing-library/react",
+                "importNames": ["render"],
+                "message": "Import 'render' from '@cloudbees/shared-test-utils/render' instead."
+              }
+            ]
+          }
+        ],
+        "no-restricted-syntax": [
+          "error",
+          {
+            "message": "setTimeout may indicate underlying issues with the test or code itself.\n\nSuggestions:\n   - Split the test up into smaller, more easily tested parts\n   - Check for expensive operations or unhandled asynchronous code.\n   - Consider moving it to the e2e test suite\n",
+            "selector": "CallExpression[callee.object.name='jest'][callee.property.name='setTimeout']"
+          },
+          {
+            "selector": ":matches(ImportNamespaceSpecifier[local.name!='React'])",
+            "message": "The '*' character imports everything from the targeted module. Did you mean to do this? For performance reasons, it's best to only import the modules you need."
+          }
+        ],
+        "@nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "scope:app",
+                "onlyDependOnLibsWithTags": ["scope:shared", "scope:test"]
+              },
+              {
+                "sourceTag": "scope:shared",
+                "onlyDependOnLibsWithTags": ["scope:shared", "scope:test"]
+              },
+              {
+                "sourceTag": "scope:test",
+                "onlyDependOnLibsWithTags": ["scope:types"]
+              },
+              {
+                "sourceTag": "scope:tools",
+                "onlyDependOnLibsWithTags": ["scope:types", "scope:node-utils"]
+              }
+            ]
+          }
+        ],
+        "testing-library/consistent-data-testid": [
+          "error",
+          {
+            "testIdPattern": "^[a-z]+(-[a-z]+)*$"
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.json", "*.json5", "*.jsonc"],
+      "extends": ["plugin:jsonc/recommended-with-jsonc"],
+      "parser": "jsonc-eslint-parser",
+      "rules": {
+        "jsonc/auto": "error"
+      }
+    },
+    {
+      "files": ["tsconfig.base.json"],
+      "parser": "jsonc-eslint-parser",
+      "rules": {
+        "@nx/workspace/ts-config-glob-alias": "warn"
+      }
+    },
+    {
+      "files": ["*.tsx"],
+      "extends": ["plugin:@nx/react-typescript"]
+    },
+    {
+      "files": ["*.tsx", "*.jsx"],
+      "extends": ["plugin:@nx/react-base", "plugin:@nx/react-jsx"]
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nx/typescript"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": [
+        "@nx",
+        "@typescript-eslint",
+        "mui-path-imports",
+        "unused-imports",
+        "simple-import-sort"
+      ],
+      "parserOptions": {
+        "project": ["tsconfig.*?.json", "libs/*/tsconfig.lib.json"]
+      },
+      "rules": {
+        "unused-imports/no-unused-imports-ts": "error",
+        "@typescript-eslint/await-thenable": "error",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-unnecessary-type-assertion": [
+          "warn",
+          { "typesToIgnore": ["HTMLElement"] }
+        ],
+        "@nx/workspace/segment-naming-convention": "error",
+        "@nx/workspace/no-root-imports": [
+          "error",
+          {
+            "exclusions": [
+              "@cloudbees/shared-providers",
+              "@cloudbees/route-config-nextgen",
+              "@cloudbees/shared-types"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx", "*.cjs", "*.mjs"],
+      "extends": ["plugin:@nx/javascript"]
+    },
+    {
+      "files": ["**/e2e/**/*.[jt]s?(x)", "**/*.cy.[jt]s?(x)"],
+      "plugins": ["cypress"],
+      "extends": ["plugin:cypress/recommended"],
+      "rules": {
+        "@nx/workspace/cypress-no-unsafe-chaining": "error",
+        "cypress/unsafe-to-chain-command": "off"
+      }
+    },
+    {
+      "files": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+      "plugins": ["jest", "testing-library", "jest-dom"],
+      "extends": [
+        "plugin:jest/recommended",
+        "plugin:jest/style",
+        "plugin:testing-library/react",
+        "plugin:jest-dom/recommended"
+      ],
+      "rules": {
+        "jest/consistent-test-it": "error",
+        "jest/prefer-each": "error",
+        "jest/prefer-snapshot-hint": "warn",
+        "jest/require-to-throw-message": "error",
+        "jest/prefer-comparison-matcher": "error",
+        "jest/prefer-equality-matcher": "error",
+        "jest/prefer-expect-resolves": "error",
+        "jest/prefer-to-have-length": "error",
+        "jest/prefer-hooks-in-order": "error",
+        "jest/prefer-hooks-on-top": "error",
+        "jest/prefer-to-be": "error",
+        "jest/prefer-to-contain": "error",
+        "jest/prefer-spy-on": "error",
+        "jest/prefer-strict-equal": "warn",
+        "jest/no-export": "warn",
+        "testing-library/prefer-user-event": "warn",
+        "testing-library/prefer-wait-for": "error",
+        "testing-library/prefer-explicit-assert": "error",
+        "testing-library/await-async-query": "error",
+        "testing-library/no-manual-cleanup": "error",
+        "testing-library/no-await-sync-events": "error"
+      }
+    }
+  ]
+}

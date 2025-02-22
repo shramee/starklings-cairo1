@@ -1,0 +1,86 @@
+[
+  {
+    "name": "intro1",
+    "path": "exercises/intro/intro1.cairo",
+    "mode": "compile",
+    "group": "INTRO",
+    "order": 1
+  },
+  {
+    "name": "intro2",
+    "path": "exercises/intro/intro2.cairo",
+    "mode": "compile",
+    "group": "INTRO",
+    "order": 2
+  },
+  {
+    "name": "variables1",
+    "path": "exercises/variables/variables1.cairo",
+    "mode": "compile",
+    "group": "VARIABLES",
+    "order": 3
+  },
+  {
+    "name": "variables2",
+    "path": "exercises/variables/variables2.cairo",
+    "mode": "compile",
+    "group": "VARIABLES",
+    "order": 4
+  },
+  {
+    "name": "variables3",
+    "path": "exercises/variables/variables3.cairo",
+    "mode": "compile",
+    "group": "VARIABLES",
+    "order": 5
+  },
+  {
+    "name": "variables4",
+    "path": "exercises/variables/variables4.cairo",
+    "mode": "compile",
+    "group": "VARIABLES",
+    "order": 6
+  },
+  {
+    "name": "variables5",
+    "path": "exercises/variables/variables5.cairo",
+    "mode": "compile",
+    "group": "VARIABLES",
+    "order": 7
+  },
+  {
+    "name": "variables6",
+    "path": "exercises/variables/variables6.cairo",
+    "mode": "compile",
+    "group": "VARIABLES",
+    "order": 8
+  },
+  {
+    "name": "primitive_types1",
+    "path": "exercises/primitive_types/primitive_types1.cairo",
+    "mode": "compile",
+    "group": "PRIMITIVE_TYPES",
+    "order": 9
+  },
+  {
+    "name": "primitive_types2",
+    "path": "exercises/primitive_types/primitive_types2.cairo",
+    "mode": "compile",
+    "group": "PRIMITIVE_TYPES",
+    "order": 10
+  },
+  {
+    "name": "primitive_types3",
+    "path": "exercises/primitive_types/primitive_types3.cairo",
+    "mode": "compile",
+    "group": "PRIMITIVE_TYPES",
+    "order": 11
+  },
+  {
+    "name": "primitive_types4",
+    "path": "exercises/primitive_types/primitive_types4.cairo",
+    "mode": "test",
+    "group": "PRIMITIVE_TYPES",
+    "order": 12
+  }
+]

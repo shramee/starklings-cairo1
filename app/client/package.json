@@ -1,0 +1,83 @@
+{
+  "name": "starklings-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@monaco-editor/react": "^4.6.0",
+    "@mui/icons-material": "^5.15.10",
+    "@mui/material": "^5.14.18",
+    "@starknet-react/chains": "0.1.6",
+    "@starknet-react/core": "2.1.6",
+    "@tanstack/react-query": "^5.8.4",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.62",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "axios": "^1.7.9",
+    "get-starknet-core": "^3.2.0",
+    "linkify-it": "^5.0.0",
+    "notistack": "^3.0.1",
+    "react": "^18.2.0",
+    "react-device-detect": "^2.2.3",
+    "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.12",
+    "react-resizable-panels": "^0.0.63",
+    "react-router-dom": "^6.19.0",
+    "react-scripts": "5.0.1",
+    "starknet": "^5.24.3",
+    "tlds": "^1.254.0",
+    "typescript": "^4.9.5",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@nx/eslint-plugin": "16.1.1",
+    "@types/linkify-it": "^5.0.0",
+    "cypress": "^13.7.1",
+    "eslint": "~8.15.0",
+    "eslint-config-prettier": "8.1.0",
+    "eslint-plugin-cypress": "^2.13.3",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-jest": "^27.1.7",
+    "eslint-plugin-jest-dom": "^4.0.3",
+    "eslint-plugin-jsonc": "^2.10.0",
+    "eslint-plugin-jsx-a11y": "6.6.1",
+    "eslint-plugin-lodash": "^7.4.0",
+    "eslint-plugin-mui-path-imports": "^0.0.7",
+    "eslint-plugin-react": "7.31.11",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "eslint-plugin-testing-library": "^5.9.1",
+    "eslint-plugin-unused-imports": "^2.0.0"
+  },
+  "scripts": {
+    "start": "PORT=4000 react-scripts start --env-file .env",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "e2e": "npx cypress run",
+    "e2e-ui": "npx cypress open"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

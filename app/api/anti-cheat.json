@@ -1,0 +1,282 @@
+{
+  "variables1": {
+    "append": {
+      "to": "main",
+      "code": "assert(x == 5, 'x should be 5');"
+    }
+  },
+  "variables2": {
+    "append": {
+      "to": "main",
+      "code": "assert(x == 0 || x != 0, 'x should exist');"
+    }
+  },
+  "variables3": {
+    "append": {
+      "to": "main",
+      "code": "assert(x == 0 || x != 0, 'x should exist');"
+    }
+  },
+  "variables4": {
+    "shouldContain": ["x = 5;"],
+    "append": {
+      "to": "main",
+      "code": "assert(x == 5, 'x should be 5');"
+    }
+  },
+  "variables5": {
+    "shouldContain": ["let number = 1_u8;", "number = 3;"],
+    "append": {
+      "to": "main",
+      "code": "assert(number == 3, 'number should be 3');"
+    }
+  },
+  "variables6": {
+    "shouldContain": ["3_u8;"],
+    "append": {
+      "to": "main",
+      "code": "assert(NUMBER == 3, 'NUMBER should be 3'); \nassert(SMALL_NUMBER == 3, 'SMALL_NUMBER should be 3');"
+    }
+  },
+  "primitive_types1": {
+    "append": {
+      "to": "main",
+      "code": "assert(is_evening == true || is_evening == false, 'is_evening should exist');"
+    }
+  },
+  "primitive_types2": {
+    "append": {
+      "to": "main",
+      "code": "assert(your_character == 0 || your_character != 0, 'your_character should exist');"
+    }
+  },
+  "primitive_types3": {
+    "shouldContain": ["let cat = ('Furry McFurson', 3);"],
+    "append": {
+      "to": "main",
+      "code": "assert(name == 'Furry McFurson' && age == 3, 'name and cat should not change');"
+    }
+  },
+  "primitive_types4": {
+    "append": {
+      "code": "#[test]\nfn test_sum_u8s_duplicate() {\n    assert(sum_u8s(1, 2_u8) == 3_u8, 'Something went wrong');\n}\n\n#[test]\nfn test_convert_to_felt_duplicate() {\n    assert(convert_to_felt(1_u8) == 1, 'Type conversion went wrong');\n}\n\n#[test]\nfn test_convert_to_u8_duplicate() {\n    assert(convert_felt_to_u8(1) == 1_u8, 'Type conversion went wrong');\n}\n"
+    }
+  },
+  "operations1": {
+    "shouldContain": ["res // Do not change"],
+    "append": {
+      "code": "\n#[test]\nfn test_poly_duplicate() {\nlet res = poly(5, 3);\nassert(res == 126, 'Error message');\nassert(res < 300, 'res < 300');\nassert(res <= 300, 'res <= 300');\nassert(res > 20, 'res > 20');\nassert(res >= 2, 'res >= 2');\nassert(res != 27, 'res != 27');\nassert(res % 2 == 0, 'res %2 != 0');\n}\n"
+    }
+  },
+  "operations2": {
+    "append": {
+      "code": "#[test]\n      fn test_modulus_duplicate() {\n          let res = modulus(16, 2);\n          assert(res == 0, 'Error message');\n          \n          let res = modulus(17, 3);\n          assert(res == 2, 'Error message');\n      }\n      \n      #[test]\n      fn test_floor_division_duplicate() {\n          let res = floor_division(160, 2);\n          assert(res == 80, 'Error message');\n          \n          let res = floor_division(21, 4);\n          assert(res == 5, 'Error message');\n      }\n      \n      #[test]\n      fn test_mul_duplicate() {\n          let res = multiplication(16, 2);\n          assert(res == 32, 'Error message');\n          \n          let res = multiplication(21, 4);\n          assert(res == 84, 'Error message');\n      }\n      \n      #[test]\n      #[should_panic]\n      fn test_u64_mul_overflow_1_duplicate() {\n          let _res = multiplication(0x100000000, 0x100000000);\n      }\n"
+    }
+  },
+  "if1": {
+    "append": {
+      "code": "\n    #[test]\n    fn ten_is_bigger_than_eight_duplicate() {\n        assert(10 == bigger(10, 8), '10 bigger than 8');\n    }\n\n    #[test]\n    fn fortytwo_is_bigger_than_thirtytwo_duplicate() {\n        assert(42 == bigger(32, 42), '42 bigger than 32');\n    }\n"
+    }
+  },
+  "if2": {
+    "append": {
+      "code": "#[test]\n    fn foo_for_fizz_duplicate() {\n        assert(foo_if_fizz('fizz') == 'foo', 'fizz returns foo')\n    }\n\n    #[test]\n    fn bar_for_fuzz_duplicate() {\n        assert(foo_if_fizz('fuzz') == 'bar', 'fuzz returns bar');\n    }\n\n    #[test]\n    fn default_to_baz_duplicate() {\n        assert(foo_if_fizz('literally anything') == 'baz', 'anything else returns baz');\n    }\n"
+    }
+  },
+  "functions1": {
+    "append": {
+      "to": "main",
+      "code": "call_me();"
+    }
+  },
+  "functions2": {
+    "append": {
+      "to": "main",
+      "code": "call_me(3);"
+    }
+  },
+  "functions3": {
+    "append": {
+      "to": "main",
+      "code": "call_me(3);"
+    }
+  },
+  "functions4": {
+    "append": {
+      "to": "main",
+      "code": "sale_price(original_price);"
+    }
+  },
+  "quizs1": {
+    "append": {
+      "code": "#[test]\nfn verify_test_duplicate() {\n    let price1 = calculate_price_of_apples(35);\n    let price2 = calculate_price_of_apples(40);\n    let price3 = calculate_price_of_apples(41);\n    let price4 = calculate_price_of_apples(65);\n\n    assert(105 == price1, 'Incorrect price');\n    assert(120 == price2, 'Incorrect price');\n    assert(82 == price3, 'Incorrect price');\n    assert(130 == price4, 'Incorrect price');\n}\n"
+    }
+  },
+  "loops1": {
+    "shouldContain": [
+      "#[test]",
+      "fn test_loop() {",
+      "let mut counter = 0;",
+      "loop {",
+      "break ();",
+      "counter += 1;",
+      "assert(counter == 10, 'counter should be 10')"
+    ]
+  },
+  "loops2": {
+    "append": {
+      "to": "test_loop",
+      "code": "assert(result == 5, 'result should be 5');"
+    }
+  },
+  "enums1": {
+    "shouldContain": [
+      "println!(\"{}\", Message::Quit);",
+      "println!(\"{}\", Message::Echo);",
+      "println!(\"{}\", Message::Move);",
+      "println!(\"{}\", Message::ChangeColor);"
+    ]
+  },
+  "enums2": {
+    "shouldContain": [
+      "messages.append(Message::Quit);",
+      "messages.append(Message::Echo('hello world'));",
+      "messages.append(Message::Move((10, 30)));",
+      "messages.append(Message::ChangeColor((0, 255, 255)));"
+    ]
+  },
+  "enums3": {
+    "append": {
+      "code": "#[test]\nfn test_match_message_call_duplicate() {\n    let mut state = State { quit: false, position: Point { x: 0, y: 0 }, color: (0, 0, 0), };\n    state.process(Message::ChangeColor((255, 0, 255)));\n    state.process(Message::Echo('hello world'));\n    state.process(Message::Move(Point { x: 10, y: 15 }));\n    state.process(Message::Quit);\n\n    assert(state.color == (255, 0, 255), 'wrong color');\n    assert(state.position.x == 10, 'wrong x position');\n    assert(state.position.y == 15, 'wrong y position');\n    assert(state.quit == true, 'quit should be true');\n}\n"
+    }
+  },
+  "options1": {
+    "shouldContain": ["assert(icecreams == 5, 'err_6');"],
+    "append": {
+      "code": "#[test]\nfn check_icecream_duplicate() {\n    assert(maybe_icecream(9).unwrap() == 5, 'err_1');\n    assert(maybe_icecream(10).unwrap() == 5, 'err_2');\n    assert(maybe_icecream(23).unwrap() == 0, 'err_3');\n    assert(maybe_icecream(22).unwrap() == 0, 'err_4');\n    assert(maybe_icecream(25).is_none(), 'err_5');\n}\n"
+    }
+  },
+  "options2": {
+    "append": {
+      "code": "#[test]\nfn test_options_duplicate() {\n    let target = 'starklings';\n    let optional_some = Option::Some(target);\n    let optional_none: Option<felt252> = Option::None;\n    simple_option(optional_some);\n    simple_option(optional_none);\n}\n"
+    }
+  },
+  "options3": {
+    "append": {
+      "code": "#[test]\n#[available_gas(20000000)]\nfn test_all_defined_duplicate() {\n    let courses = array![\n        Option::Some('A'),\n        Option::Some('B'),\n        Option::Some('C'),\n        Option::Some('A'),\n    ];\n    let mut student = Student { name: 'Alice', courses: courses };\n    display_grades(@student, 0);\n}\n\n#[test]\n#[available_gas(20000000)]\nfn test_some_empty_duplicate() {\n    let courses = array![\n        Option::Some('A'),\n        Option::None,\n        Option::Some('B'),\n        Option::Some('C'),\n        Option::None,\n    ];\n    let mut student = Student { name: 'Bob', courses: courses };\n    display_grades(@student, 0);\n}\n"
+    }
+  },
+  "arrays1": {
+    "append": {
+      "code": "#[test]\nfn test_array_len_duplicate() {\n    let mut a = create_array();\n    assert(a.len() == 3, 'Array length is not 3');\n    assert(a.pop_front().unwrap() == 0, 'First element is not 0');\n}\n"
+    }
+  },
+  "arrays2": {
+    "shouldContain": [
+      "fn create_array() -> Array<felt252> {",
+      "let mut a = ArrayTrait::new();",
+      "a.append(42);"
+    ],
+    "append": {
+      "code": "#[test]\nfn test_arrays2_duplicate() {\n    let mut a = create_array();\n    assert(*a.at(0) == 42, 'First element is not 42');\n}\n\n#[test]\nfn test_arrays2_empty_duplicate() {\n    let mut a = create_array();\n    remove_element_from_array(ref a);\n    assert(a.len() == 0, 'Array length is not 0');\n}\n"
+    }
+  },
+  "structs1": {
+    "append": {
+      "to": "classic_c_structs",
+      "code": "assert(green.red == 0, 0); \n assert(green.green == 255, 0); \n assert(green.blue == 0, 0);"
+    }
+  },
+  "structs2": {
+    "append": {
+      "to": "test_your_order",
+      "code": "assert(name == 'Bob', 'Wrong name'); \n assert(year == order_template.year, 'Wrong year'); \nassert(made_by_phone == order_template.made_by_phone, 'Wrong phone'); \n assert(made_by_mobile == order_template.made_by_mobile, 'Wrong mobile'); \n assert(made_by_email == order_template.made_by_email, 'Wrong email'); \n assert(item_number == order_template.item_number, 'Wrong item number'); \n assert(count == 0, 'Wrong count');"
+    }
+  },
+  "structs3": {
+    "append": {
+      "code": "#[test]\nfn create_international_package_duplicate() {\n    let sender_country = 'Spain';\n    let recipient_country = 'Russia';\n    let mut package = PackageTrait::new(sender_country, recipient_country, 1200);\n    assert(package.is_international() == true, 'Not international');\n}\n\n#[test]\nfn create_local_package_duplicate() {\n    let sender_country = 'Canada';\n    let recipient_country = sender_country;\n    let mut package = PackageTrait::new(sender_country, recipient_country, 1200);\n    assert(package.is_international() == false, 'International');\n}\n\n#[test]\nfn calculate_transport_fees_duplicate() {\n    let sender_country = 'Spain';\n    let recipient_country = 'Spain';\n    let cents_per_gram = 3;\n    let mut package = PackageTrait::new(sender_country, recipient_country, 1500);\n    assert(package.get_fees(cents_per_gram) == 4500, 'Wrong fees');\n}\n"
+    }
+  },
+  "move_semantics1": {
+    "shouldContain": ["print(arr1.span());", "arr1.append(88);"]
+  },
+  "move_semantics2": {
+    "shouldContain": ["print(arr0.span());"]
+  },
+  "move_semantics5": {
+    "shouldContain": [
+      "let mut a = ArrayTrait::new();",
+      "let mut b = pass_by_value(a);",
+      "pass_by_ref(ref a);",
+      "pass_by_ref(ref b);",
+      "pass_by_snapshot(@a);"
+    ]
+  },
+  "traits1": {
+    "append": {
+      "to": "test_traits1",
+      "code": "assert(cat.make_noise() == 'meow', 'Wrong noise');\nassert(cow.make_noise() == 'moo', 'Wrong noise');"
+    }
+  },
+  "traits2": {
+    "append": {
+      "code": "#[test]\nfn test_traits2_duplicate() {\n    let kitty: Cat = AnimalTrait::new();\n    assert(kitty.make_noise() == 'meow', 'Wrong noise');\n\n    let cow: Cow = AnimalTrait::new();\n    assert(cow.make_noise() == 'moo', 'Wrong noise');\n}\n"
+    }
+  },
+  "traits3": {
+    "append": {
+      "code": "#[test]\nfn test_traits3_duplicate() {\n    // Don't modify this test!\n    let mut salmon: Fish = AnimalTrait::new();\n    salmon.swim();\n    assert(salmon.make_noise() == 'blub', 'Wrong noise');\n    assert(salmon.get_distance() == 1, 'Wrong distance');\n\n    let mut dog: Dog = AnimalTrait::new();\n    dog.walk();\n    assert(dog.make_noise() == 'woof', 'Wrong noise');\n    assert(dog.get_distance() == 1, 'Wrong distance');\n}\n"
+    }
+  },
+  "dict1": {
+    "append": {
+      "code": "#[test]\n#[available_gas(200000)]\nfn test_dict_duplicate() {\n    let mut dict = create_dictionary();\n    assert(dict.get('A') == 1, 'First element is not 1');\n    assert(dict.get('B') == 2, 'Second element is not 2');\n    assert(dict.get('bob') == 3, 'Third element is not 3');\n}\n"
+    }
+  },
+  "dict2": {
+    "append": {
+      "code": "#[test]\n#[available_gas(2000000000)]\nfn test_3_duplicate() {\n    let mut dict: Felt252Dict<u32> = Default::default();\n    dict.insert(0, 1);\n    dict.insert(1, 2);\n    dict.insert(2, 3);\n\n    multiply_element_by_10(ref dict, 3);\n\n    assert(dict.get(0) == 10, 'First element is not 10');\n    assert(dict.get(1) == 20, 'Second element is not 20');\n    assert(dict.get(2) == 30, 'Third element is not 30');\n}\n\n#[test]\n#[available_gas(200000000)]\nfn test_4_duplicate() {\n    let mut dict: Felt252Dict<u32> = Default::default();\n    dict.insert(0, 1);\n    dict.insert(1, 2);\n    dict.insert(2, 5);\n    dict.insert(3, 10);\n\n    multiply_element_by_10(ref dict, 4);\n\n    assert(dict.get(2) == 50, 'First element is not 50');\n    assert(dict.get(3) == 100, 'First element is not 100');\n\n}\n"
+    }
+  },
+  "dict3": {
+    "append": {
+      "code": "#[test]\n#[available_gas(200000)]\nfn test_add_player_duplicate() {\n    let mut team = TeamTrait::new();\n    team.add_player('bob', 10);\n    team.add_player('alice', 20);\n\n    assert(team.players_count == 2, 'Wrong number of player');\n    assert(team.get_level('bob') == 10, 'Wrong level');\n    assert(team.get_level('alice') == 20, 'Wrong level');\n}\n\n#[test]\n#[available_gas(200000)]\nfn test_level_up_duplicate() {\n    let mut team = TeamTrait::new();\n    team.add_player('bobby', 10);\n    team.level_up('bobby');\n\n    assert(team.level.get('bobby') == 11, 'Wrong level');\n}\n"
+    }
+  },
+  "modules1": {
+    "append": {
+      "code": "assert(order_result == 'order_taken', 'Order not taken');",
+      "to": "test_mod_fn"
+    }
+  },
+  "modules2": {
+    "append": {
+      "code": "#[test]\nfn test_array_duplicate() {\n    let order1 = order_utils::dummy_phoned_order('John Doe');\n    let fees1 = order_utils::order_fees(order1);\n    assert(fees1 == 500, 'Order fee should be 500');\n\n    let order2 = order_utils::dummy_emailed_order('Jane Doe');\n    let fees2 = order_utils::order_fees(order2);\n    assert(fees2 == 200, 'Order fee should be 200');\n}\n"
+    }
+  },
+  "starknet1": {
+    "append": {
+      "to": "test",
+      "code": "#[test]\n #[available_gas(2000000000)]\n fn test_contract_view_duplicate() {\n let dispatcher = deploy_contract();\n assert('Joe' == dispatcher.get_owner(), 'Joe should be the owner.');\n }"
+    }
+  },
+  "starknet2": {
+    "append": {
+      "to": "test",
+      "code": "#[test]\n    #[available_gas(2000000000)]\n    fn test_owner_setting_duplicate() {\n        let mut calldata = ArrayTrait::new();\n        calldata.append('Jill');\n        let (address0, _) = deploy_syscall(\n            JillsContract::TEST_CLASS_HASH.try_into().unwrap(), 0, calldata.span(), false\n        )\n            .unwrap();\n        let dispatcher = IJillsContractDispatcher { contract_address: address0 };\n        let owner = dispatcher.get_owner();\n        assert(owner == 'Jill'.try_into().unwrap(), 'Owner should be Jill');\n    }\n"
+    }
+  },
+  "starknet3": {
+    "append": {
+      "to": "test",
+      "code": "#[test]\n    #[available_gas(2000000000)]\n    fn test_owner_duplicate() {\n        let owner: ContractAddress = 'Sensei'.try_into().unwrap();\n        let dispatcher = deploy_contract();\n        assert(owner == dispatcher.get_contract_owner(), 'Mr. Sensei should be the owner');\n    }\n    "
+    }
+  },
+  "starknet5": {
+    "append": {
+      "to": "test_interoperability",
+      "code": "assert(contract_a.set_value(300) == true, 'Could not set value'); \n assert(contract_a.get_value() == 300, 'Value was not set'); \n assert(contract_b.is_enabled() == true, 'Contract b is not enabled');"
+    }
+  }
+}

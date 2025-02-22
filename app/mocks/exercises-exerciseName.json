@@ -1,0 +1,6 @@
+{
+	"name": "variables1",
+	"description": "Make me compile!",
+	"code": "use debug::PrintTrait;\n\nfn main() {\n\tx = 5;\n\tx.print();\n}\n",
+	"mode": "compile"
+}
