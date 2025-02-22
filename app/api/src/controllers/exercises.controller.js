@@ -37,9 +37,9 @@ export const getExercise = async (req, res) => {
   let result = toml.parse(response);
 
   let exercise;
-  for (const objeto of result.exercises) {
-    if (objeto.id === req.params.id) {
-      exercise = objeto;
+  for (const exerciseInfo of result.exercises) {
+    if (exerciseInfo.name === req.params.id) {
+      exercise = exerciseInfo;
       break;
     }
   }
@@ -65,9 +65,9 @@ export const getHint = async (req, res) => {
   let result = toml.parse(response);
 
   let exercise;
-  for (const objeto of result.exercises) {
-    if (objeto.id === req.params.id) {
-      exercise = objeto;
+  for (const exerciseInfo of result.exercises) {
+    if (exerciseInfo.name === req.params.id) {
+      exercise = exerciseInfo;
       break;
     }
   }

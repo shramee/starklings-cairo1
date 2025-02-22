@@ -29,7 +29,7 @@ export const matchUser = async (req, res, next) => {
   const newUser = req.params.newUser;
 
   await pool.query(
-    "UPDATE resolutions SET user_name = $1 WHERE user_name = $2",
+    "UPDATE Resolutions SET user_name = $1 WHERE user_name = $2",
     [newUser, user]
   );
   return res.status(200).json({ message: "ok" });
@@ -55,9 +55,9 @@ export const resolveExercise = async (req, res, next) => {
   let result = toml.parse(response);
 
   let exercise;
-  for (const objeto of result.exercises) {
-    if (objeto.id === exercise_id) {
-      exercise = objeto;
+  for (const exerciseInfo of result.exercises) {
+    if (exerciseInfo.name === exercise_id) {
+      exercise = exerciseInfo;
       break;
     }
   }
@@ -92,7 +92,7 @@ export const resolveExercise = async (req, res, next) => {
     }
   }
 
-  console.log("antiCheatCOde", antiCheatCode);
+  console.log("antiCheatCode", antiCheatCode);
   try {
     if (!(await existFolder(destinationFolder))) {
       await executeScarbNew(safeUser, tempFolder, destinationFolder);

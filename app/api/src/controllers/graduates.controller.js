@@ -5,7 +5,7 @@ import path from "path";
 
 export const getGraduates = async (req, res, next) => {
   const result = await pool.query(
-    "SELECT user_name FROM resolutions GROUP BY user_name HAVING COUNT(DISTINCT exercise_id) = 54;"
+    "SELECT user_name FROM Resolutions GROUP BY user_name HAVING COUNT(DISTINCT exercise_id) = 54;"
   );
   return res.json(result.rows);
 };
@@ -13,7 +13,7 @@ export const getGraduates = async (req, res, next) => {
 export const checkGraduate = async (req, res, next) => {
   let userGithub = req.params.github?.match(/^\d/) ? "gh" + req.params.github : req.params.github;
   const result = await pool.query(
-    "SELECT COUNT(DISTINCT exercise_id) = 54 AS has_54_exercises FROM resolutions WHERE user_name ILIKE $1;", [userGithub]
+    "SELECT COUNT(DISTINCT exercise_id) = 54 AS has_54_exercises FROM Resolutions WHERE user_name ILIKE $1;", [userGithub]
   );
   return res.json({
     "completed": result.rows[0].has_54_exercises
@@ -23,13 +23,13 @@ export const checkGraduate = async (req, res, next) => {
 export const evaluateGraduates = async (req, res, next) => {
   try {
     const listGraduates = await pool.query(
-      "SELECT user_name FROM resolutions GROUP BY user_name HAVING COUNT(DISTINCT exercise_id) = 54;"
+      "SELECT user_name FROM Resolutions GROUP BY user_name HAVING COUNT(DISTINCT exercise_id) = 54;"
     );
 
     const graduatesDict = {};
     listGraduates.rows.forEach(graduate => {
-      const userName = graduate.user_name?.match(/^\d/) 
-        ? "gh" + graduate.user_name.toUpperCase() 
+      const userName = graduate.user_name?.match(/^\d/)
+        ? "gh" + graduate.user_name.toUpperCase()
         : graduate.user_name.toUpperCase();
       graduatesDict[userName] = true;
     });
