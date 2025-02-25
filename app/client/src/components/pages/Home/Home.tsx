@@ -6,6 +6,7 @@ import { GITHUB_ENABLED } from "../../../constants/localStorage";
 import { getFirstExerciseUrl } from "../../../utils/getFirstExerciseUrl";
 import { Logo } from "../../shared/Logo";
 import { GitHubWarningDialog } from "./GitHubWarningDialog";
+import { SimpleLink } from "../../shared/SimpleLink";
 
 export const Home = () => {
   const [ghDialogOpen, setGhDialogOpen] = useState(false);
@@ -20,32 +21,80 @@ export const Home = () => {
   };
 
   return (
-    <Box
-      sx={{
-        height: "90%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        overflowX: "hidden",
-      }}
-    >
-      <Logo />
-      <Typography sx={{ mt: 3, px:2 }}>
-        A web-based interactive tutorial to learn Cairo and Starknet.
-      </Typography>
-
-      <Button
-        onClick={handleStartCodingClick}
-        sx={{ mt: 6, px: isMobileOnly ? 8 : 16, fontSize: 16 }}
-        variant="contained"
+    <>
+      <Box
+        id="hero"
+        sx={{
+          height: "90%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          overflowX: "hidden",
+        }}
       >
-        Start coding
-      </Button>
-      <GitHubWarningDialog
-        open={ghDialogOpen}
-        onClose={() => setGhDialogOpen(false)}
-      />
-    </Box>
+        <Logo />
+        <Typography sx={{ mt: 3, px: 2 }}>
+          A web-based interactive tutorial to learn Cairo and Starknet.
+        </Typography>
+
+        <Button
+          className="btn1"
+          onClick={handleStartCodingClick}
+          sx={{ mt: 6, px: isMobileOnly ? 8 : 16, fontSize: 16 }}
+          variant="contained"
+        >
+          Start coding
+        </Button>
+        <GitHubWarningDialog
+          open={ghDialogOpen}
+          onClose={() => setGhDialogOpen(false)}
+        />
+      </Box>
+      {!isMobileOnly && (
+        <Box
+          id="signup-banner"
+          sx={{
+            zIndex: 1000,
+            width: "100%",
+            backgroundColor: "#101c42",
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <SimpleLink href="https://starknet.notion.site/Starknet-Basecamp-Hub-1541b3c1f49f439da872d3d71647d834">
+            <Typography
+              sx={{
+                lineHeight: 1.1,
+                textWrap: "nowrap",
+              }}
+            >
+              Sign up for a free 6-week Starknet bootcamp
+            </Typography>
+          </SimpleLink>
+          <Typography
+            sx={{
+              lineHeight: 1.2,
+              textWrap: "nowrap",
+              fontSize: 15,
+            }}
+          >
+            Plus, use your new Cairo skills to contribute to open-source
+            projects and earn rewards on{" "}
+            <SimpleLink href="https://app.onlydust.xyz/">
+              app.onlydust.xyz
+            </SimpleLink>
+          </Typography>
+          {/*             <IconButton
+              onClick={closeBanner}
+              sx={{ position: "absolute", right: 15 }}
+            >
+              <CloseIcon />
+            </IconButton> */}
+        </Box>
+      )}
+    </>
   );
 };

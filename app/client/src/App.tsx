@@ -30,6 +30,9 @@ import { EvaluateGraduates } from "./components/pages/EvaluateGraduates/Evaluate
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
+    primary: {
+      main: "#dd3d3d",
+    },
   },
 });
 
@@ -71,7 +74,10 @@ function App() {
                       element={<CheckGitHubAccount />}
                     />{" "}
                     <Route path="/graduates" element={<CheckGraduates />} />
-                    <Route path="/evaluate-students" element={<EvaluateGraduates />} />
+                    <Route
+                      path="/evaluate-students"
+                      element={<EvaluateGraduates />}
+                    />
                   </Routes>
                   <Box sx={{ position: "fixed", bottom: 0, right: 0 }}>
                     <Typography

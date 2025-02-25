@@ -3,23 +3,23 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { GITHUB_LOGIN_URL } from "../../constants/github";
 import {
-    GITHUB_AVATAR,
-    GITHUB_ENABLED,
-    USERNAME,
+  GITHUB_AVATAR,
+  GITHUB_ENABLED,
+  USERNAME,
 } from "../../constants/localStorage";
 import {
-    ITokenResponse,
-    useGetAccessToken,
+  ITokenResponse,
+  useGetAccessToken,
 } from "../../queries/useGetAccessToken";
 import {
-    IUserDataResponse,
-    useGetUserData,
+  IUserDataResponse,
+  useGetUserData,
 } from "../../queries/useGetUserData";
 import { useMatchUserToGitHubAccount } from "../../queries/useMatchUserToGitHubAccount";
 
 const convertGHUsername = (username: string) => {
   const ghUser = username?.match(/^\d/) ? "gh" + username : username;
-  return ghUser.toLowerCase()
+  return ghUser.toLowerCase();
 };
 
 export const GitHubLoginButton = () => {
@@ -86,7 +86,7 @@ export const GitHubLoginButton = () => {
       {ghUser ? (
         <>
           <Button
-            variant="outlined"
+            variant="contained"
             color="success"
             sx={{
               textTransform: "lowercase",
@@ -114,8 +114,8 @@ export const GitHubLoginButton = () => {
         <Button
           disabled={loading}
           sx={{ fontWeight: "bold" }}
-          variant="outlined"
-          color="warning"
+          variant="contained"
+          color="primary"
           onClick={loginWithGitHub}
         >
           {loading ? "Connecting..." : "Connect GitHub"}
