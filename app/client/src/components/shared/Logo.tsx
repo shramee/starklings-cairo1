@@ -6,7 +6,10 @@ interface ILogoProps {
   fontSize?: string;
 }
 
-export const Logo = ({ text = "starklings.app", fontSize = "14.2vw" }: ILogoProps) => {
+export const Logo = ({
+  text = "starklings",
+  fontSize = "calc( 5vw + 40px )",
+}: ILogoProps) => {
   return (
     <Box
       sx={{
@@ -17,13 +20,15 @@ export const Logo = ({ text = "starklings.app", fontSize = "14.2vw" }: ILogoProp
       }}
     >
       <Typography
+        id="logotext-hero"
+        className="logotext"
         sx={{ zIndex: 3, ml: "-0.5%", fontSize }}
         variant="h1"
       >
         {text}
       </Typography>
       <Box sx={{ position: "absolute", overflow: "hidden", width: "100%" }}>
-        <Typography
+        {/* <Typography
           sx={{
             zIndex: 2,
             transform: "translateY(4px) scale(1.01)",
@@ -36,6 +41,7 @@ export const Logo = ({ text = "starklings.app", fontSize = "14.2vw" }: ILogoProp
         >
           {text}
         </Typography>
+        */}
       </Box>
     </Box>
   );

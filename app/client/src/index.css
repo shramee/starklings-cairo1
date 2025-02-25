@@ -1,29 +1,177 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "IBM Plex Sans", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 * {
-  font-family: 'Sometype Mono', monospace !important;
+  font-family: "IBM Plex Sans", "Sometype Mono", monospace !important;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace !important;
 }
 
-html, body, #root, #root>div {
+html,
+body,
+#root,
+#root > div {
   height: 100%;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Share Tech Mono', monospace !important;
+p {
+  color: white;
+  opacity: 0.7;
 }
 
-a, button {
-  border-radius: 0 !important;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "IBM Plex Sans", "Share Tech Mono", monospace !important;
+}
+
+a,
+button {
+  /*border-radius: 0 !important;*/
+}
+
+/* Button 1 */
+
+#root .btn1 {
+  display: inline-block;
+  padding: 0.5em 1.25em;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #dd3d3d;
+  border: 3px solid #dd3d3d;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  margin-top: 30px;
+}
+#root .btn1:hover {
+  /*transform: translateY(-2px);*/
+  box-shadow: 0px 0px 30px #dd3d3d;
+  color: #ffffffd6;
+  background-color: #dd3d3d00;
+  transition: all 0.2s ease;
+}
+
+body .btn {
+  display: inline-block;
+  padding: 5px 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #dd3d3d;
+  border: 3px solid #dd3d3d;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+body .btn:hover {
+  /*transform: translateY(-2px);*/
+  color: #ffffffd6;
+  background-color: #dd3d3d00;
+  transition: all 0.2s ease;
+}
+
+/***********************
+Logo
+************************/
+
+#root .logotext {
+  font-family: Lexend, sans-serif;
+  font-weight: 600;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+/***********************
+Logo HERO
+************************/
+#logotext-hero {
+  opacity: 0.6;
+  font-weight: 600;
+  margin-bottom: 20px;
+  line-height: 1;
+  text-shadow: 0px -4px 20px #dd3d3d00, 0px -2px 5px #dedede00;
+  transform: skew(0deg, 0deg);
+  transition: all 1s ease;
+}
+#logotext-hero:hover {
+  text-shadow: 0px -8px 25px #dd3d3d, 0px -2px 6px #e7e7e7;
+  transition: all 1s ease;
+  transform-style: preserve-3d;
+  transform: perspective(10cm) rotateX(-20deg) rotateY(0deg);
+}
+
+/***********************
+Mixed Fixes
+************************/
+
+.MuiBox-root.css-ddtcj8 {
+  overflow: visible;
+}
+
+/* Header */
+.MuiBox-root.css-dm3lr6 {
+  padding: 14px 0;
+  background: transparent;
+}
+#header-icon {
+  opacity: 0.7;
+}
+
+/* Bottom signup banner */
+#signup-banner {
+  position: absolute;
+  bottom: 0;
+  background: #ffffff08;
+  padding: 14px 0 4px;
+}
+
+#signup-banner p {
+  margin-bottom: 10px;
+}
+
+#signup-banner a p {
+  color: #dd3d3d;
+  font-weight: 600;
+}
+
+#signup-banner > p {
+  font-size: 12px;
+}
+
+#signup-banner a:last-child {
+  background: #242424;
+  padding: 4px 6px 6px;
+  border-radius: 5px;
+  font-weight: 600;
+  color: white;
+}
+
+/***********************
+Hero BG
+************************/
+.MuiBox-root.css-10klw3m {
+  background: url(../public/hero-bg2.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+/***********************
+About Popup
+************************/
+#alert-dialog-description {
+  opacity: 1;
 }

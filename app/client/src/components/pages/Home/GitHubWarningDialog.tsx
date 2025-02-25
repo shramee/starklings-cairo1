@@ -28,12 +28,14 @@ export const GitHubWarningDialog = ({
       <DialogTitle id="alert-dialog-title">Connect to GitHub</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          We recommend connecting to your GitHub account before starting to code. This ensures that all your progress will be saved.
+          We recommend connecting to your GitHub account before starting to
+          code. This ensures that all your progress will be saved.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <GitHubLoginButton />
         <Button
+          variant="text"
           onClick={() => {
             navigate(getFirstExerciseUrl());
           }}

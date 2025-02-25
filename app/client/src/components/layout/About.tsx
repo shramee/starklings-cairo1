@@ -21,6 +21,7 @@ export const About = () => {
     <>
       <Tooltip title="About starklings.app">
         <IconButton
+          id="header-icon"
           onClick={() => setDialogOpen(true)}
           sx={{ p: 0.5, color: "#FFF" }}
           aria-label="about"
@@ -36,7 +37,7 @@ export const About = () => {
         maxWidth="md"
       >
         <DialogTitle sx={{ m: 2, fontSize: 25 }} id="alert-dialog-title">
-          About starklings.app
+          About Starklings App
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
