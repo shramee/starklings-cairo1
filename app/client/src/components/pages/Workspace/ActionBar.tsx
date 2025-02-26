@@ -50,7 +50,7 @@ export const ActionBar = ({
     <>
       <Box
         sx={{
-          background: "#000",
+          background: "#111",
           display: "flex",
           justifyContent: "space-between",
         }}
@@ -87,6 +87,7 @@ export const ActionBar = ({
           </Tooltip>
         </Box>
         <Box
+          className="exercise-btnset"
           sx={{
             display: "flex",
             justifyContent: "flex-end",
