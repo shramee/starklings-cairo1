@@ -148,7 +148,6 @@
       "parser": "@typescript-eslint/parser",
       "plugins": [
         "@nx",
-        "@typescript-eslint",
         "mui-path-imports",
         "unused-imports",
         "simple-import-sort"
