@@ -1,37 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 28.3.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="23 23 104 104">
-  <!-- Gradient definition -->
   <defs>
-    <linearGradient id="borderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FF94B8" />
-      <stop offset="100%" stop-color="#FF8C42" />
+    <linearGradient id="a" y2="100%">
+      <stop offset="0" stop-color="#FF94B8"/>
+      <stop offset="1" stop-color="#FF8C42"/>
     </linearGradient>
   </defs>
-
-  <!-- Gradient border circle -->
-  <circle cx="75" cy="75" r="51" fill="none" stroke="url(#borderGradient)" stroke-width="2" />
-
-  <!-- Dark circle background -->
-  <circle cx="75" cy="75" r="50" fill="#141456" />
-
-  <!-- Three-part pyramid with darker Starknet colors and adjusted margins -->
-  <!-- Bottom section - Darker Cairo orange -->
-  <path d="M40 100 L110 100 L98 82 L52 82 Z" fill="#FF5A00" />
-
-  <!-- Middle section - Darker pink -->
-  <path d="M56 77 L94 77 L86 59 L64 59 Z" fill="#FF94B8" />
-
-  <!-- Top section (triangle) - Light gray instead of white -->
-  <path d="M67 54 L83 54 L75 31 Z" fill="#FFFFFF" />
-
-  <!-- Circle at bottom - Light gray -->
-  <g transform="translate(75, 113) scale(2.4) translate(-11.02, -13.25)">
-    <path
-      d="M11.22 16.101l.493-1.525c.1-.31.345-.552.657-.647l1.533-.471c.212-.065.213-.364.003-.432l-1.526-.494a.999.999 0 01-.647-.657l-.47-1.533a.227.227 0 00-.433-.002l-.494 1.525a.999.999 0 01-.656.647l-1.533.47a.227.227 0 00-.003.433l1.526.494a1 1 0 01.646.657l.471 1.532a.227.227 0 00.432.003z"
-      fill="#E0E0E0"
-    />
-  </g>
+  <circle cx="75" cy="75" r="51" fill="none" stroke="url(#a)" stroke-width="2"/>
+  <circle cx="75" cy="75" r="50" fill="#141456"/>
+  <path fill="#FF5A00" d="M35.5 90H116l-13.8-15H49.3z"/>
+  <path fill="#FF94B8" d="M53.9 70h43.7l-9.2-15H63.1z"/>
+  <path fill="#fff" d="M66.55 50h18.4l-9.2-19z"/>
+  <path fill="#E0E0E0" d="m75.8 119.404 1.972-6.1a3.981 3.981 0 0 1 2.628-2.588l6.132-1.884c.848-.26.852-1.456.012-1.728l-6.104-1.976a3.996 3.996 0 0 1-2.588-2.628l-1.88-6.132a.908.908 0 0 0-1.732-.008l-1.976 6.1a3.996 3.996 0 0 1-2.624 2.588l-6.132 1.88a.908.908 0 0 0-.012 1.732l6.104 1.976a4 4 0 0 1 2.584 2.628l1.884 6.128a.908.908 0 0 0 1.728.012z"/>
 </svg>
