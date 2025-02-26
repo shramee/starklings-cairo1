@@ -87,12 +87,6 @@ export const Home = () => {
               app.onlydust.xyz
             </SimpleLink>
           </Typography>
-          {/*             <IconButton
-              onClick={closeBanner}
-              sx={{ position: "absolute", right: 15 }}
-            >
-              <CloseIcon />
-            </IconButton> */}
         </Box>
       )}
     </>
