@@ -34,7 +34,9 @@ export const Home = () => {
         }}
       >
         <Logo />
-        <Typography variant="h5" sx={{ mt: 3, px: 2 }}>
+        <Typography variant="h4" sx={{ my: 3, px: 2 }} style={{
+          textShadow: '0 1px 1px rgba(0, 0, 0, 0.5), 0 2px 3px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.5)'
+        }}>
           A web-based interactive tutorial to learn Cairo and Starknet.
         </Typography>
 
