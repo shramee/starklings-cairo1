@@ -15,7 +15,10 @@ import { useEffect, useMemo, useState } from "react";
 import { isMobileOnly } from "react-device-detect";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { CURRENT_EXERCISE, EXERCISE_SOLUTION } from "../../../constants/localStorage";
+import {
+  CURRENT_EXERCISE,
+  EXERCISE_SOLUTION,
+} from "../../../constants/localStorage";
 import { useGetExercise } from "../../../queries/useGetExercise";
 import { useGetExercises } from "../../../queries/useGetExercises";
 import { useGetHint } from "../../../queries/useGetHint";
@@ -42,7 +45,7 @@ export const Workspace = () => {
   const [searchParams] = useSearchParams();
   const compatibility = !!searchParams.get("compatibility");
 
-  const bannersHeight = 138;
+  const heightOffset = 50 + 38.5;
 
   const { data: exercises } = useGetExercises();
   const { data, isLoading } = useGetExercise(id);
@@ -69,7 +72,9 @@ export const Workspace = () => {
   const { mutateAsync: markExerciseDone } = useMarkExerciseDone();
 
   useEffect(() => {
-    const savedSolution = id ? localStorage.getItem(`${EXERCISE_SOLUTION}${id}`) : null;
+    const savedSolution = id
+      ? localStorage.getItem(`${EXERCISE_SOLUTION}${id}`)
+      : null;
 
     if (savedSolution) {
       if (!compatibility) {
@@ -177,7 +182,7 @@ export const Workspace = () => {
                 flexDirection: "column",
                 justifyContent: "space-between",
                 overflowY: "auto",
-                height: `calc(100vh - ${bannersHeight}px)`,
+                height: `calc(100vh - ${heightOffset}px)`,
               }}
             >
               {/* description */}

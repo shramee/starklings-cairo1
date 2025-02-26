@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import { isMobileOnly } from "react-device-detect";
 import { GitHubLoginButton } from "../github/GitHubLoginButton";
 import { About } from "./About";
+import { useLocation } from "react-router-dom";
 
 const NAV_HEIGHT = "50px";
 
@@ -10,24 +11,22 @@ interface IBasicLayoutProps {
   children: JSX.Element;
 }
 export const BasicLayout = ({ children }: IBasicLayoutProps) => {
-  /*   const [bannerClosed, setBannerClosed] = useState(
-    localStorage.getItem(BANNER_CLOSED)
-  );
-
-  const closeBanner = () => {
-    setBannerClosed("true");
-    localStorage.setItem(BANNER_CLOSED, "true");
-  }; */
-
+  const location = useLocation();
+  const path = location.pathname.substring(1);
   return (
-    <Box sx={{ height: "100%", backgroundColor: "#242424", color: "#FFF" }}>
-      <Box sx={{ height: "100%" }}>
+    <Box
+      className={path.replaceAll("/", "-") || "home"}
+      sx={{ height: "100%", backgroundColor: "#242424", color: "#FFF" }}
+    >
+      <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
         <Box
+          component="header"
+          id="site-header"
           sx={{
             height: NAV_HEIGHT,
             zIndex: 1000,
             width: "100%",
-            backgroundColor: "#000",
+            backgroundColor: "#111",
             display: "flex",
             alignItems: "center",
             flexDirection: "row",
@@ -55,7 +54,7 @@ export const BasicLayout = ({ children }: IBasicLayoutProps) => {
         </Box>
         <Box
           sx={{
-            height: `calc(100% - 100px)`,
+            flex: 1,
           }}
         >
           {children}

@@ -123,7 +123,7 @@ Mixed Fixes
 }
 
 /* Header */
-.MuiBox-root.css-dm3lr6 {
+.home #site-header {
   padding: 14px 0;
   background: transparent;
 }
@@ -160,10 +160,19 @@ Mixed Fixes
   color: white;
 }
 
+/* Powered by SNF */
+.snf-pow {
+  display: none;
+}
+
+.home .snf-pow {
+  display: block;
+}
+
 /***********************
 Hero BG
 ************************/
-.MuiBox-root.css-10klw3m {
+#root > .home {
   background: url(../public/hero-bg2.jpg);
   background-position: center;
   background-size: cover;
@@ -174,4 +183,14 @@ About Popup
 ************************/
 #alert-dialog-description {
   opacity: 1;
+}
+
+/***********************
+Exercises
+************************/
+.exercise-btnset button {
+  padding: 0 0.7em;
+  margin: 0.5em;
+  margin-left: 0;
+  opacity: 0.8;
 }
