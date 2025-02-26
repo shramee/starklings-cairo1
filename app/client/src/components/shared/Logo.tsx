@@ -8,7 +8,7 @@ interface ILogoProps {
 
 export const Logo = ({
   text = "starklings",
-  fontSize = "calc( 5vw + 40px )",
+  fontSize = "calc( 8vw + 20px )",
 }: ILogoProps) => {
   return (
     <Box

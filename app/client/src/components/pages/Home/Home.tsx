@@ -34,14 +34,14 @@ export const Home = () => {
         }}
       >
         <Logo />
-        <Typography sx={{ mt: 3, px: 2 }}>
+        <Typography variant="h5" sx={{ mt: 3, px: 2 }}>
           A web-based interactive tutorial to learn Cairo and Starknet.
         </Typography>
 
         <Button
           className="btn1"
           onClick={handleStartCodingClick}
-          sx={{ mt: 6, px: isMobileOnly ? 8 : 16, fontSize: 16 }}
+          sx={{ my: 6, px: isMobileOnly ? 8 : 16, fontSize: 16 }}
           variant="contained"
         >
           Start coding
@@ -57,7 +57,6 @@ export const Home = () => {
           sx={{
             zIndex: 1000,
             width: "100%",
-            backgroundColor: "#101c42",
             display: "flex",
             alignItems: "center",
             flexDirection: "column",

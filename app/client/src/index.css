@@ -99,7 +99,7 @@ Logo
 Logo HERO
 ************************/
 #logotext-hero {
-  opacity: 0.6;
+  opacity: 0.8;
   font-weight: 600;
   margin-bottom: 20px;
   line-height: 1;
@@ -135,7 +135,6 @@ Mixed Fixes
 #signup-banner {
   position: absolute;
   bottom: 0;
-  background: #ffffff08;
   padding: 14px 0 4px;
 }
 
@@ -173,9 +172,14 @@ Mixed Fixes
 Hero BG
 ************************/
 #root > .home {
-  background: url(../public/hero-bg2.jpg);
+  background: url(../public/hero-bg.svg);
   background-position: center;
   background-size: cover;
+}
+
+.home > .MuiBox-root,
+.home > #signup-banner {
+  background: rgba(0, 0, 0, 0.6);
 }
 
 /***********************

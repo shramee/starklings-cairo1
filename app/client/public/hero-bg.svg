@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <symbol id="c" viewBox="23 23 104 104">
+      <circle cx="75" cy="75" r="51" fill="none" stroke="url(#a)" stroke-width="2"/>
+      <circle cx="75" cy="75" r="50" fill="#141456"/>
+      <path fill="#FF5A00" d="M35.5 90H116l-13.8-15H49.3z"/>
+      <path fill="#FF94B8" d="M53.9 70h43.7l-9.2-15H63.1z"/>
+      <path fill="#fff" d="M66.55 50h18.4l-9.2-19z"/>
+      <path fill="#E0E0E0" d="m75.8 119.404 1.972-6.1a3.981 3.981 0 0 1 2.628-2.588l6.132-1.884c.848-.26.852-1.456.012-1.728l-6.104-1.976a3.996 3.996 0 0 1-2.588-2.628l-1.88-6.132a.908.908 0 0 0-1.732-.008l-1.976 6.1a3.996 3.996 0 0 1-2.624 2.588l-6.132 1.88a.908.908 0 0 0-.012 1.732l6.104 1.976a4 4 0 0 1 2.584 2.628l1.884 6.128a.908.908 0 0 0 1.728.012z"/>
+    </symbol>
+    <symbol id="d" viewBox="66 30 20 20">
+      <path fill="#B2B2B2" d="M66.55 50h18.4l-9.2-19z"/>
+    </symbol>
+    <symbol id="e" viewBox="35 75 82 15">
+      <path fill="#B23F00" d="M35.5 90H116l-13.8-15H49.3z"/>
+    </symbol>
+    <symbol id="f" viewBox="53 55 45 15">
+      <path fill="#B26881" d="M53.9 70h43.7l-9.2-15H63.1z"/>
+    </symbol>
+    <symbol id="g" viewBox="65 95 20 30">
+      <path fill="#E0E0E0" d="m75.8 119.404 1.972-6.1a3.981 3.981 0 0 1 2.628-2.588l6.132-1.884c.848-.26.852-1.456.012-1.728l-6.104-1.976a3.996 3.996 0 0 1-2.588-2.628l-1.88-6.132a.908.908 0 0 0-1.732-.008l-1.976 6.1a3.996 3.996 0 0 1-2.624 2.588l-6.132 1.88a.908.908 0 0 0-.012 1.732l6.104 1.976a4 4 0 0 1 2.584 2.628l1.884 6.128a.908.908 0 0 0 1.728.012z"/>
+    </symbol>
+    <linearGradient id="a" y2="100%">
+      <stop offset="0" stop-color="#B26881"/>
+      <stop offset="1" stop-color="#B2622E"/>
+    </linearGradient>
+    <linearGradient id="b" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#0c0c2C"/>
+      <stop offset="100%" stop-color="#030314"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#b)"/>
+  <use width="100" height="100" x="350" y="250" href="#c" opacity=".6">
+    <animateTransform attributeName="transform" dur="20s" repeatCount="indefinite" type="translate" values="0,0; 10,15; 0,30; -10,15; 0,0"/>
+    <animateTransform additive="sum" attributeName="transform" dur="15s" repeatCount="indefinite" type="rotate" values="0,400,300; 5,400,300; 0,400,300; -5,400,300; 0,400,300"/>
+    <animate attributeName="opacity" dur="10s" repeatCount="indefinite" values="0.4;0.6;0.4"/>
+  </use>
+  <use width="80" height="80" x="650" y="100" href="#c" opacity=".4">
+    <animateTransform attributeName="transform" dur="25s" repeatCount="indefinite" type="translate" values="0,0; -30,20; -60,0; -30,-20; 0,0"/>
+    <animate attributeName="opacity" dur="12s" repeatCount="indefinite" values="0.3;0.5;0.3"/>
+    <animateTransform additive="sum" attributeName="transform" dur="15s" repeatCount="indefinite" type="scale" values="1;1.1;1"/>
+  </use>
+  <use width="70" height="70" x="150" y="350" href="#c" opacity=".3">
+    <animateTransform attributeName="transform" dur="30s" repeatCount="indefinite" type="translate" values="0,0; 25,-20; 50,0; 25,20; 0,0"/>
+    <animate attributeName="opacity" dur="15s" repeatCount="indefinite" values="0.25;0.45;0.25"/>
+  </use>
+  <use width="40" height="40" x="100" y="100" href="#d" opacity=".2">
+    <animateTransform attributeName="transform" dur="20s" repeatCount="indefinite" type="translate" values="0,0; 50,30; 100,0; 50,-30; 0,0"/>
+    <animateTransform additive="sum" attributeName="transform" dur="40s" repeatCount="indefinite" type="rotate" values="0,115,115; 360,115,115"/>
+  </use>
+  <use width="30" height="30" x="650" y="400" href="#d" opacity=".25">
+    <animateTransform attributeName="transform" dur="25s" repeatCount="indefinite" type="translate" values="0,0; -40,20; -80,0; -40,-20; 0,0"/>
+    <animateTransform additive="sum" attributeName="transform" dur="35s" repeatCount="indefinite" type="rotate" values="0,660,410; -360,660,410"/>
+  </use>
+  <use width="120" height="30" x="200" y="200" href="#e" opacity=".6">
+    <animateTransform attributeName="transform" dur="18s" repeatCount="indefinite" type="translate" values="0,0; 20,40; 0,80; -20,40; 0,0"/>
+    <animate attributeName="opacity" dur="9s" repeatCount="indefinite" values="0.6;0.3;0.6"/>
+  </use>
+  <use width="100" height="25" x="500" y="350" href="#e" opacity=".4">
+    <animateTransform attributeName="transform" dur="22s" repeatCount="indefinite" type="translate" values="0,0; -30,20; -60,0; -30,-20; 0,0"/>
+    <animate attributeName="opacity" dur="11s" repeatCount="indefinite" values="0.4;0.2;0.4"/>
+  </use>
+  <use width="90" height="30" x="300" y="150" href="#f" opacity=".5">
+    <animateTransform attributeName="transform" dur="20s" repeatCount="indefinite" type="translate" values="0,0; 40,-20; 80,0; 40,20; 0,0"/>
+    <animate attributeName="opacity" dur="10s" repeatCount="indefinite" values="0.5;0.3;0.5"/>
+  </use>
+  <use width="70" height="25" x="400" y="400" href="#f" opacity=".4">
+    <animateTransform attributeName="transform" dur="24s" repeatCount="indefinite" type="translate" values="0,0; -25,30; -50,0; -25,-30; 0,0"/>
+    <animate attributeName="opacity" dur="12s" repeatCount="indefinite" values="0.4;0.2;0.4"/>
+  </use>
+  <use width="70" height="25" x="40" y="500" href="#f" opacity=".4">
+    <animateTransform attributeName="transform" dur="24s" repeatCount="indefinite" type="translate" values="0,0; -25,30; -50,0; -25,-30; 0,0"/>
+    <animateTransform additive="sum" attributeName="transform" dur="15s" repeatCount="indefinite" type="rotate" values="0,400,300; 5,400,300; 0,400,300; -5,400,300; 0,400,300"/>
+    <animate attributeName="opacity" dur="12s" repeatCount="indefinite" values="0.4;0.2;0.4"/>
+  </use>
+  <use width="40" height="40" x="150" y="250" href="#g" opacity=".8">
+    <animateTransform attributeName="transform" dur="30s" repeatCount="indefinite" type="translate" values="0,0; 70,30; 140,0; 70,-30; 0,0"/>
+    <animate attributeName="opacity" dur="15s" repeatCount="indefinite" values="0.8;0.4;0.8"/>
+  </use>
+  <use width="35" height="35" x="550" y="150" href="#g" opacity=".7">
+    <animateTransform attributeName="transform" dur="35s" repeatCount="indefinite" type="translate" values="0,0; -50,25; -100,0; -50,-25; 0,0"/>
+    <animate attributeName="opacity" dur="17.5s" repeatCount="indefinite" values="0.7;0.3;0.7"/>
+  </use>
+  <use width="30" height="30" x="350" y="450" href="#g" opacity=".6">
+    <animateTransform attributeName="transform" dur="40s" repeatCount="indefinite" type="translate" values="0,0; 40,-40; 80,0; 40,40; 0,0"/>
+    <animate attributeName="opacity" dur="20s" repeatCount="indefinite" values="0.6;0.3;0.6"/>
+  </use>
+  <circle cx="400" cy="300" r="200" fill="none" stroke="url(#a)" opacity=".15">
+    <animate attributeName="r" dur="20s" repeatCount="indefinite" values="200;220;200"/>
+    <animate attributeName="opacity" dur="10s" repeatCount="indefinite" values="0.15;0.25;0.15"/>
+  </circle>
+</svg>
