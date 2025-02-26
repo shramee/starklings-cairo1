@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
+
 body {
   margin: 0;
   font-family: "IBM Plex Sans", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
@@ -20,7 +21,7 @@ code {
 html,
 body,
 #root,
-#root > div {
+#root>div {
   height: 100%;
 }
 
@@ -58,6 +59,7 @@ button {
   transition: all 0.2s ease;
   margin-top: 30px;
 }
+
 #root .btn1:hover {
   /*transform: translateY(-2px);*/
   box-shadow: 0px 0px 30px #dd3d3d;
@@ -77,6 +79,7 @@ body .btn {
   text-decoration: none;
   transition: all 0.2s ease;
 }
+
 body .btn:hover {
   /*transform: translateY(-2px);*/
   color: #ffffffd6;
@@ -107,6 +110,7 @@ Logo HERO
   transform: skew(0deg, 0deg);
   transition: all 1s ease;
 }
+
 #logotext-hero:hover {
   text-shadow: 0px -8px 25px #dd3d3d, 0px -2px 6px #e7e7e7;
   transition: all 1s ease;
@@ -127,6 +131,7 @@ Mixed Fixes
   padding: 14px 0;
   background: transparent;
 }
+
 #header-icon {
   opacity: 0.7;
 }
@@ -147,7 +152,7 @@ Mixed Fixes
   font-weight: 600;
 }
 
-#signup-banner > p {
+#signup-banner>p {
   font-size: 12px;
 }
 
@@ -171,15 +176,15 @@ Mixed Fixes
 /***********************
 Hero BG
 ************************/
-#root > .home {
+#root>.home {
   background: url(../public/hero-bg.svg);
   background-position: center;
   background-size: cover;
 }
 
-.home > .MuiBox-root,
-.home > #signup-banner {
-  background: rgba(0, 0, 0, 0.6);
+.home>.MuiBox-root,
+.home>#signup-banner {
+  background: rgba(0, 0, 0, 0.5);
 }
 
 /***********************
