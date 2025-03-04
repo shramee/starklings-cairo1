@@ -192,9 +192,9 @@ export const Workspace = () => {
                 </Typography>
                 {isLoading && <CircularProgressCenterLoader />}
                 {data && (
-                  <Typography style={{ whiteSpace: "pre-line" }}>
+                  <Typography>
                     {data.description?.trim() !== ""
-                      ? data.description
+                      ? data.description?.split(".\n").map((line, i) => <p key={i}>{line}.</p>)
                       : "Having trouble to solve this one? Click 'GET HINT' button for help!"}
                   </Typography>
                 )}
