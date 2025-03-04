@@ -13,19 +13,21 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Route, Routes } from "react-router-dom";
+import { BasecampModal } from "./components/basecamp/BasecampModal";
 import { ErrorFallback } from "./components/error/ErrorFallback";
 import { BasicLayout } from "./components/layout/BasicLayout";
 import { CheckGitHubAccount } from "./components/pages/Check/CheckGitHubAccount";
 import { CheckGraduates } from "./components/pages/Check/CheckGraduates";
+import { EvaluateGraduates } from "./components/pages/EvaluateGraduates/EvaluateGraduates";
 import { FinalScreen } from "./components/pages/FinalScreen/FinalScreen";
 import { Home } from "./components/pages/Home/Home";
 import { Workspace } from "./components/pages/Workspace/Workspace";
 import { PocApp } from "./components/poc/PocApp";
 import { StarknetProvider } from "./context/StarknetProvider";
 import { useNotification } from "./hooks/useNotification";
-import { EvaluateGraduates } from "./components/pages/EvaluateGraduates/EvaluateGraduates";
 
 const darkTheme = createTheme({
   palette: {
@@ -37,6 +39,16 @@ const darkTheme = createTheme({
 });
 
 function App() {
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const { showError } = useNotification();
 
   const queryClient = new QueryClient({
@@ -51,6 +63,14 @@ function App() {
   const provider = publicProvider();
   const connectors = [braavos(), argent()];
 
+  useEffect(() => {
+    if (localStorage.getItem("basecamp-modal-dismissed") === "true") {
+      return;
+    } else {
+      handleOpen();
+    }
+  }, []);
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <StarknetConfig
@@ -62,6 +82,7 @@ function App() {
         <StarknetProvider>
           <QueryClientProvider client={queryClient}>
             <ThemeProvider theme={darkTheme}>
+              <BasecampModal open={open} handleClose={handleClose} />
               <BasicLayout>
                 <>
                   <Routes>
