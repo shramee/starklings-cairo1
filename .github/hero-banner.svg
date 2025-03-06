@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <defs>
+    <symbol id="c" viewBox="0 0 400 400">
+      <path fill="#fe4a49" d="M164.32 2.619C35.309 25.356-37.353 166.967 18.901 286.028c5.308 11.234 21.021 36.516 23.74 38.196.634.392 5.094-4.68 9.912-11.27 20.478-28.016 48.856-58.479 70.047-75.196 14.285-11.27 20.94-22.359 24.411-40.678 8.383-44.239 24.171-58.906 67.169-62.397 34.389-2.793 69.358 3.179 76.252 13.021 3.261 4.656 1.526 5.705-9.869 5.97-33.636.783-43.655 14.855-38.514 54.093.653 4.984 1.593 16.199 2.088 24.923l.902 15.861-8.173-4.211c-21.323-10.985-62.263-2.491-102.337 21.233-10.153 6.011-15.66 10.865-9.286 8.185 29.146-12.252 81.763-19.453 100.152-13.706 37.119 11.601 25.181 79.899-22.482 128.623-5.518 5.641-10.033 10.577-10.033 10.969 0 1.674 37.651-.942 48.795-3.39 149.557-32.85 209.131-211.092 109.603-327.923C306.868 16.199 233.527-9.578 164.32 2.619m73.353 30.255c37.454 17.44 25.518 73.25-15.667 73.25-41.184 0-53.12-55.81-15.666-73.25 9.186-4.277 22.147-4.277 31.333 0" fill-rule="evenodd"/>
+    </symbol>
+
+    <symbol id="sn" viewBox="0 0 158 158">
+      <path d="M2 78.9988C2 121.525 36.4731 155.998 78.9988 155.998C121.525 155.998 156 121.524 156 78.9988C156 36.4732 121.525 2 78.9988 2C36.4731 2 2 36.4731 2 78.9988Z" fill="#0C0C4F" stroke="#EC796B" stroke-width="4"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M44.1542 60.3876L46.1043 54.3628C46.5007 53.1374 47.4678 52.1839 48.6977 51.8079L54.752 49.9461C55.59 49.6901 55.5968 48.5078 54.7656 48.2383L48.7385 46.2881C47.5154 45.8918 46.5618 44.9246 46.1836 43.6947L44.324 37.6405C44.0681 36.8047 42.8858 36.7956 42.6162 37.6291L40.6661 43.654C40.2697 44.877 39.3026 45.8306 38.0727 46.2089L32.0184 48.0684C31.1804 48.3266 31.1713 49.5067 32.0048 49.7762L38.0319 51.7263C39.255 52.1227 40.2086 53.0921 40.5868 54.322L42.4464 60.374C42.7023 61.212 43.8846 61.2211 44.1542 60.3876Z" fill="#FAFAFA"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M139.848 56.881C137.352 54.09 133.457 52.5186 129.67 51.8742C125.853 51.2553 121.85 51.3127 118.082 51.9822C110.457 53.272 103.53 56.4292 97.4881 60.3241C94.3506 62.2356 91.675 64.4474 88.903 66.7C87.5674 67.8392 86.3497 69.0524 85.0815 70.2482L81.6163 73.696C77.851 77.6317 74.1398 81.2165 70.549 84.1878C66.9437 87.1454 63.573 89.3917 60.2512 90.9604C56.9315 92.5372 53.3794 93.4645 48.7495 93.6129C44.1603 93.7748 38.7307 92.9465 32.9229 91.5794C27.0839 90.2183 20.9523 88.2782 14.1004 86.6088C16.4912 93.2414 20.0914 99.1027 24.7137 104.461C29.3902 109.726 35.2297 114.524 42.7314 117.68C50.1247 120.906 59.4157 122.064 68.1031 120.317C76.8135 118.64 84.4573 114.61 90.6359 109.948C96.8304 105.239 101.842 99.8748 106.067 94.298C107.233 92.7572 107.85 91.8949 108.694 90.6906L111.027 87.2351C112.648 85.0977 114.124 82.6641 115.728 80.5464C118.874 76.1112 121.976 71.6811 125.58 67.5997C127.394 65.5296 129.307 63.5495 131.565 61.6466C132.691 60.7178 133.908 59.8088 135.256 58.99C136.624 58.1068 138.069 57.4155 139.848 56.881Z" fill="#EC796B"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M139.848 56.8808C137.167 50.1148 132.182 44.4194 125.491 40.2167C118.841 36.0601 109.605 33.9389 100.452 35.7471C95.9307 36.6216 91.5501 38.3052 87.7059 40.5472C83.8791 42.7803 80.4499 45.4685 77.4812 48.3524C75.9992 49.7992 74.654 51.3084 73.3176 52.8262L69.8538 57.2423L64.5039 64.3512C57.6836 73.4976 50.3391 84.2166 38.2863 87.3927C26.454 90.5108 21.3221 87.7493 14.1004 86.6085C15.4209 90.0176 17.0565 93.3284 19.2739 96.2409C21.45 99.2124 24.0204 102.003 27.216 104.396C28.8309 105.545 30.5359 106.679 32.4295 107.641C34.3146 108.57 36.3474 109.388 38.5172 110.003C42.8332 111.186 47.6923 111.601 52.397 110.964C57.1039 110.336 61.6029 108.845 65.5355 106.864C69.4971 104.901 72.9481 102.511 76.0296 99.9891C82.1551 94.9021 86.9197 89.2815 90.9444 83.6C92.9688 80.7594 94.8064 77.8652 96.5059 74.9702L98.5062 71.5236C99.1177 70.5161 99.7362 69.5024 100.364 68.5584C102.899 64.7654 105.378 61.7241 108.389 59.4413C111.358 57.0995 115.493 55.3693 121.018 54.9674C126.52 54.5606 132.872 55.312 139.848 56.8808Z" fill="#FAFAFA"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M110.081 113.097C110.081 118.067 114.112 122.097 119.081 122.097C124.051 122.097 128.076 118.067 128.076 113.097C128.076 108.128 124.051 104.097 119.081 104.097C114.112 104.097 110.081 108.128 110.081 113.097Z" fill="#EC796B"/>
+    </symbol>
+
+    <symbol id="l" viewBox="0 0 578.3 481">
+      <path d="M395 437 30 337 2 371l401 110zm-19-98L96 262l-28 33 317 86zm-20-96-198-54-28 33 235 64zm-19-95-117-32-28 32 154 43zM310 11l-65 76 85 23z" style="fill:#1976d2"/>
+      <path d="M554 325 395 438l8 43 175-124zm-55-72-123 86 8 42 138-97zm-54-71-89 62 9 42 103-73zm-55-71-53 37 8 42 69-48zM311 10l-1 1 20 99 38-26z" style="fill:#1d5582"/>
+      <path d="M393 427 29 328 0 361l402 110zm-18-98L95 252l-29 33 317 86zm-20-96-199-54-28 33 235 64zm-19-95-117-32-28 33 153 42z" style="fill:#fff"/>
+      <path style="fill:#ec796b" d="m309 1-66 76 85 23z"/>
+      <path d="M552 315 393 428l9 43 175-124zm-55-72-123 87 8 41 139-97zm-54-71-88 62 8 42 104-73zm-54-71-54 38 9 41 69-48z" style="fill:#b7b7b7"/>
+      <path style="fill:#aa5b55" d="m309 0-1 1 20 99 38-26z"/>
+    </symbol>
+
+    <symbol id="d" viewBox="66 30 20 20">
+      <path fill="#B2B2B2" d="M66.55 50h18.4l-9.2-19z"/>
+    </symbol>
+    <symbol id="e" viewBox="35 75 82 15">
+      <path fill="#B23F00" d="M35.5 90H116l-13.8-15H49.3z"/>
+    </symbol>
+    <symbol id="f" viewBox="53 55 45 15">
+      <path fill="#B26881" d="M53.9 70h43.7l-9.2-15H63.1z"/>
+    </symbol>
+    <symbol id="g" viewBox="65 95 20 30">
+      <path fill="#E0E0E0" d="m75.8 119.404 1.972-6.1a3.981 3.981 0 0 1 2.628-2.588l6.132-1.884c.848-.26.852-1.456.012-1.728l-6.104-1.976a3.996 3.996 0 0 1-2.588-2.628l-1.88-6.132a.908.908 0 0 0-1.732-.008l-1.976 6.1a3.996 3.996 0 0 1-2.624 2.588l-6.132 1.88a.908.908 0 0 0-.012 1.732l6.104 1.976a4 4 0 0 1 2.584 2.628l1.884 6.128a.908.908 0 0 0 1.728.012z"/>
+    </symbol>
+    <linearGradient id="a" y2="100%">
+      <stop offset="0" stop-color="#B26881"/>
+      <stop offset="1" stop-color="#B2622E"/>
+    </linearGradient>
+    <linearGradient id="b" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#0c0c2C"/>
+      <stop offset="100%" stop-color="#030314"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#b)"/>
+  <use width="30" height="30" x="650" y="100" href="#d" opacity=".25">
+    <animateTransform attributeName="transform" dur="25s" repeatCount="indefinite" type="translate" values="0,0; -40,20; -80,0; -40,-20; 0,0"/>
+    <animateTransform additive="sum" attributeName="transform" dur="35s" repeatCount="indefinite" type="rotate" values="0,660,410; -360,660,410"/>
+  </use>
+  <use width="120" height="30" x="200" y="0" href="#e" opacity=".6">
+    <animateTransform attributeName="transform" dur="18s" repeatCount="indefinite" type="translate" values="0,0; 20,40; 0,80; -20,40; 0,0"/>
+    <animate attributeName="opacity" dur="9s" repeatCount="indefinite" values="0.6;0.3;0.6"/>
+  </use>
+  <use width="100" height="25" x="500" y="150" href="#e" opacity=".4">
+    <animateTransform attributeName="transform" dur="22s" repeatCount="indefinite" type="translate" values="0,0; -30,20; -60,0; -30,-20; 0,0"/>
+    <animate attributeName="opacity" dur="11s" repeatCount="indefinite" values="0.4;0.2;0.4"/>
+  </use>
+  <use width="70" height="25" x="40" y="30" href="#f" opacity=".4">
+    <animateTransform attributeName="transform" dur="24s" repeatCount="indefinite" type="translate" values="0,0; -25,30; -50,0; -25,-30; 0,0"/>
+    <animate attributeName="opacity" dur="12s" repeatCount="indefinite" values="0.4;0.2;0.4"/>
+  </use>
+  <use width="40" height="40" x="300" y="50" href="#g" opacity=".8">
+    <animateTransform attributeName="transform" dur="30s" repeatCount="indefinite" type="translate" values="0,0; 70,30; 140,0; 70,-30; 0,0"/>
+    <animate attributeName="opacity" dur="15s" repeatCount="indefinite" values="0.8;0.4;0.8"/>
+  </use>
+  <use width="35" height="35" x="550" y="10" href="#g" opacity=".7">
+    <animateTransform attributeName="transform" dur="35s" repeatCount="indefinite" type="translate" values="0,0; -50,25; -100,0; -50,-25; 0,0"/>
+    <animate attributeName="opacity" dur="17.5s" repeatCount="indefinite" values="0.7;0.3;0.7"/>
+  </use>
+  <use width="30" height="30" x="50" y="20" href="#g" opacity=".6">
+    <animateTransform attributeName="transform" dur="40s" repeatCount="indefinite" type="translate" values="0,0; 40,-40; 80,0; 40,40; 0,0"/>
+    <animate attributeName="opacity" dur="20s" repeatCount="indefinite" values="0.6;0.3;0.6"/>
+  </use>
+  <circle cx="400" cy="100" r="200" stroke-width="10" fill="none" stroke="url(#a)" opacity=".15">
+    <animate attributeName="r" dur="20s" repeatCount="indefinite" values="200;220;200"/>
+    <animate attributeName="opacity" dur="10s" repeatCount="indefinite" values="0.15;0.25;0.15"/>
+  </circle>
+    <use width="160" height="160" x="350" y="30" href="#l">
+    <animateTransform attributeName="transform" dur="20s" repeatCount="indefinite" type="translate" values="0,0; 10,15; 0,30; -10,15; 0,0"/>
+    <animateTransform additive="sum" attributeName="transform" dur="15s" repeatCount="indefinite" type="rotate" values="0,400,300; 5,400,300; 0,400,300; -5,400,300; 0,400,300"/>
+    <animate attributeName="opacity" dur="10s" repeatCount="indefinite" values="0.4;0.6;0.4"/>
+  </use>
+  <use width="110" height="110" x="650" y="20" href="#c">
+    <animateTransform attributeName="transform" dur="25s" repeatCount="indefinite" type="translate" values="0,0; -30,20; -60,0; -30,-20; 0,0"/>
+    <animate attributeName="opacity" dur="12s" repeatCount="indefinite" values="0.3;0.5;0.3"/>
+    <animateTransform additive="sum" attributeName="transform" dur="15s" repeatCount="indefinite" type="scale" values="1;1.1;1"/>
+  </use>
+  <use width="110" height="110" x="50" y="90" href="#sn">
+    <animateTransform attributeName="transform" dur="30s" repeatCount="indefinite" type="translate" values="0,0; 25,-20; 50,0; 25,20; 0,0"/>
+    <animate attributeName="opacity" dur="15s" repeatCount="indefinite" values="0.25;0.45;0.25"/>
+  </use>
+
+</svg>

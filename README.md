@@ -16,103 +16,45 @@
 
 # STARKLINGS
 
+![STARKLINGS](./.github/hero-banner.svg)
+
 ### An interactive tutorial to get you up and running with Cairo and Starknet
 
----
+## Overview
 
-## Setup and run
+Starklings is an interactive tutorial project designed to help you learn Cairo and Starknet development through practical exercises. The project consists of two main components:
 
-Make sure you have Rust and Cargo installed with the `default` toolchain.  
-With rustup 
-```sh
-curl https://sh.rustup.rs -sSf | sh -s
-```
+### <a href="./README.APP.md">Starklings APP <img align="right" alt="Readme APP" src="https://img.shields.io/badge/Readme-grey"></a>
 
-1. Clone the repo and go in the directory,
-   ```
-   git clone https://github.com/shramee/starklings-cairo1.git && cd starklings-cairo1
-   ```
-2. Run starklings (this might take a while the first time),
-   ```sh
-   cargo run -r --bin starklings
-   ```
-3. You should see an intro message, when you are ready run starklings in watch mode,
-   ```sh
-   cargo run -r --bin starklings watch
-   ```
+CLI-based interactive tutorial
 
-## Start at a specific exercise `NEW`
+### <a href="./README.CLI.md">Starklings CLI <img align="right" alt="Readme CLI" src="https://img.shields.io/badge/Readme-grey"></a>
 
-To start watch at a specific exercise pass the name of the exercise to watch command.
-For example, to start at `starknet1`,
+A web-based in browser Starklings experience
 
-```
-cargo run -r --bin starklings watch starknet1
-```
+#### Both versions share the same core exercises and hints, with a single source of truth for all content.
 
-## Welcome message and instructions
+## Contributing
 
-```
-starklings - An interactive tutorial to get started with Cairo and Starknet
+Thanks for your interest in the project. You can fork the repo, create a branch with a descriptive name (maybe the issue number and a word or two to describe it) and submit a pull request.
 
-       _             _    _ _
-      | |           | |  | (_)
-   ___| |_ __ _ _ __| | _| |_ _ __   __ _ ___
-  / __| __/ _` | '__| |/ / | | '_ \ / _` / __|
-  \__ \ || (_| | |  |   <| | | | | | (_| \__ \
-  |___/\__\__,_|_|  |_|\_\_|_|_| |_|\__, |___/
-                                     __/ |
-                                    |___/
+### Testing
 
-Thanks for installing starklings!
-
-Is this your first time? Don't worry, starklings is made for beginners! We are
-going to teach you a bunch of stuff about StarkNet and Cairo.
-
-Here's how starklings works,
-
-1. To start starklings run `cargo run -r --bin starklings watch`
-2. It'll automatically start with the first exercise. Don't get confused by
-error message popping up as soon as you run starklings! This is part of the
-exercise that you're supposed to solve, so open the exercise file in an editor
-and start your detective work!
-3. If you're stuck on an exercise, there is a helpful hint you can view by
-typing `hint` (in watch mode), or running `cargo run -r --bin starklings hint
-exercise_name`.
-4. When you have solved the exercise successfully, Remove `// I AM NOT DONE`
-comment to move on to the next exercise.
-5. If an exercise doesn't make sense to you, please open an issue on GitHub!
-(https://github.com/shramee/starklings-cairo1/issues/new).
-
-Got all that? Great! To get started, run `starklings watch` in order to get the
-first exercise. Make sure to have your editor open!
-```
-
-## VSCode extension & language server
-
-In order to have syntax highlighting and language server features, you will need to install the Cairo Language Server. The instructions available in the [Cairo repository](https://github.com/starkware-libs/cairo/tree/main/vscode-cairo)
-
-## Inspiration
-
--   [Rustlings](https://github.com/rust-lang/rustlings), starklings is forked from Rustlings. Thanks to all the original [authors and contributors](https://github.com/rust-lang/rustlings)
-
-## Testing
-
-#### For Cairo related tests
+#### Cairo related tests
 
 ```
 cargo test cairo
 ```
 
-#### For all tests
+#### All tests
 
 ```
 cargo test
 ```
 
-## Contributing
+#### App tests
 
-Thanks for your interest in the project. You can fork the repo, create a branch with a descriptive name (maybe the issue number and a word or two to describe it) and submit a pull request.
+_Coming soon_
 
 ### Adding new exercises
 
