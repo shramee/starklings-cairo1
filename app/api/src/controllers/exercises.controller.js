@@ -94,7 +94,7 @@ export const getExercise = async (req, res) => {
   try {
     const cairoCode = await readFileAsync(exercise.path, 'utf8');
     const descAndCode = parseExerciseContent(cairoCode);
-    exercise.description = descAndCode[0];
+    exercise.description = exercise.description || descAndCode[0];
     exercise.code = descAndCode[1];
   } catch (error) {
     throw { statusCode: 500, message: 'Error reading exercise file at path ' + exercise.path };
