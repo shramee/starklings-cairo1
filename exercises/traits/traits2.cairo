@@ -1,4 +1,3 @@
-// traits2.cairo
 
 // The previous exercise did not make the distinction
 // between different types of animals, but this one does.
@@ -11,7 +10,6 @@
 // You need to implement the trait `AnimalTrait` for them.
 
 // No hints for this one!
-// Execute `starklings hint traits2` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
 
