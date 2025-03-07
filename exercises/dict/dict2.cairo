@@ -1,8 +1,6 @@
-// dict2.cairo
 // Dictionaries can be used to simulate dynamic array : the value they store can be accessed and modified.
 // Your task is to create a function that multiplies the elements stored at the indexes 0 to n of a dictionary by 10
 // Make me compile and pass the test!
-// Execute `starklings hint dict2` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
 

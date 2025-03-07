@@ -1,6 +1,3 @@
-// functions4.cairo
-// Execute `starklings hint functions4` or use the `hint` watch subcommand for a hint.
-
 // This store is having a sale where if the price is an even number, you get
 // 10 Cairobucks off, but if it's an odd number, it's 3 Cairobucks off.
 // (Don't worry about the function bodies themselves, we're only interested

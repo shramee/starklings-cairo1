@@ -1,11 +1,8 @@
-// traits3.cairo
 //
 // The previous exercise showed how to implement a trait for multiple types.
 // This exercise shows how you can implement multiple traits for a single type.
 // This is useful when you have types that share some common functionality, but
 // also have some unique functionality.
-
-// Execute `starklings hint traits3` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
 

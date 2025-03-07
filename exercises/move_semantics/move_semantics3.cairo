@@ -1,7 +1,5 @@
-// move_semantics3.cairo
 // Make me compile without adding new lines-- just changing existing lines!
 // (no lines with multiple semicolons necessary!)
-// Execute `starklings hint move_semantics3` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
 

@@ -1,6 +1,4 @@
-// structs1.cairo
 // Address all the TODOs to make the tests pass!
-// Execute `starklings hint structs1` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
 #[derive(Copy, Drop)]

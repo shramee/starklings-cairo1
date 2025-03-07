@@ -1,4 +1,3 @@
-// starknet2.cairo
 // Joe's contract in the last exercise showed that Joe is the owner of the contract.
 // He thanks you for helping him out!
 // Jill says that contract should allow setting the owner when contract is deployed.

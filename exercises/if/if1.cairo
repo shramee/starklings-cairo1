@@ -1,5 +1,4 @@
-// if1.cairo
-// Execute `starklings hint if1` or use the `hint` watch subcommand for a hint.
+// Make the tests pass.
 
 // I AM NOT DONE
 
