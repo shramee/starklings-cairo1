@@ -60,21 +60,21 @@ export const ExerciseList = ({ currentExercise, open }: IExerciseListProps) => {
   const { data: exercises, isLoading } = useGetExercises();
   const [showPrevious, setShowPrevious] = useState(false);
   const [showNext, setShowNext] = useState(false);
-
+  
   if (isLoading) {
     return <CircularProgressCenterLoader />;
   }
-
+  
   const lastCompleted =
-    exercises
-      ?.filter((exercise) => {
-        return !!exercise.completed;
-      })
-      ?.slice(-1)[0]?.exercise_order ?? 0;
-
+  exercises
+  ?.filter((exercise) => {
+    return !!exercise.completed;
+  })
+  ?.slice(-1)[0]?.exercise_order ?? 0;
+  
   const currentExerciseOrder =
-    exercises?.find((exercise) => exercise.id === currentExercise)
-      ?.exercise_order ?? 0;
+  exercises?.find((exercise) => exercise.id === currentExercise)
+  ?.exercise_order ?? 0;
 
   const shownExercises =
     exercises && currentExerciseOrder
