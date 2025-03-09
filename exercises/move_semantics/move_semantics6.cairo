@@ -1,5 +1,3 @@
-// move_semantics6.cairo
-// Execute `starklings hint move_semantics6` or use the `hint` watch subcommand for a hint.
 // You can't change anything except adding or removing references.
 
 // I AM NOT DONE

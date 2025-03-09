@@ -1,6 +1,4 @@
-// arrays3.cairo
 // Make me compile and pass the test!
-// Execute `starklings hint arrays3` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
 
