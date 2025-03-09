@@ -1,7 +1,5 @@
-// arrays2.cairo
 // Your task is to make the test pass without modifying the `create_array` function.
 // Make me compile and pass the test!
-// Execute `starklings hint arrays2` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
 

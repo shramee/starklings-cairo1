@@ -187,14 +187,14 @@ export const Workspace = () => {
             >
               {/* description */}
               <Box sx={{ px: 8, py: 6 }}>
-                <Typography sx={{ mb: 4 }} variant="h4">
-                  {data?.name}
+                <Typography sx={{ mb: 4, textTransform: "capitalize" }} variant="h4">
+                  {data?.name.split('_').join(' ').replace(/(\d+)$/, ' $1')}
                 </Typography>
                 {isLoading && <CircularProgressCenterLoader />}
                 {data && (
-                  <Typography style={{ whiteSpace: "pre-line" }}>
+                  <Typography>
                     {data.description?.trim() !== ""
-                      ? data.description
+                      ? data.description?.split(".\n").map((line, i) => <p key={i}>{line}.</p>)
                       : "Having trouble to solve this one? Click 'GET HINT' button for help!"}
                   </Typography>
                 )}
@@ -202,7 +202,7 @@ export const Workspace = () => {
               {/* alerts */}
               <Box>
                 {hintLoading && <CircularProgressCenterLoader />}
-                {hint && (
+                `{hint && (
                   <Alert
                     sx={{ m: 2, ml: 4, color: "#FFF" }}
                     severity="info"

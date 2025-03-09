@@ -1,8 +1,6 @@
-// starknet4.cairo
 // Liz, a friend of Jill, wants to manage inventory for her store on-chain.
 // This is a bit challenging for Joe and Jill, Liz prepared an outline
 // for how contract should work, can you help Jill and Joe write it?
-// Execute `starklings hint starknet4` or use the `hint` watch subcommand for a hint.
 
 // I AM NOT DONE
 
