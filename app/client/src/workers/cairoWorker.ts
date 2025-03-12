@@ -49,7 +49,7 @@ addEventListener("message", (event) => {
   }
   if (
     result.startsWith("failed to compile") ||
-    result.includes("test result APPEND: FAILED") ||
+    result.includes("test result: FAILED") ||
     !code ||
     code.trim() === ""
   ) {

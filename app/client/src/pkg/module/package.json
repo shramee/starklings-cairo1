@@ -4,7 +4,7 @@
     "cryptonerdcn <cryptonerdcn@gmail.com> (https://twitter.com/cryptonerdcn)"
   ],
   "description": "WASM runtime for Cairo language and Starknet",
-  "version": "0.8.8",
+  "version": "0.10.2",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -13,8 +13,7 @@
   "files": [
     "wasm-cairo_bg.wasm",
     "wasm-cairo.js",
-    "wasm-cairo.d.ts",
-    "LICENSE_APACHE"
+    "wasm-cairo.d.ts"
   ],
   "module": "wasm-cairo.js",
   "types": "wasm-cairo.d.ts",
