@@ -188,7 +188,7 @@ export const Workspace = () => {
               {/* description */}
               <Box sx={{ px: 8, py: 6 }}>
                 <Typography sx={{ mb: 4, textTransform: "capitalize" }} variant="h4">
-                  {data?.name.split('_').join(' ').replace(/(\d+)$/, ' $1')}
+                  {data?.name}
                 </Typography>
                 {isLoading && <CircularProgressCenterLoader />}
                 {data && (
