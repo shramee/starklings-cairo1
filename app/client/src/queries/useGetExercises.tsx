@@ -3,6 +3,7 @@ import axios from "axios";
 import { API_URL } from "../constants/api";
 import { ICompletedExercise, IExercise } from "../types/exercise";
 import { getUser } from "../utils/getUser";
+import { getName } from "../utils/getName";
 
 export const useGetExercises = (user = getUser()) => {
   return useQuery<IExercise[]>({
@@ -15,6 +16,8 @@ export const useGetExercises = (user = getUser()) => {
       return exercises.map((exercise: IExercise) => {
         return {
           ...exercise,
+          id: exercise.name,
+          name: getName(exercise.name),
           completed: !!completedExercises.find(
             (completedExercise: ICompletedExercise) =>
               completedExercise.exercise_id === exercise.id
