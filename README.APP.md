@@ -53,3 +53,11 @@ Launch the development server:
 ```bash
 pnpm run start
 ```
+
+## Cairo runtime
+
+Cairo runtime is based on Cairo WASM from [@cryptonerdcn](https://github.com/cryptonerdcn).
+
+We use a modified fork (kudos to [@dpinones](https://github.com/dpinones)) of the runtime. The fork provides more detailed test logs, making it easier for identifying and debugging the issues.
+- [Cairo WASM Fork - github.com/dpinones/wasm-cairo/tree/cairo-2.8.2](https://github.com/dpinones/wasm-cairo/tree/cairo-2.8.2)  
+- [Cairo Fork - github.com/dpinones/cairo/commits/cairo-2.8.2](https://github.com/dpinones/cairo/commits/cairo-2.8.2)
