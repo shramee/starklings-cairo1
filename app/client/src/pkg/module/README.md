@@ -5,6 +5,8 @@ WASM runtime for Cairo language and Starknet
   <h1><code>WASM-Cairo</code></h1>
 
   <strong>A suite of development tools and an environment for Cairo, all based on WebAssembly.</strong>
+
+  [Homepage](https://wasm-cairo-landing.vercel.app/)
   
   [Github](https://github.com/cryptonerdcn/wasm-cairo)
 
@@ -14,6 +16,11 @@ WASM runtime for Cairo language and Starknet
 
 ## 🚴 Usage
 
+How to use:
+1. You can download the precompiled wasm file from [here](https://github.com/cryptonerdcn/wasm-cairo/releases).
+2. If you want to use WASM-Cairo in your Web App, you can also use npm package [wasm-cairo](https://www.npmjs.com/package/wasm-cairo).
+
+If you prefer to build it yourself, you can follow the steps below.
 
 ### 🛠️ Build WASM-bindgen's WASM-Cairo Toolkit 
 With Modules
@@ -43,6 +50,8 @@ No Modules
 wasm-pack pack output/no_module 
 ```
 
+Caution: Do not run `wasm-pack publish` after `wasm-pack pack output/no_module`. It will publish the no-modules version.
+
 ### 🛠️ Build WASMTIME's WASM-Cairo Toolkit
 
 ```
@@ -70,7 +79,7 @@ Run Tests
 Compile Contract
 
 ```
-./wasmtime_test.sh compileStarknetContract ./cairo_files/erc20.cairo ./cairo_files/erc20.json
+./wasmtime_test.sh compileStarknetContract ./cairo_files/storage.cairo ./cairo_files/storage.json  
 ```
 
 ## 🔋 Batteries Included
@@ -82,7 +91,7 @@ Compile Contract
 * [`wee_alloc`](https://github.com/rustwasm/wee_alloc), an allocator optimized
   for small code size.
 * [`Cairo`](https://github.com/starkware-libs/cairo) for Cairo-lang support.
-* `LICENSE-APACHE` and `LICENSE-MIT`: most Rust projects are licensed this way, so these are included for you
+* `LICENSE-APACHE`.
 
 ## License
 
