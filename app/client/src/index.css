@@ -106,16 +106,22 @@ Logo HERO
   font-weight: 600;
   margin-bottom: 20px;
   line-height: 1;
-  text-shadow: 0px -4px 20px #dd3d3d00, 0px -2px 5px #dedede00;
-  transform: skew(0deg, 0deg);
-  transition: all 1s ease;
+  text-shadow: 0px -2px 20px #dd3d3d00, 0px -2px 5px #dedede00;
+  animation: logoAnimation 3s infinite alternate ease-in-out;
+  transform-style: preserve-3d;
+  cursor: default;
 }
 
-#logotext-hero:hover {
-  text-shadow: 0px -8px 25px #dd3d3d, 0px -2px 6px #e7e7e7;
-  transition: all 1s ease;
-  transform-style: preserve-3d;
-  transform: perspective(10cm) rotateX(-20deg) rotateY(0deg);
+@keyframes logoAnimation {
+  0% {
+    text-shadow: 0px -4px 20px #dd3d3d, 0px 0px 2px #e7e7e7;
+    transform: perspective(7000px) rotateX(-20deg);
+  }
+
+  100% {
+    text-shadow: 0px -8px 25px #dd3d3d, 0px -2px 6px #e7e7e7;
+    transform: perspective(700px) rotateX(-20deg);
+  }
 }
 
 /***********************
