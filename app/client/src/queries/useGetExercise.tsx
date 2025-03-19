@@ -10,7 +10,7 @@ export const useGetExercise = (exerciseName: string | undefined) => {
     enabled: !!exerciseName,
     queryFn: async () => {
       const { data } = await axios.get(`${API_URL}/exercises/${exerciseName}`);
-      if (!data.code) {
+      if (typeof data.code == 'undefined') {
         throw new Error("No code found");
       }
       data.code = data.code.replace(/^\n+/g, '');
