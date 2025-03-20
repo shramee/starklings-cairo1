@@ -26,11 +26,11 @@ Starklings is an interactive tutorial project designed to help you learn Cairo a
 
 ### <a href="./README.APP.md">Starklings APP <img align="right" alt="Readme APP" src="https://img.shields.io/badge/Readme-grey"></a>
 
-CLI-based interactive tutorial
+A web-based in browser Starklings experience
 
 ### <a href="./README.CLI.md">Starklings CLI <img align="right" alt="Readme CLI" src="https://img.shields.io/badge/Readme-grey"></a>
 
-A web-based in browser Starklings experience
+CLI-based interactive tutorial
 
 #### Both versions share the same core exercises and hints, with a single source of truth for all content.
 
